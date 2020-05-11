@@ -37,6 +37,29 @@ Content-Type: application/json
 }
 ```
 
+## GET  `/user`
+
+List all the users on the system
+
+### Require
+
+Nothing
+
+### Result
+
+| Name    | Type   | About                                                        |
+| ------- | ------ | ------------------------------------------------------------ |
+| status  | Number | The HTTP status code.                                        |
+| message | String | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| result  | Array  | An array with the users data.                                |
+
+### Example
+
+```http
+GET /user HTTP/1.1
+Host: localhost
+```
+
 
 >  Copyright 2020 Wjtje
 >

@@ -19,7 +19,7 @@ A table for storing the user information and login details
 
 ### Code
 
-```mysql
+```sql
 CREATE TABLE `trakless`.`TL_users` (
   `user_id` INT NOT NULL AUTO_INCREMENT ,
   `firstname` TEXT NOT NULL ,

@@ -33,6 +33,7 @@ server.use(bodyParser.json());
 server.use(bodyParser.raw());
 
 import './user/create';
+import './user/index';
 
 // Start the server
 server.listen(port, () => {

@@ -25,6 +25,7 @@ server.get('/api', (req, res) => {
             // IDK there is an error
             sqlError(res, error, 'Something went wrong.');
           } else {
+
             // Send the data to the user
             res.send(JSON.stringify({
               status: 200,
@@ -33,10 +34,10 @@ server.get('/api', (req, res) => {
             }));
 
             res.status(200);
+
           }
         }
       );
-
     }).catch((reason) => {
       // Couldn't login
       res.send({
@@ -66,6 +67,7 @@ server.post('/api', (req, res) => {
           // Something went wrong
           sqlError(res, error, `Please check your username and password.`);
         } else {
+
           // Check if the password is correct
           if (sha512_256(req.body.password + result[0].salt_hash) === result[0].hash) {
             const apiKey:string = sha512_256(Date.now().toString()); // Generated using time
@@ -84,16 +86,20 @@ server.post('/api', (req, res) => {
                   // Something went wrong
                   sqlError(res, error, `Something went wrong. Please try again later.`);
                 } else {
+
                   // Send the api key
                   res.send({
                     status: 200,
                     message: 'done',
                     apiKey: apiKey
                   });
+
                   res.status(200);
+
                 }
               }
             );
+
           } else {
             // Password not correct
             res.send(JSON.stringify({
@@ -102,6 +108,7 @@ server.post('/api', (req, res) => {
             }));
             res.status(403);
           }
+
         }
       }
     );

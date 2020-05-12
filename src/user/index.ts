@@ -81,23 +81,21 @@ server.post('/user', (req, res) => {
         ],
         (error, result) => {
 
-          if (error) {
+          if (error) {  // SQL error
             sqlError(res, error, `Something went wrong while checking the user name = '${req.body.username}'`);
-          } else if (result.length > 0) {
-            // Username is taken
+          } else if (result.length > 0) { // Username is taken
             res.send(JSON.stringify({
               status: 400,
               message: 'Username is taken.',
             }));
     
             res.status(400);
-          } else {
-
+          } else {  // Every things good
             // Create a new user
             // Generate salt
-            const salt = generateString(32);
+            const salt = generateString(32);  // Safety
 
-            // Execute the query
+            // Commit to the database
             DBcon.query(
               "INSERT INTO `TL_users` ( `firstname`, `lastname`, `username`, `salt_hash`, `hash` ) VALUES ( ?, ?, ?, ?, ?)",
               [
@@ -108,21 +106,21 @@ server.post('/user', (req, res) => {
                 sha512_256(req.body.password + salt)
               ],
               (error, result) => {
-                // Check if there is an error
+                // Check if it has been saved
                 if (error) {
                   sqlError(res, error, `Couldn't save the user into the database. Please try again later`);
                 } else {
 
-                  // Created that user
+                  // User has been created
                   // Get the user_id
                   DBcon.query(
                     "SELECT `user_id` FROM `TL_users` ORDER BY `user_id` DESC LIMIT 1",
                     (error, result) => {
-                      if (error) {
+                      if (error) {  // Sql error
                         sqlError(res, error, `Couldn't find the user_id for the newly created user.`);
-                      } else {
+                      } else { // found the user id
 
-                        // found the user id
+                        // Done
                         res.send(JSON.stringify({
                           status: 200,
                           message: 'done',

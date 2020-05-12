@@ -17,7 +17,7 @@ export function sqlError(res, error:MysqlError, errorMessage:string) {
   // Report to the user
   res.send(JSON.stringify({
     status: 500,
-    message: errorMessage,
+    message: errorMessage + ` (${error.code})`,
   }));
 
   res.status(500);

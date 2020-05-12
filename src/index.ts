@@ -37,6 +37,9 @@ import './user/create';
 import './user/index';
 import './user/user_id';
 
+// Import api commands
+import './api/create';
+
 // Start the server
 server.listen(port, () => {
   console.log("SERVER: Started! on " + port);

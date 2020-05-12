@@ -56,6 +56,35 @@ CREATE TABLE `trakless`.`TL_errors` (
 ) ENGINE = InnoDB;
 ```
 
+## TL_apikeys
+
+A table for storing the active api keys
+
+### Layout
+
+| Name       | Type     | About                                                   |
+| ---------- | -------- | ------------------------------------------------------- |
+| api_id     | INT      | index (AUTO_INCREMENT)                                  |
+| apiKey     | TEXT     | The api key                                             |
+| createDate | DATETIME | CURRENT_TIME                                            |
+| lastUsed   | DATETIME | Last time the api key was used                          |
+| deviceName | TEXT     | A name for the api key.<br/>Like what device it is for. |
+| user_id    | INT      | For who is it                                           |
+
+### Code
+
+```sql
+CREATE TABLE `trakless`.`TL_apikeys` (
+  `api_id` INT NOT NULL AUTO_INCREMENT ,
+  `apiKey` TEXT NOT NULL ,
+  `createDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `lastUsed` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `deviceName` TEXT NOT NULL ,
+  `user_id` INT NOT NULL ,
+  PRIMARY KEY (`api_id`)
+) ENGINE = InnoDB;
+```
+
 >  Copyright 2020 Wjtje
 >
 >  See the LICENSE

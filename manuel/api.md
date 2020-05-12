@@ -14,6 +14,7 @@ A quick way to create more users.
 | lastname  | String | The last name of the user.                        |
 | username  | String | The login name of the user.                       |
 | password  | String | The password of the user. (Please make it strong) |
+| apiKey    | String | Your own apiKey to log in.                        |
 
 ### Result
 
@@ -34,7 +35,8 @@ Content-Type: application/json
 	"firstname": "John",
 	"lastname": "Doe",
 	"username": "JohnD",
-	"password": "Str0ng!"
+	"password": "Str0ng!",
+	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
 }
 ```
 
@@ -44,7 +46,9 @@ List all the users on the system
 
 ### Require
 
-Nothing
+| Name      | Type   | About                          |
+| --------- | ------ | ------------------------------ |
+| apiKey    | String | Your own apiKey to log in.     |
 
 ### Result
 
@@ -59,6 +63,11 @@ Nothing
 ```http
 GET /user HTTP/1.1
 Host: localhost
+Content-Type: application/json
+
+{
+	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
+}
 ```
 
 ## GET `/user/:user_id`
@@ -70,6 +79,7 @@ Get all the details from a single user
 | Name     | Type   | About                           |
 | -------- | ------ | ------------------------------- |
 | :user_id | Number | The unique number for that user |
+| apiKey   | String | Your own apiKey to log in.      |
 
 ### Result
 
@@ -84,6 +94,11 @@ Get all the details from a single user
 ```http
 GET /user/:user_id HTTP/1.1
 Host: localhost
+Content-Type: application/json
+
+{
+	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
+}
 ```
 
 ## DELETE `/user/:user_id`
@@ -95,6 +110,7 @@ Get a single user
 | Name     | Type   | About                           |
 | -------- | ------ | ------------------------------- |
 | :user_id | Number | The unique number for that user |
+| apiKey   | String | Your own apiKey to log in.      |
 
 ### Result
 
@@ -108,6 +124,45 @@ Get a single user
 ```http
 DELETE /user/:user_id HTTP/1.1
 Host: localhost
+Content-Type: application/json
+
+{
+	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
+}
+```
+
+## POST `/api/create`
+
+Create a new apiKey
+
+### Require
+
+| Name       | Type   | About                                        |
+| ---------- | ------ | -------------------------------------------- |
+| username   | String | Your username.                               |
+| password   | String | Your password.                               |
+| deviceName | String | A name for that device you are logging into. |
+
+## Result
+
+| Name    | Type   | About                                                        |
+| ------- | ------ | ------------------------------------------------------------ |
+| status  | Number | The HTTP status code.                                        |
+| message | String | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| apiKey  | String | Your new apiKey for that device.                             |
+
+### Example
+
+```http
+POST /api/create HTTP/1.1
+Host: localhost
+Content-Type: application/json
+
+{
+	"username": "JohnD",
+	"password": "Str0ng!",
+	"deviceName": "John his device"
+}
 ```
 
 

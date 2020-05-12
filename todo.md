@@ -2,7 +2,14 @@
 
 ## Global
  - A system with rights
- - An api-key system
+
+## Api-System
+ - A way to check the api key
+ - A way to remove a api key
+ - A way to list all you deviceName's
+
+## DELETE `\user\:user_id`
+ - Remove all api keys for that account
 
 ## POST `\user\create`
  - Check if the password is strong

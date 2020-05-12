@@ -2,14 +2,14 @@
 
 All the 'know' commands.
 
- - POST `/user/create`
+ - POST `/user`
  - GET `/user`
  - GET `/user/:user_id`
  - DELETE `/user/:user_id`
- - POST `/api/create`
+ - POST `/api`
  - GET `/api`
 
-## POST `/user/create`
+## POST `/user`
 
 A quick way to create more users.
 
@@ -34,7 +34,7 @@ A quick way to create more users.
 ### Example
 
 ```http
-POST /user/create HTTP/1.1
+POST /user HTTP/1.1
 Host: localhost
 Content-Type: application/json
 
@@ -138,7 +138,7 @@ Content-Type: application/json
 }
 ```
 
-## POST `/api/create`
+## POST `/api`
 
 Create a new apiKey
 
@@ -161,7 +161,7 @@ Create a new apiKey
 ### Example
 
 ```http
-POST /api/create HTTP/1.1
+POST /api HTTP/1.1
 Host: localhost
 Content-Type: application/json
 

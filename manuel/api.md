@@ -47,16 +47,41 @@ Nothing
 
 ### Result
 
-| Name    | Type   | About                                                        |
-| ------- | ------ | ------------------------------------------------------------ |
-| status  | Number | The HTTP status code.                                        |
-| message | String | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
-| result  | Array  | An array with the users data.                                |
+| Name    | Type           | About                                                        |
+| ------- | -------------- | ------------------------------------------------------------ |
+| status  | Number         | The HTTP status code.                                        |
+| message | String         | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| result  | Array<TL_user> | An array with all the users data.                            |
 
 ### Example
 
 ```http
 GET /user HTTP/1.1
+Host: localhost
+```
+
+## GET `/user/:user_id`
+
+Get all the details from a single user
+
+### Require
+
+| Name     | Type   | About                           |
+| -------- | ------ | ------------------------------- |
+| :user_id | Number | The unique number for that user |
+
+### Result
+
+| Name    | Type           | About                                                        |
+| ------- | -------------- | ------------------------------------------------------------ |
+| status  | Number         | The HTTP status code.                                        |
+| message | String         | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| result  | Array<TL_user> | An array with the users data                                 |
+
+### Example
+
+```http
+GET /user/:user_id HTTP/1.1
 Host: localhost
 ```
 

@@ -8,8 +8,8 @@
 ## POST `\user\create`
  - Check if the password is strong
 
-## GET `\user\:user_id`
- - List a user
-
 ## DELETE `\user\:user_id`
  - Delete a user
+
+## PATCH `\user\:user_id`
+ - Make changes to a user

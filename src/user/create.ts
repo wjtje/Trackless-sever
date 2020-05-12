@@ -2,8 +2,8 @@
 import { server, DBcon } from '../index';
 
 // Import string and scripts we need
-import { missingError, passwordNotSafeError, sqlError } from '../language';
-import { generateString } from '../scripts';
+import { missingError, passwordNotSafeError } from '../language';
+import { generateString, sqlError } from '../scripts';
 
 // Import other modules
 import * as _ from 'lodash';
@@ -40,16 +40,7 @@ server.post('/user/create', (req, res) => {
       ],
       (error, result) => {
         if (error) {
-          // Report to the user
-          res.send(JSON.stringify({
-            status: 500,
-            message: sqlError,
-            sqlError: error,
-          }));
-  
-          res.status(500);
-  
-          console.log(error);
+          sqlError(res, error);
         } else if (result.length > 0) {
           // Username is taken
           res.send(JSON.stringify({
@@ -76,16 +67,7 @@ server.post('/user/create', (req, res) => {
             (error, result) => {
               // Check if there is an error
               if (error) {
-                // Report to the user
-                res.send(JSON.stringify({
-                  status: 500,
-                  message: sqlError,
-                  sqlError: error,
-                }));
-
-                res.status(500);
-
-                console.log(error);
+                sqlError(res, error);
               } else {
                 // Done
                 res.send(JSON.stringify({

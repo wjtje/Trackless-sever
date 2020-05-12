@@ -32,8 +32,10 @@ server.use(bodyParser.urlencoded({
 server.use(bodyParser.json());
 server.use(bodyParser.raw());
 
+// Import user commands
 import './user/create';
 import './user/index';
+import './user/user_id';
 
 // Start the server
 server.listen(port, () => {

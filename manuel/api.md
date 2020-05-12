@@ -2,7 +2,14 @@
 
 All the 'know' commands.
 
-## POST: `/user/create`
+ - POST `/user/create`
+ - GET `/user`
+ - GET `/user/:user_id`
+ - DELETE `/user/:user_id`
+ - POST `/api/create`
+ - GET `/api`
+
+## POST `/user/create`
 
 A quick way to create more users.
 
@@ -40,7 +47,7 @@ Content-Type: application/json
 }
 ```
 
-## GET  `/user`
+## GET `/user`
 
 List all the users on the system
 
@@ -143,7 +150,7 @@ Create a new apiKey
 | password   | String | Your password.                               |
 | deviceName | String | A name for that device you are logging into. |
 
-## Result
+### Result
 
 | Name    | Type   | About                                                        |
 | ------- | ------ | ------------------------------------------------------------ |
@@ -165,6 +172,37 @@ Content-Type: application/json
 }
 ```
 
+## GET `/api`
+
+List all you apiKeys and deviceNames
+
+### Require
+
+| Name   | Type   | About                      |
+| ------ | ------ | -------------------------- |
+| apiKey | String | Your own apiKey to log in. |
+
+### Result
+
+| Name    | Type   | About                                                        |
+| ------- | ------ | ------------------------------------------------------------ |
+| status  | Number | The HTTP status code.                                        |
+| message | String | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| result  | Array<TL_api> | An array with all the infomation.                     |
+
+### Example
+
+```http
+GET /api HTTP/1.1
+Host: localhost
+Content-Type: application/json
+
+{
+	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
+}
+```
+
+#
 
 >  Copyright 2020 Wjtje
 >

@@ -10,7 +10,10 @@ import * as _ from 'lodash';
 import { sha512_256 } from 'js-sha512';
 
 // Export
-export function apiLogin(apiKey:string):Promise<object> {
+export function apiLogin(apiKey:string):Promise<{
+  user_id: number;
+  username: string;
+}> {
   return new Promise((resolve, reject) => {
     // Check the api key
     DBcon.query(
@@ -34,6 +37,24 @@ export function apiLogin(apiKey:string):Promise<object> {
             (error)? error.code : 'Could not find your account.'
           );
         } else {
+          DBcon.query(
+            "UPDATE `TL_apikeys` SET `lastUsed`=CURRENT_TIMESTAMP WHERE `apiKey`=?",
+            [
+              sha512_256(apiKey)
+            ],
+            (error) => {
+              if (error) {
+                DBcon.query(
+                  "INSERT INTO `TL_errors` (`sqlError`, `message`) VALUES (?,?)",
+                  [
+                    JSON.stringify(error),
+                    'None'
+                  ]
+                );
+              }
+            }
+          );
+
           resolve(result[0]);
         }
       }

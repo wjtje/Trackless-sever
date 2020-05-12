@@ -39,6 +39,7 @@ import './user/user_id';
 
 // Import api commands
 import './api/create';
+import './api/index';
 
 // Start the server
 server.listen(port, () => {

@@ -4,8 +4,6 @@
  - A system with rights
 
 ## Api-System
- - A way to check the api key
- - A way to remove a api key
  - A way to list all you deviceName's
 
 ## DELETE `\user\:user_id`

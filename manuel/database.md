@@ -31,7 +31,30 @@ CREATE TABLE `trakless`.`TL_users` (
 ) ENGINE = InnoDB;
 ```
 
+## TL_errors
 
+A table for storing all the error details.
+
+### Layout
+
+| Name     | Type     | About                  |
+| -------- | -------- | ---------------------- |
+| error_id | INT      | index (AUTO_INCREMENT) |
+| dateTime | DATETIME | CURRENT_TIME           |
+| sqlError | LONGTEXT | The sql error message  |
+| message  | TEXT     | User error message     |
+
+### Code
+
+```sql
+CREATE TABLE `trakless`.`TL_errors` (
+    `error_id` INT NOT NULL AUTO_INCREMENT ,
+    `dateTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+    `sqlError` LONGTEXT NOT NULL ,
+    `message` TEXT NOT NULL ,
+    PRIMARY KEY (`error_id`)
+) ENGINE = InnoDB;
+```
 
 >  Copyright 2020 Wjtje
 >

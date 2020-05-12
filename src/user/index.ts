@@ -14,7 +14,7 @@ server.get('/user', (req, res) => {
     "SELECT `user_id`, `firstname`, `lastname`, `username` FROM `TL_users` WHERE 1",
     (error, result) => {
       if (error) {
-        sqlError(res, error);
+        sqlError(res, error, `Couldn't select all the users.`);
       } else {
         // Done
         res.send(JSON.stringify({

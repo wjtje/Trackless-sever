@@ -40,7 +40,7 @@ server.post('/user/create', (req, res) => {
       ],
       (error, result) => {
         if (error) {
-          sqlError(res, error);
+          sqlError(res, error, `Something went wrong while checking the user name = '${req.body.username}'`);
         } else if (result.length > 0) {
           // Username is taken
           res.send(JSON.stringify({
@@ -67,7 +67,7 @@ server.post('/user/create', (req, res) => {
             (error, result) => {
               // Check if there is an error
               if (error) {
-                sqlError(res, error);
+                sqlError(res, error, `Couldn't save the user into the database. Please try again later`);
               } else {
                 // Created that user
                 // Get the user_id
@@ -75,7 +75,7 @@ server.post('/user/create', (req, res) => {
                   "SELECT `user_id` FROM `TL_users` ORDER BY `user_id` DESC LIMIT 1",
                   (error, result) => {
                     if (error) {
-                      sqlError(res, error);
+                      sqlError(res, error, `Couldn't find the user_id for the newly created user.`);
                     } else {
                       // found the user id
                       res.send(JSON.stringify({

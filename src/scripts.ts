@@ -1,4 +1,5 @@
 import { MysqlError } from "mysql";
+import { DBcon } from './index';
 
 export function generateString(length:number) : string {
   var result           = '';
@@ -12,17 +13,22 @@ export function generateString(length:number) : string {
   return result;
 }
 
-import { sqlErrorText } from './language';
-
-export function sqlError(res, error:MysqlError) {
+export function sqlError(res, error:MysqlError, errorMessage:string) {
   // Report to the user
   res.send(JSON.stringify({
     status: 500,
-    message: sqlErrorText,
-    sqlError: error,
+    message: errorMessage,
   }));
 
   res.status(500);
+
+  DBcon.query(
+    "INSERT INTO `TL_errors` (`sqlError`, `message`) VALUES (?,?)",
+    [
+      JSON.stringify(error),
+      errorMessage
+    ]
+  );
 
   console.log(error);
 }

@@ -18,7 +18,7 @@ server.get('/user/:user_id', (req, res) => {
     (error, result) => {
       // If something went wrong
       if (error) {
-        sqlError(res, error);
+        sqlError(res, error, `Couldn't find the user '${req.params.user_id}'`);
       } else {
         // Send the data to the user
         res.send(JSON.stringify({
@@ -41,7 +41,7 @@ server.delete('/user/:user_id', (req, res) => {
     (error, result) => {
       if (error) {
         // Something went wrong
-        sqlError(res, error);
+        sqlError(res, error, `Couldn't delete the user '${req.params.user_id}'`);
       } else {
         // Success
         res.send(JSON.stringify({

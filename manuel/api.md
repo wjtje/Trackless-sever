@@ -21,6 +21,7 @@ A quick way to create more users.
 | ------- | ------ | --------------------------------------------------------- |
 | status  | Number | The HTTP status code.                                     |
 | message | String | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| user_id | Number | The user_id for the create user                           |
 
 ### Example
 

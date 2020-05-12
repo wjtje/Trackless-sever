@@ -69,13 +69,25 @@ server.post('/user/create', (req, res) => {
               if (error) {
                 sqlError(res, error);
               } else {
-                // Done
-                res.send(JSON.stringify({
-                  status: 200,
-                  message: 'done',
-                }));
+                // Created that user
+                // Get the user_id
+                DBcon.query(
+                  "SELECT `user_id` FROM `TL_users` ORDER BY `user_id` DESC LIMIT 1",
+                  (error, result) => {
+                    if (error) {
+                      sqlError(res, error);
+                    } else {
+                      // found the user id
+                      res.send(JSON.stringify({
+                        status: 200,
+                        message: 'done',
+                        user_id: result[0].user_id
+                      }));
 
-                res.status(200);
+                      res.status(200);
+                    }
+                  }
+                )
               }
             }
           );

@@ -37,10 +37,10 @@ server.delete('/user/:user_id', (req, res) => {
   // Create the query
   DBcon.query(
     "DELETE FROM `TL_users` WHERE `user_id`=?",
-    [req.params.user_id],
+    [Number(req.params.user_id)],
     (error, result) => {
       if (error) {
-        // Some thing went wrong
+        // Something went wrong
         sqlError(res, error);
       } else {
         // Success

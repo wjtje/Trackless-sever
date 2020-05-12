@@ -11,7 +11,7 @@ import { sha512_256 } from 'js-sha512';
 
 // Get a user
 server.get('/user/:user_id', (req, res) => {
-  // Create a query
+  // Create the query
   DBcon.query(
     "SELECT `user_id`, `firstname`, `lastname`, `username` FROM `TL_users` WHERE `user_id`=?",
     [req.params.user_id],
@@ -31,4 +31,26 @@ server.get('/user/:user_id', (req, res) => {
       }
     }
   )
+});
+
+server.delete('/user/:user_id', (req, res) => {
+  // Create the query
+  DBcon.query(
+    "DELETE FROM `TL_users` WHERE `user_id`=?",
+    [req.params.user_id],
+    (error, result) => {
+      if (error) {
+        // Some thing went wrong
+        sqlError(res, error);
+      } else {
+        // Success
+        res.send(JSON.stringify({
+          status: 200,
+          message: 'done',
+        }));
+
+        res.status(200);
+      }
+    }
+  );
 });

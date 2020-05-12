@@ -85,6 +85,30 @@ GET /user/:user_id HTTP/1.1
 Host: localhost
 ```
 
+## DELETE `/user/:user_id`
+
+Get a single user
+
+### Require
+
+| Name     | Type   | About                           |
+| -------- | ------ | ------------------------------- |
+| :user_id | Number | The unique number for that user |
+
+### Result
+
+| Name    | Type           | About                                                        |
+| ------- | -------------- | ------------------------------------------------------------ |
+| status  | Number         | The HTTP status code.                                        |
+| message | String         | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+
+### Example
+
+```http
+DELETE /user/:user_id HTTP/1.1
+Host: localhost
+```
+
 
 >  Copyright 2020 Wjtje
 >

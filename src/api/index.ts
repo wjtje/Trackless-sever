@@ -3,7 +3,7 @@ import { server, DBcon } from '../index';
 
 // Import string and scripts we need
 import { missingError } from '../language';
-import { sqlError, apiCheck } from '../scripts';
+import { sqlError, apiCheck, handleQuery, responseDone } from '../scripts';
 import { apiLogin } from '../api/lib';
 
 // Import other modules
@@ -17,23 +17,11 @@ server.get('/api', (req, res) => {
     DBcon.query(
       "SELECT `api_id`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `user_id`=?",
       [result.user_id],
-      (error, result) => {
-        if (error) {
-          // IDK there is an error
-          sqlError(res, error, 'Something went wrong.');
-        } else {
-
-          // Send the data to the user
-          res.send(JSON.stringify({
-            status: 200,
-            message: 'done',
-            result: result
-          }));
-
-          res.status(200);
-
-        }
-      }
+      handleQuery(res, 'Something went wrong.', (result) => {
+        responseDone(res, {
+          result: result
+        });
+      })
     );
   });
 });
@@ -50,55 +38,37 @@ server.post('/api', (req, res) => {
     DBcon.query(
       "SELECT `salt_hash`, `hash`, `user_id` FROM `TL_users` WHERE `username`=?",
       [req.body.username],
-      (error, result) => {
-        if (error) {
-          // Something went wrong
-          sqlError(res, error, `Please check your username and password.`);
+      handleQuery(res, 'Please check your username and password.', (result) => {
+        // Check if the password is correct
+        if (sha512_256(req.body.password + result[0].salt_hash) === result[0].hash) {
+          const apiKey:string = sha512_256(Date.now().toString()); // Generated using time
+          const user_id:number = result[0].user_id;
+
+          // Send it to the database
+          DBcon.query(
+            "INSERT INTO `TL_apikeys` ( `apiKey`, `deviceName`, `user_id` ) VALUES (?,?,?)",
+            [
+              sha512_256(apiKey),
+              req.body.deviceName,
+              user_id
+            ],
+            handleQuery(res, 'Something went wrong. Please try again later.', (result) => {
+              responseDone(res, {
+                apiKey: apiKey
+              })
+            })
+          );
+
         } else {
-
-          // Check if the password is correct
-          if (sha512_256(req.body.password + result[0].salt_hash) === result[0].hash) {
-            const apiKey:string = sha512_256(Date.now().toString()); // Generated using time
-            const user_id:number = result[0].user_id;
-
-            // Send it to the database
-            DBcon.query(
-              "INSERT INTO `TL_apikeys` ( `apiKey`, `deviceName`, `user_id` ) VALUES (?,?,?)",
-              [
-                sha512_256(apiKey),
-                req.body.deviceName,
-                user_id
-              ],
-              (error, result) => {
-                if (error) {
-                  // Something went wrong
-                  sqlError(res, error, `Something went wrong. Please try again later.`);
-                } else {
-
-                  // Send the api key
-                  res.send({
-                    status: 200,
-                    message: 'done',
-                    apiKey: apiKey
-                  });
-
-                  res.status(200);
-
-                }
-              }
-            );
-
-          } else {
-            // Password not correct
-            res.send(JSON.stringify({
-              status: 403,
-              message: 'Please check your username and password.'
-            }));
-            res.status(403);
-          }
-
+          // Password not correct
+          res.send(JSON.stringify({
+            status: 403,
+            message: 'Please check your username and password.'
+          }));
+          res.status(403);
         }
-      }
+
+      })
     );
   } else {
     // Something is missing

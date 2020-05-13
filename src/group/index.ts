@@ -2,13 +2,10 @@
 import { server, DBcon } from '../index';
 
 // Import string and scripts we need
-import { missingError, passwordNotSafeError } from '../language';
-import { generateString, sqlError, missingErrorFun, loginFault, apiCheck, handleQuery } from '../scripts';
-import { apiLogin } from '../api/lib';
+import { apiCheck, handleQuery, responseDone } from '../scripts';
 
 // Import other modules
 import * as _ from 'lodash';
-import { sha512_256 } from 'js-sha512';
 
 // List all the groups
 server.get('/group', (req, res) => {
@@ -17,14 +14,9 @@ server.get('/group', (req, res) => {
     DBcon.query(
       "SELECT * FROM `TL_groups`",
       handleQuery(res, `Could not list all the groups.`, (result) => {
-        // Done
-        res.send(JSON.stringify({
-          status: 200,
-          message: 'done',
+        responseDone(res, {
           result: result
-        }));
-
-        res.status(200);
+        })
       })
     );
   });

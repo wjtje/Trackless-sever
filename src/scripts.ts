@@ -81,3 +81,23 @@ export function handleQuery(res, errorMessage:string, then: (result: any) => voi
     }
   };
 }
+
+// Sent the result to the user
+export function responseDone(res, result?) {
+  if (result) {
+    res.send(JSON.stringify({
+      status: 200,
+      message: 'done',
+      ...result
+    }));
+
+    res.status(200);
+  } else {
+    res.send(JSON.stringify({
+      status: 200,
+      message: 'done'
+    }));
+
+    res.status(200);
+  }
+}

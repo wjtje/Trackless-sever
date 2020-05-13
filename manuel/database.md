@@ -14,17 +14,19 @@ A table for storing the user information and login details
 | firstname | TEXT | Holds the first name of the user                       |
 | lastname  | TEXT | Holds the last name of the user                        |
 | username  | TEXT | The login name of the user                             |
+| group_ID  | INT  | index of the group.                                    |
 | salt_hash | TEXT | An unique string for storing the password hash         |
 | hash      | TEXT | An sha512 hash of the password including the salt_hash |
 
 ### Code
 
 ```sql
-CREATE TABLE `trakless`.`TL_users` (
+CREATE TABLE `trackless`.`TL_users` (
   `user_id` INT NOT NULL AUTO_INCREMENT ,
   `firstname` TEXT NOT NULL ,
   `lastname` TEXT NOT NULL ,
   `username` TEXT NOT NULL ,
+  `group_id` int NOT NULL DEFAULT '0',
   `salt_hash` TEXT NOT NULL ,
   `hash` TEXT NOT NULL ,
   PRIMARY KEY (`user_id`)
@@ -47,7 +49,7 @@ A table for storing all the error details.
 ### Code
 
 ```sql
-CREATE TABLE `trakless`.`TL_errors` (
+CREATE TABLE `trackless`.`TL_errors` (
     `error_id` INT NOT NULL AUTO_INCREMENT ,
     `dateTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     `sqlError` LONGTEXT NOT NULL ,
@@ -74,7 +76,7 @@ A table for storing the active api keys
 ### Code
 
 ```sql
-CREATE TABLE `trakless`.`TL_apikeys` (
+CREATE TABLE `trackless`.`TL_apikeys` (
   `api_id` INT NOT NULL AUTO_INCREMENT ,
   `apiKey` TEXT NOT NULL ,
   `createDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
@@ -84,6 +86,33 @@ CREATE TABLE `trakless`.`TL_apikeys` (
   PRIMARY KEY (`api_id`)
 ) ENGINE = InnoDB;
 ```
+
+## TL_groups
+
+A table for storing the group names
+
+### Layout
+
+| Name     | Type | About                  |
+| -------- | ---- | ---------------------- |
+| group_id | INT  | index (AUTO_INCREMENT) |
+| name     | TEXT | The name of the group. |
+
+### Code
+
+```sql
+CREATE TABLE `trackless`.`TL_groups` (
+  `group_id` INT NOT NULL AUTO_INCREMENT ,
+  `groupName` TEXT NOT NULL ,
+  PRIMARY KEY (`group_id`)
+) ENGINE = InnoDB;
+
+INSERT INTO `TL_groups` (`group_id`, `groupName`) VALUES (1, 'Default');
+
+UPDATE `TL_groups` SET `group_id` = '0' WHERE `TL_groups`.`group_id` = 1;
+```
+
+#
 
 >  Copyright 2020 Wjtje
 >

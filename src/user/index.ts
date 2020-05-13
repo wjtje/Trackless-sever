@@ -3,7 +3,7 @@ import { server, DBcon } from '../index';
 
 // Import string and scripts we need
 import { missingError, passwordNotSafeError } from '../language';
-import { generateString, sqlError } from '../scripts';
+import { generateString, sqlError, missingErrorFun, loginFault, apiCheck } from '../scripts';
 import { apiLogin } from '../api/lib';
 
 // Import other modules
@@ -12,38 +12,26 @@ import { sha512_256 } from 'js-sha512';
 
 // List all users
 server.get('/user', (req, res) => {
-  if (
-    _.has(req.body, "apiKey")
-  ) {
-    apiLogin(req.body.apiKey).then(() => {
-      // Get all the users
-      DBcon.query(
-        "SELECT `user_id`, `firstname`, `lastname`, `username` FROM `TL_users` WHERE 1",
-        (error, result) => {
-          if (error) {
-            sqlError(res, error, `Couldn't select all the users.`);
-          } else {
-            // Done
-            res.send(JSON.stringify({
-              status: 200,
-              message: 'done',
-              result: result
-            }));
+  apiCheck(req, res, () => {
+    // Get all the users
+    DBcon.query(
+      "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`)",
+      (error, result) => {
+        if (error) {
+          sqlError(res, error, `Couldn't select all the users.`);
+        } else {
+          // Done
+          res.send(JSON.stringify({
+            status: 200,
+            message: 'done',
+            result: result
+          }));
 
-            res.status(200);
-          }
+          res.status(200);
         }
-      );
-    }).catch((reason) => {
-      // Couldn't login
-      res.send({
-        status: 400,
-        message: reason
-      });
-
-      res.status(400);
-    });
-  }
+      }
+    );
+  });
 });
 
 // Create a new user
@@ -56,11 +44,13 @@ server.post('/user', (req, res) => {
     _.has(req.body, "username") &&
     _.has(req.body, "password") &&
     _.has(req.body, "apiKey") &&
+    _.has(req.body, "group_id") &&
 
     // Check if it is not empty
     _.get(req.body, "firstname") != '' &&
     _.get(req.body, "lastname") != '' &&
-    _.get(req.body, "username") != ''
+    _.get(req.body, "username") != '' &&
+    _.get(req.body, "group_id") != ''
   ) {
     // Check for strong password
     if (_.get(req.body, "password") == '') {
@@ -97,11 +87,12 @@ server.post('/user', (req, res) => {
 
             // Commit to the database
             DBcon.query(
-              "INSERT INTO `TL_users` ( `firstname`, `lastname`, `username`, `salt_hash`, `hash` ) VALUES ( ?, ?, ?, ?, ?)",
+              "INSERT INTO `TL_users` ( `firstname`, `lastname`, `username`, `group_id`, `salt_hash`, `hash` ) VALUES ( ?, ?, ?, ?, ?, ?)",
               [
                 req.body.firstname,
                 req.body.lastname,
                 req.body.username,
+                Number(req.body.group_id),
                 salt,
                 sha512_256(req.body.password + salt)
               ],
@@ -140,22 +131,6 @@ server.post('/user', (req, res) => {
           }
         }
       );
-    }).catch((reason) => {
-      // Couldn't login
-      res.send({
-        status: 400,
-        message: reason
-      });
-
-      res.status(400);
-    });
-  } else {
-    // Something is missing
-    // throw an error
-    res.send(JSON.stringify({
-      status: 400,
-      message: missingError
-    }));
-    res.status(400);
-  }
+    }).catch(loginFault(res));
+  } else { missingErrorFun(res) }
 });

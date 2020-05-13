@@ -41,6 +41,9 @@ import './user/user_id';
 import './api/create';
 import './api/index';
 
+// Import groups commands
+import './group/index';
+
 // Start the server
 server.listen(port, () => {
   console.log("SERVER: Started! on " + port);

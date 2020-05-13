@@ -8,6 +8,7 @@ All the 'know' commands.
  - DELETE `/user/:user_id`
  - POST `/api`
  - GET `/api`
+ - GET `/group`
 
 ## POST `/user`
 
@@ -20,6 +21,7 @@ A quick way to create more users.
 | firstname | String | The first name of the user.                       |
 | lastname  | String | The last name of the user.                        |
 | username  | String | The login name of the user.                       |
+| group_id  | Number | The group_id for that user.                       |
 | password  | String | The password of the user. (Please make it strong) |
 | apiKey    | String | Your own apiKey to log in.                        |
 
@@ -42,6 +44,7 @@ Content-Type: application/json
 	"firstname": "John",
 	"lastname": "Doe",
 	"username": "JohnD",
+	"group_id": "0"
 	"password": "Str0ng!",
 	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
 }
@@ -202,7 +205,37 @@ Content-Type: application/json
 }
 ```
 
-#
+## GET `/group`
+
+List all the groups
+
+### Require
+
+| Name   | Type   | About                      |
+| ------ | ------ | -------------------------- |
+| apiKey | String | Your own apiKey to log in. |
+
+### Result
+
+| Name    | Type   | About                                                        |
+| ------- | ------ | ------------------------------------------------------------ |
+| status  | Number | The HTTP status code.                                        |
+| message | String | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| result  | Array<TL_group> | An array with all the infomation.                     |
+
+### Example
+
+```http
+GET /api HTTP/1.1
+Host: localhost
+Content-Type: application/json
+
+{
+	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
+}
+```
+
+# 
 
 >  Copyright 2020 Wjtje
 >

@@ -3,7 +3,7 @@ import { server, DBcon } from '../index';
 
 // Import string and scripts we need
 import { missingError } from '../language';
-import { sqlError } from '../scripts';
+import { sqlError, apiCheck } from '../scripts';
 import { apiLogin } from '../api/lib';
 
 // Import other modules
@@ -12,42 +12,30 @@ import { sha512_256 } from 'js-sha512';
 
 // List all apiKey device names
 server.get('/api', (req, res) => {
-  if (
-    _.has(req.body, "apiKey")
-  ) {
-    apiLogin(req.body.apiKey).then((result) => {
-      // Get all the users api keys
-      DBcon.query(
-        "SELECT `api_id`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `user_id`=?",
-        [result.user_id],
-        (error, result) => {
-          if (error) {
-            // IDK there is an error
-            sqlError(res, error, 'Something went wrong.');
-          } else {
+  apiCheck(req, res, (result) => {
+    // Get all the users api keys
+    DBcon.query(
+      "SELECT `api_id`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `user_id`=?",
+      [result.user_id],
+      (error, result) => {
+        if (error) {
+          // IDK there is an error
+          sqlError(res, error, 'Something went wrong.');
+        } else {
 
-            // Send the data to the user
-            res.send(JSON.stringify({
-              status: 200,
-              message: 'done',
-              result: result
-            }));
+          // Send the data to the user
+          res.send(JSON.stringify({
+            status: 200,
+            message: 'done',
+            result: result
+          }));
 
-            res.status(200);
+          res.status(200);
 
-          }
         }
-      );
-    }).catch((reason) => {
-      // Couldn't login
-      res.send({
-        status: 400,
-        message: reason
-      });
-
-      res.status(400);
-    });
-  }
+      }
+    );
+  });
 });
 
 // Create a apiKey

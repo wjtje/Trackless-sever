@@ -101,3 +101,23 @@ export function responseDone(res, result?) {
     res.status(200);
   }
 }
+
+// Check an array of items
+export function reqDataCheck(req, res, items:Array<string>, fun:() => void) {
+  let passed = true;
+
+  // Check all the items
+  items.forEach((item) => {
+    if (!_.has(req.body, item) && _.get(req.body, item) != '') {
+      // You are missing something
+      passed = false;
+
+      missingErrorFun(res);
+    }
+  });
+
+  // Passed?
+  if (passed) {
+    fun();
+  }
+}

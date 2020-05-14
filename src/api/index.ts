@@ -3,7 +3,7 @@ import { server, DBcon } from '../index';
 
 // Import string and scripts we need
 import { missingError } from '../language';
-import { sqlError, apiCheck, handleQuery, responseDone } from '../scripts';
+import { sqlError, apiCheck, handleQuery, responseDone, reqDataCheck } from '../scripts';
 import { apiLogin } from '../api/lib';
 
 // Import other modules
@@ -28,12 +28,11 @@ server.get('/api', (req, res) => {
 
 // Create a apiKey
 server.post('/api', (req, res) => {
-  // Check if there is a username an a password
-  if (
-    _.has(req.body, "username") &&
-    _.has(req.body, "password") &&
-    _.has(req.body, "deviceName")
-  ) {
+  reqDataCheck(req, res, [
+    "username",
+    "password",
+    "deviceName"
+  ], () => {
     // Check the password
     DBcon.query(
       "SELECT `salt_hash`, `hash`, `user_id` FROM `TL_users` WHERE `username`=?",
@@ -70,13 +69,5 @@ server.post('/api', (req, res) => {
 
       })
     );
-  } else {
-    // Something is missing
-    // throw an error
-    res.send(JSON.stringify({
-      status: 400,
-      message: missingError
-    }));
-    res.status(400);
-  }
+  })
 });

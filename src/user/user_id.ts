@@ -24,6 +24,7 @@ server.get('/user/:user_id', (req, res) => {
   });
 });
 
+// Delete a user from the system
 server.delete('/user/:user_id', (req, res) => {
   apiCheck(req, res, () => {
     // Send the command to the database

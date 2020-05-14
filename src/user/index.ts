@@ -3,7 +3,7 @@ import { server, DBcon } from '../index';
 
 // Import string and scripts we need
 import { passwordNotSafeError } from '../language';
-import { generateString, missingErrorFun, loginFault, apiCheck, handleQuery, responseDone } from '../scripts';
+import { generateString, missingErrorFun, loginFault, apiCheck, handleQuery, responseDone, reqDataCheck } from '../scripts';
 import { apiLogin } from '../api/lib';
 
 // Import other modules
@@ -27,34 +27,19 @@ server.get('/user', (req, res) => {
 
 // Create a new user
 server.post('/user', (req, res) => {
-  // Check if all the requested data is here
-  if (
-    // Check if it exsist
-    _.has(req.body, 'firstname') &&
-    _.has(req.body, "lastname") &&
-    _.has(req.body, "username") &&
-    _.has(req.body, "password") &&
-    _.has(req.body, "apiKey") &&
-    _.has(req.body, "group_id") &&
+  reqDataCheck(req, res, [
+    "firstname",
+    "lastname",
+    "username",
+    "password",
+    "group_id",
+    "apiKey"
+  ], () => {
+    // Check for a strong password
+    // TODO
 
-    // Check if it is not empty
-    _.get(req.body, "firstname") != '' &&
-    _.get(req.body, "lastname") != '' &&
-    _.get(req.body, "username") != '' &&
-    _.get(req.body, "group_id") != ''
-  ) {
-    // Check for strong password
-    if (_.get(req.body, "password") == '') {
-      res.send(JSON.stringify({
-        status: 400,
-        message: passwordNotSafeError
-      }));
-      res.status(400);
-    }
-
-    // Try logging in
     apiLogin(req.body.apiKey).then(() => {
-      // Check if username is available
+      // Check if the user is taken
       DBcon.query(
         "SELECT `username` FROM `TL_users` WHERE `username`=?",
         [
@@ -88,10 +73,11 @@ server.post('/user', (req, res) => {
                 // User has been created
                 // Get the user_id
                 DBcon.query(
-                  "SELECT `user_id` FROM `TL_users` ORDER BY `user_id` DESC LIMIT 1",
+                  "SELECT LAST_INSERT_ID()",
                   handleQuery(res, `Couldn't find the user_id for the newly created user.`, (result) => {
+                    console.log(result);
                     responseDone(res, {
-                      user_id: result[0].user_id
+                      user_id: result[0]['LAST_INSERT_ID()']
                     })
                   })
                 );
@@ -101,5 +87,5 @@ server.post('/user', (req, res) => {
         })
       );
     }).catch(loginFault(res));
-  } else { missingErrorFun(res) }
+  });
 });

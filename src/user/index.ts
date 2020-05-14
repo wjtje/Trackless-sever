@@ -33,7 +33,6 @@ server.post('/user', (req, res) => {
     "username",
     "password",
     "group_id",
-    "apiKey"
   ], () => {
     // Check for a strong password
     // TODO
@@ -69,18 +68,11 @@ server.post('/user', (req, res) => {
                 salt,
                 sha512_256(req.body.password + salt)
               ],
-              handleQuery(res, 'Couldn\'t save the user into the database. Please try again later', () => {
+              handleQuery(res, 'Couldn\'t save the user into the database. Please try again later', (result) => {
                 // User has been created
-                // Get the user_id
-                DBcon.query(
-                  "SELECT LAST_INSERT_ID()",
-                  handleQuery(res, `Couldn't find the user_id for the newly created user.`, (result) => {
-                    console.log(result);
-                    responseDone(res, {
-                      user_id: result[0]['LAST_INSERT_ID()']
-                    })
-                  })
-                );
+                responseDone(res, {
+                  user_id: result.insertId
+                });
               })
             );
           }

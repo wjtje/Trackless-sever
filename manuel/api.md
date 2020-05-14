@@ -235,6 +235,36 @@ Content-Type: application/json
 }
 ```
 
+## POST `/group`
+
+Create a new group
+
+### Require
+
+| Name   | Type   | About                      |
+| ------ | ------ | -------------------------- |
+| name   | String | The name of the group      |
+| apiKey | String | Your own apiKey to log in. |
+
+### Result
+
+| Name     | Type   | About                              |
+| -------- | ------ | ---------------------------------- |
+| group_id | Number | The id of the newly created group. |
+
+### Example
+
+```http
+POST /group HTTP/1.1
+Host: localhost
+Content-Type: application/json
+
+{
+	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"name": "groupName"
+}
+```
+
 # 
 
 >  Copyright 2020 Wjtje

@@ -93,10 +93,10 @@ A table for storing the group names
 
 ### Layout
 
-| Name     | Type | About                  |
-| -------- | ---- | ---------------------- |
-| group_id | INT  | index (AUTO_INCREMENT) |
-| name     | TEXT | The name of the group. |
+| Name      | Type | About                  |
+| --------- | ---- | ---------------------- |
+| group_id  | INT  | index (AUTO_INCREMENT) |
+| groupName | TEXT | The name of the group. |
 
 ### Code
 

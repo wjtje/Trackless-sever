@@ -2,7 +2,7 @@
 import { server, DBcon } from '../index';
 
 // Import string and scripts we need
-import { apiCheck, handleQuery, responseDone } from '../scripts';
+import { apiCheck, handleQuery, responseDone, reqDataCheck } from '../scripts';
 
 // Import other modules
 import * as _ from 'lodash';
@@ -19,5 +19,25 @@ server.get('/group', (req, res) => {
         })
       })
     );
+  });
+});
+
+// Create a new group
+server.post('/group', (req, res) => {
+  reqDataCheck(req, res, [
+    "name",
+  ], () => {
+    apiCheck(req, res, () => {
+      DBcon.query(
+        "INSERT INTO `TL_groups` (`groupName`) VALUES (?)",
+        [req.body.name],
+        handleQuery(res, 'Could not save your new group', (result) => {
+          // Saved to database
+          responseDone(res, {
+            group_id: result.insertId
+          });
+        })
+      );
+    });
   });
 });

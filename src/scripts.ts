@@ -17,7 +17,7 @@ export function generateString(length:number) : string {
   return result;
 }
 
-// Trow an sql error and safe it
+// Trow an sql error and save it
 export function sqlError(res, error:MysqlError, errorMessage:string) {
   // Report to the user
   res.send(JSON.stringify({

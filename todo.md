@@ -3,9 +3,6 @@
 ## Global
  - A system with rights
 
-## Scipts
- - A way to check if the user has given all the information
-
 ## Groups
  - A way to remove a group
 

@@ -26,3 +26,4 @@
 | --------- | ------ | -------------------------------- |
 | group_id  | Number | The unique number for that group |
 | groupName | String | The name of that group           |
+| users     | Array<LT_user> | A list of all the users  |

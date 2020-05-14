@@ -6,6 +6,8 @@ import { apiCheck, handleQuery, responseDone, reqDataCheck } from '../scripts';
 
 // Import other modules
 import * as _ from 'lodash';
+const util = require('util');
+const query = util.promisify(DBcon.query).bind(DBcon);
 
 // List all the groups
 server.get('/group', (req, res) => {
@@ -14,9 +16,31 @@ server.get('/group', (req, res) => {
     DBcon.query(
       "SELECT * FROM `TL_groups`",
       handleQuery(res, `Could not list all the groups.`, (result) => {
-        responseDone(res, {
-          result: result
-        })
+        let rslt = []; // Result
+
+        // Get all users for each group
+        async function readUser() {
+          await Promise.all(result.map(async (group: {
+            group_id: number;
+            groupName: string;
+          }) => {
+            // Connect to the database
+            const users = await query("SELECT `user_id`, `firstname`, `lastname`, `username` FROM `TL_users` WHERE `group_id`=?", [group.group_id]);
+
+            // Append to the rslt list
+            rslt.push({
+              group_id: group.group_id,
+              groupName: group.groupName,
+              users: users
+            });
+          }));
+
+          responseDone(res, {
+            result: rslt
+          })
+        }
+
+        readUser(); // Start the async function
       })
     );
   });

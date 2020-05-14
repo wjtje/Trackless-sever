@@ -2,10 +2,12 @@
 import { server, DBcon } from '../index';
 
 // Import string and scripts we need
-import { apiCheck, handleQuery, responseDone } from '../scripts';
+import { apiCheck, handleQuery, responseDone, arrayContainOnly } from '../scripts';
 
 // Import other modules
 import * as _ from 'lodash';
+import { apiError } from '../language';
+import { rejects } from 'assert';
 
 // Get a user
 server.get('/user/:user_id', (req, res) => {
@@ -42,5 +44,68 @@ server.delete('/user/:user_id', (req, res) => {
         responseDone(res);
       })
     );
+  });
+});
+
+// Update a users info
+server.patch('/user/:user_id', (req, res) => {
+  apiCheck(req, res, () => {
+    let objectKeys = Object.keys(req.body);
+    const searchArray = [
+      "firstname",
+      "lastname",
+      "username",
+      "group_id",
+      "password",
+
+      "apiKey", // Needed
+    ];
+
+    arrayContainOnly(objectKeys, searchArray).then(() => {
+      const updateUser = new Promise((resolve, reject) => {
+        let hasFailed = false;
+
+        objectKeys.forEach(async (key) => {
+          if (key == "password") {
+            // Update password
+          } else if (key != "apiKey") {
+            // Update it
+            DBcon.query("UPDATE `TL_users` SET `" + key + "`=? WHERE `user_id`=?", [
+              req.body[key],
+              Number(req.params.user_id)
+            ], (error) => {
+              if (error) {
+                // Could not save it
+                hasFailed = true;
+                reject();
+              }
+            });
+          }
+        });
+
+        if (!hasFailed) {
+          resolve();
+        }
+      });
+
+      // Run the code
+      updateUser.then(() => {
+        responseDone(res);
+      }).catch(() => {
+        res.send(JSON.stringify({
+          status: 400,
+          message: "Could not save the changes."
+        }));
+
+        res.status(400);
+      });
+    }).catch(() => {
+      res.send(JSON.stringify({
+        status: 400,
+        message: apiError
+      }));
+
+      res.status(400);
+    });
   });
 });

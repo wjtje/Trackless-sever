@@ -121,3 +121,22 @@ export function reqDataCheck(req, res, items:Array<string>, fun:() => void) {
     fun();
   }
 }
+
+// Check an array of items
+// That is does not include wrong values
+export function arrayContainOnly(array: Array<string>, searchList: Array<string>) {
+  return new Promise((resolve, reject) => {
+    let isRejected = false;
+
+    array.forEach(item => {
+      if (!searchList.includes(item)) {
+        isRejected = true;
+        reject();
+      }
+    });
+    
+    if (!isRejected) {
+      resolve();
+    }
+  });
+}

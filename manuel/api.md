@@ -6,9 +6,11 @@ All the 'know' commands.
  - GET `/user`
  - GET `/user/:user_id`
  - DELETE `/user/:user_id`
+ - PATCH `/user/:user_id`
  - POST `/api`
  - GET `/api`
  - GET `/group`
+ - POST `/group`
 
 ## POST `/user`
 
@@ -133,6 +135,44 @@ Get a single user
 
 ```http
 DELETE /user/:user_id HTTP/1.1
+Host: localhost
+Content-Type: application/json
+
+{
+	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
+}
+```
+
+## PATCH `/user/:user_id`
+
+Update a users info
+
+### Require
+
+| Name     | Type   | About                           |
+| -------- | ------ | ------------------------------- |
+| :user_id | Number | The unique number for that user |
+| apiKey   | String | Your own apiKey to log in.      |
+| `column` | String | `Data`													|
+
+#### Options
+ - firstname
+ - lastname
+ - username
+ - password
+ - group_id
+
+### Result
+
+| Name    | Type           | About                                                        |
+| ------- | -------------- | ------------------------------------------------------------ |
+| status  | Number         | The HTTP status code.                                        |
+| message | String         | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+
+### Example
+
+```http
+PATCH /user/:user_id HTTP/1.1
 Host: localhost
 Content-Type: application/json
 

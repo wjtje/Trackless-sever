@@ -140,7 +140,6 @@ server.patch('/user/:user_id', (req, res) => {
           }));
 
           if (!hasFailed) {
-            console.log('Resolve');
             resolve();
           }
         }

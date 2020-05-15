@@ -34,9 +34,6 @@ server.post('/user', (req, res) => {
     "password",
     "group_id",
   ], () => {
-    // Check for a strong password
-    // TODO
-
     apiLogin(req.body.apiKey).then(() => {
       // Check if the user is taken
       DBcon.query(

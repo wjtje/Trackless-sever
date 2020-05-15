@@ -3,7 +3,7 @@ import { server, DBcon } from '../index';
 
 // Import string and scripts we need
 import { passwordNotSafeError } from '../language';
-import { generateString, missingErrorFun, loginFault, apiCheck, handleQuery, responseDone, reqDataCheck } from '../scripts';
+import { generateString, missingErrorFun, loginFault, apiCheck, handleQuery, responseDone, reqDataCheck, storePassword } from '../scripts';
 import { apiLogin } from '../api/lib';
 
 // Import other modules
@@ -54,8 +54,7 @@ server.post('/user', (req, res) => {
             res.status(400);
           } else {  // Every things good
             // Create a new user
-            // Generate salt
-            const salt = generateString(32);  // Safety
+            const [salt, hash] = storePassword(req.body.password);
 
             // Commit to the database
             DBcon.query(
@@ -66,7 +65,7 @@ server.post('/user', (req, res) => {
                 req.body.username,
                 Number(req.body.group_id),
                 salt,
-                sha512_256(req.body.password + salt)
+                hash
               ],
               handleQuery(res, 'Couldn\'t save the user into the database. Please try again later', (result) => {
                 // User has been created

@@ -11,7 +11,3 @@
 
 ## Api-System
  - A way to remove a api key
-
-## PATCH `\user\:user_id`
- - Update the password
-   - Change the salt

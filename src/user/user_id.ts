@@ -2,12 +2,14 @@
 import { server, DBcon } from '../index';
 
 // Import string and scripts we need
-import { apiCheck, handleQuery, responseDone, arrayContainOnly } from '../scripts';
+import { apiCheck, handleQuery, responseDone, arrayContainOnly, storePassword } from '../scripts';
 
 // Import other modules
 import * as _ from 'lodash';
 import { apiError } from '../language';
 import { rejects } from 'assert';
+const util = require('util');
+const query = util.promisify(DBcon.query).bind(DBcon);
 
 // Get a user
 server.get('/user/:user_id', (req, res) => {
@@ -65,36 +67,94 @@ server.patch('/user/:user_id', (req, res) => {
       const updateUser = new Promise((resolve, reject) => {
         let hasFailed = false;
 
-        objectKeys.forEach(async (key) => {
-          if (key == "password") {
-            // Update password
-          } else if (key != "apiKey") {
-            // Update it
-            DBcon.query("UPDATE `TL_users` SET `" + key + "`=? WHERE `user_id`=?", [
-              req.body[key],
-              Number(req.params.user_id)
-            ], (error) => {
-              if (error) {
-                // Could not save it
-                hasFailed = true;
-                reject();
-              }
-            });
-          }
-        });
+        // Reject
+        const rejectChange = (error) => {
+          if (error) {
+            // Could not save it
+            hasFailed = true;
+            reject(' (SAVE ERR)');
 
-        if (!hasFailed) {
-          resolve();
+            // Save the error
+            DBcon.query(
+              "INSERT INTO `TL_errors` (`sqlError`) VALUES (?)",
+              [
+                JSON.stringify(error)
+              ]
+            );
+          }
+        };
+
+        // Custom function for chaning user
+        function changeUser(key: string, req, rejectChange: (error: any) => void) {
+          DBcon.query("UPDATE `TL_users` SET `" + key + "`=? WHERE `user_id`=?", [
+            req.body[key],
+            Number(req.params.user_id)
+          ], rejectChange);
         }
+
+        // Change each key
+        async function changeKey() {
+          await Promise.all(objectKeys.map(async (key:string) => {
+            switch (key) {
+              case "password":
+                // Update password
+                const [salt, hash] = storePassword(req.body[key]);
+
+                await query(
+                  "UPDATE `TL_users` SET `salt_hash`=?, `hash`=? where `user_id`=?",
+                  [
+                    salt,
+                    hash,
+                    Number(req.params.user_id)
+                  ],
+                  rejectChange
+                );
+
+                break;
+              case "group_id":
+                // List the group
+                const group = await query(
+                  "SELECT `groupname` FROM `TL_groups` WHERE `group_id`=?",
+                  [
+                    Number(req.body[key])
+                  ]
+                );
+
+                if (group[0] == undefined) {
+                  hasFailed = true;
+                  reject(' (ERR GROUP_ID)');
+                } else {
+                  // Make the change
+                  DBcon.query("UPDATE `TL_users` SET `" + key + "`=? WHERE `user_id`=?", [
+                    Number(req.body[key]),
+                    Number(req.params.user_id)
+                  ], rejectChange);
+                }
+
+                break;
+              case "apiKey":
+                break;
+              default:
+                changeUser(key, req, rejectChange);
+            }
+          }));
+
+          if (!hasFailed) {
+            console.log('Resolve');
+            resolve();
+          }
+        }
+
+        changeKey();
       });
 
       // Run the code
       updateUser.then(() => {
         responseDone(res);
-      }).catch(() => {
+      }).catch((message) => {
         res.send(JSON.stringify({
           status: 400,
-          message: "Could not save the changes."
+          message: "Could not save the changes." + message
         }));
 
         res.status(400);

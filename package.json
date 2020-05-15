@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "tsc && node .\\dist\\index.js",
-    "dev": "nodemon --exec \"tsc && node --inspect dist\\index.js\" -e ts"
+    "dev": "nodemon --exec \"tsc && node dist\\index.js\" -e ts"
   },
   "repository": {
     "type": "git",

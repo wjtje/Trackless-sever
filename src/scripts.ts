@@ -3,6 +3,7 @@ import { DBcon } from './index';
 import { missingError } from "./language";
 import { apiLogin } from "./api/lib";
 import _ = require("lodash");
+import { sha512_256 } from "js-sha512";
 
 // Generate a random string
 export function generateString(length:number) : string {
@@ -139,4 +140,16 @@ export function arrayContainOnly(array: Array<string>, searchList: Array<string>
       resolve();
     }
   });
+}
+
+// Store password
+export function storePassword(password: string):string[] {
+  const salt = generateString(32);
+
+  const hash = sha512_256(password + salt);
+
+  return [
+    salt,
+    hash
+  ];
 }

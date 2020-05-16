@@ -2,13 +2,19 @@
 import { server, DBcon } from '../index';
 
 // Import string and scripts we need
-import { missingError } from '../language';
-import { sqlError, apiCheck, handleQuery, responseDone, reqDataCheck } from '../scripts';
-import { apiLogin } from '../api/lib';
+import { apiCheck, handleQuery, responseDone, reqDataCheck } from '../scripts';
 
 // Import other modules
 import * as _ from 'lodash';
 import { sha512_256 } from 'js-sha512';
+
+// Interfaces
+export interface APIKeyNames {
+  api_id:     number;
+  createDate: string;
+  lastUsed:   string;
+  deviceName: string;
+}
 
 // List all apiKey device names
 server.get('/api', (req, res) => {
@@ -17,7 +23,7 @@ server.get('/api', (req, res) => {
     DBcon.query(
       "SELECT `api_id`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `user_id`=?",
       [result.user_id],
-      handleQuery(res, 'Something went wrong.', (result) => {
+      handleQuery(res, 'Something went wrong.', (result: Array<APIKeyNames>) => {
         responseDone(res, {
           result: result
         });
@@ -51,7 +57,7 @@ server.post('/api', (req, res) => {
               req.body.deviceName,
               user_id
             ],
-            handleQuery(res, 'Something went wrong. Please try again later.', (result) => {
+            handleQuery(res, 'Something went wrong. Please try again later.', () => {
               responseDone(res, {
                 apiKey: apiKey
               })

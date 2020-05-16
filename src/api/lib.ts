@@ -37,6 +37,7 @@ export function apiLogin(apiKey:string):Promise<{
             (error)? error.code : 'Could not find your account.'
           );
         } else {
+          // Update the last used
           DBcon.query(
             "UPDATE `TL_apikeys` SET `lastUsed`=CURRENT_TIMESTAMP WHERE `apiKey`=?",
             [

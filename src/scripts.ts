@@ -4,6 +4,7 @@ import { missingError } from "./language";
 import { apiLogin } from "./api/lib";
 import _ = require("lodash");
 import { sha512_256 } from "js-sha512";
+import { Response, Request } from 'express';
 
 // Generate a random string
 export function generateString(length:number) : string {
@@ -19,7 +20,7 @@ export function generateString(length:number) : string {
 }
 
 // Trow an sql error and save it
-export function sqlError(res, error:MysqlError, errorMessage:string) {
+export function sqlError(res: Response, error:MysqlError, errorMessage:string) {
   // Report to the user
   res.send(JSON.stringify({
     status: 500,
@@ -40,7 +41,7 @@ export function sqlError(res, error:MysqlError, errorMessage:string) {
 }
 
 // Trow an error that something is missing
-export function missingErrorFun(res) {
+export function missingErrorFun(res:Response) {
   // Something is missing
   // throw an error
   res.send(JSON.stringify({
@@ -51,7 +52,7 @@ export function missingErrorFun(res) {
 }
 
 // Trow an error that login has failed
-export function loginFault(res): (reason: any) => void | PromiseLike<void> {
+export function loginFault(res:Response): (reason: any) => void | PromiseLike<void> {
   return (reason) => {
     // Couldn't login
     res.send({
@@ -63,17 +64,16 @@ export function loginFault(res): (reason: any) => void | PromiseLike<void> {
 }
 
 // Simple script for an api check
-export function apiCheck(req, res, passed: (result: { user_id: number; username: string; }) => void) {
+export function apiCheck(req:Request, res:Response, passed: (result: { user_id: number; username: string; }) => void) {
   if (_.has(req.body, "apiKey")) {
     apiLogin(req.body.apiKey).then(passed).catch(loginFault(res));
-  }
-  else {
+  } else {
     missingErrorFun(res);
   }
 }
 
 // Simple script for handling a query
-export function handleQuery(res, errorMessage:string, then: (result: any) => void) {
+export function handleQuery(res: Response, errorMessage:string, then: (result: any) => void) {
   return (error, result) => {
     if (error) {
       sqlError(res, error, errorMessage);
@@ -84,7 +84,7 @@ export function handleQuery(res, errorMessage:string, then: (result: any) => voi
 }
 
 // Sent the result to the user
-export function responseDone(res, result?) {
+export function responseDone(res: Response, result?: object) {
   if (result) {
     res.send(JSON.stringify({
       status: 200,
@@ -104,7 +104,7 @@ export function responseDone(res, result?) {
 }
 
 // Check an array of items
-export function reqDataCheck(req, res, items:Array<string>, fun:() => void) {
+export function reqDataCheck(req: Request, res: Response, items:Array<string>, fun:() => void) {
   let passed = true;
 
   // Check all the items

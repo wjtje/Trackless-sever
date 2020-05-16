@@ -9,13 +9,20 @@ import * as _ from 'lodash';
 const util = require('util');
 const query = util.promisify(DBcon.query).bind(DBcon);
 
+// Interfaces
+export interface TL_groups {
+  group_id:  number;
+  groupName: string;
+}
+
+
 // List all the groups
 server.get('/group', (req, res) => {
   apiCheck(req, res, () => {
     // List all group
     DBcon.query(
       "SELECT * FROM `TL_groups`",
-      handleQuery(res, `Could not list all the groups.`, (result) => {
+      handleQuery(res, `Could not list all the groups.`, (result: Array<TL_groups>) => {
         let rslt = []; // Result
 
         // Get all users for each group

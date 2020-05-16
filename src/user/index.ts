@@ -2,13 +2,21 @@
 import { server, DBcon } from '../index';
 
 // Import string and scripts we need
-import { passwordNotSafeError } from '../language';
-import { generateString, missingErrorFun, loginFault, apiCheck, handleQuery, responseDone, reqDataCheck, storePassword } from '../scripts';
+import { loginFault, apiCheck, handleQuery, responseDone, reqDataCheck, storePassword } from '../scripts';
 import { apiLogin } from '../api/lib';
 
 // Import other modules
 import * as _ from 'lodash';
-import { sha512_256 } from 'js-sha512';
+
+// Interfaces
+export interface TL_user {
+  user_id:   number;
+  firstname: string;
+  lastname:  string;
+  username:  string;
+  group_id:  number;
+  groupName: string;
+}
 
 // List all users
 server.get('/user', (req, res) => {
@@ -16,7 +24,7 @@ server.get('/user', (req, res) => {
     // Get all the users
     DBcon.query(
       "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`)",
-      handleQuery(res, 'Couldn\'t select all the users.', (result) => {
+      handleQuery(res, 'Couldn\'t select all the users.', (result: Array<TL_user>) => {
         responseDone(res, {
           result: result
         })

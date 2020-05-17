@@ -56,7 +56,7 @@ server.get('/group', (req, res) => {
 // Create a new group
 server.post('/group', (req, res) => {
   reqDataCheck(req, res, [
-    "name",
+    {name: "name", type: "string"}
   ], () => {
     apiCheck(req, res, () => {
       DBcon.query(

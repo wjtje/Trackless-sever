@@ -35,9 +35,9 @@ server.get('/api', (req, res) => {
 // Create a apiKey
 server.post('/api', (req, res) => {
   reqDataCheck(req, res, [
-    "username",
-    "password",
-    "deviceName"
+    {name: "username", type: "string"},
+    {name: "password", type: "string"},
+    {name: "deviceName", type: "string"},
   ], () => {
     // Check the password
     DBcon.query(

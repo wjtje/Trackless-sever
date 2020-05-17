@@ -7,6 +7,7 @@ import { apiLogin } from '../api/lib';
 
 // Import other modules
 import * as _ from 'lodash';
+import { stringify } from 'querystring';
 
 // Interfaces
 export interface TL_user {
@@ -36,11 +37,11 @@ server.get('/user', (req, res) => {
 // Create a new user
 server.post('/user', (req, res) => {
   reqDataCheck(req, res, [
-    "firstname",
-    "lastname",
-    "username",
-    "password",
-    "group_id",
+    {name: "firstname", type: "string"},
+    {name: "lastname", type: "string"},
+    {name: "username", type: "string"},
+    {name: "password", type: "string"},
+    {name: "group_id", type: "number"},
   ], () => {
     apiLogin(req.body.apiKey).then(() => {
       // Check if the user is taken

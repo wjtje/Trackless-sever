@@ -104,23 +104,34 @@ export function responseDone(res: Response, result?: object) {
 }
 
 // Check an array of items
-export function reqDataCheck(req: Request, res: Response, items:Array<string>, fun:() => void) {
-  let passed = true;
+interface reqDataObj {
+  name: string;
+  type: "number" | "string";
+}
 
-  // Check all the items
-  items.forEach((item) => {
-    if (!_.has(req.body, item) && _.get(req.body, item) != '') {
-      // You are missing something
-      passed = false;
+export function reqDataCheck(req: Request, res: Response, items:Array<reqDataObj>, fun:() => void) {
+  let failed = false;
 
+  // Run it async for more speed
+  async function scanReqData() {
+    await Promise.all(items.map(async (item) => {
+      if (
+        !_.has(req.body, item.name) ||
+        (typeof _.get(req.body, item.name)) !== item.type
+      ) {
+        failed = true;
+      }
+    }));
+
+    if (failed) {
       missingErrorFun(res);
+    } else {
+      fun();
     }
-  });
-
-  // Passed?
-  if (passed) {
-    fun();
   }
+
+  // Start the function
+  scanReqData();
 }
 
 // Check an array of items

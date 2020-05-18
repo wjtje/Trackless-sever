@@ -43,6 +43,7 @@ import './api/index';
 
 // Import groups commands
 import './group/index';
+import './group/group_id';
 
 // Start the server
 server.listen(port, () => {

@@ -11,6 +11,9 @@ All the 'know' commands.
  - GET `/api`
  - GET `/group`
  - POST `/group`
+ - GET `/group/:group_id`
+ - DELETE `/group/:group_id`
+ - PATCH `/group/:group_id`
 
 ## POST `/user`
 
@@ -302,6 +305,99 @@ Content-Type: application/json
 {
 	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"name": "groupName"
+}
+```
+
+## GET `/group/:group_id`
+
+Get all the details from a single group
+
+### Require
+
+| Name      | Type   | About                             |
+| --------- | ------ | --------------------------------- |
+| :group_id | Number | The unique number for that group. |
+| apiKey    | String | Your own apiKey to log in.        |
+
+### Result
+
+| Name    | Type     | About                                                        |
+| ------- | -------- | ------------------------------------------------------------ |
+| status  | Number   | The HTTP status code.                                        |
+| message | String   | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| result  | TL_group | An array with the users data                                 |
+
+### Example
+
+```http
+GET /group/:group_id HTTP/1.1
+Host: localhost
+Content-Type: application/json
+
+{
+	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
+}
+```
+
+## DELETE `/group/:group_id`
+
+Remove a group from the system.
+If a user still in that group. He will be moved to the default group (group_id = 0).
+
+### Require
+
+| Name      | Type   | About                              |
+| --------- | ------ | ---------------------------------- |
+| :group_id | Number | The unique number for that group.  |
+| apiKey    | String | Your own apiKey to log in.         |
+
+### Result
+
+| Name    | Type     | About                                                        |
+| ------- | -------- | ------------------------------------------------------------ |
+| status  | Number   | The HTTP status code.                                        |
+| message | String   | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+
+### Example
+
+```http
+DELETE /group/:group_id HTTP/1.1
+Host: localhost
+Content-Type: application/json
+
+{
+	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
+}
+```
+
+## PATCH `/group/:group_id`
+
+Edit the name of a group
+
+### Require
+
+| Name      | Type   | About                             |
+| --------- | ------ | --------------------------------- |
+| :group_id | Number | The unique number for that group. |
+| apiKey    | String | Your own apiKey to log in.        |
+| groupName | String | The new name of that group.       |
+
+### Result
+
+| Name    | Type     | About                                                        |
+| ------- | -------- | ------------------------------------------------------------ |
+| status  | Number   | The HTTP status code.                                        |
+| message | String   | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+
+### Example
+
+```http
+PATCH /group/:group_id HTTP/1.1
+Host: localhost
+Content-Type: application/json
+
+{
+	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
 }
 ```
 

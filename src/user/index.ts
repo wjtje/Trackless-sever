@@ -7,7 +7,7 @@ import { apiLogin } from '../api/lib';
 
 // Import other modules
 import * as _ from 'lodash';
-import { stringify } from 'querystring';
+import { newApi, handleReject } from '../api';
 
 // Interfaces
 export interface TL_user {
@@ -20,69 +20,64 @@ export interface TL_user {
 }
 
 // List all users
-server.get('/user', (req, res) => {
-  apiCheck(req, res, () => {
-    // Get all the users
-    DBcon.query(
-      "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`)",
-      handleQuery(res, 'Couldn\'t select all the users.', (result: Array<TL_user>) => {
-        responseDone(res, {
-          result: result
-        })
+newApi("get", '/user', [
+  {name: "apiKey", type: "string"}
+], (_request, response) => {
+  // Get all the users
+  DBcon.query(
+    "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`)",
+    handleQuery(response, 'Couldn\'t select all the users.', (result: Array<TL_user>) => {
+      responseDone(response, {
+        result: result
       })
-    );
-  });
-});
+    })
+  );
+}, handleReject());
 
 // Create a new user
-server.post('/user', (req, res) => {
-  reqDataCheck(req, res, [
-    {name: "firstname", type: "string"},
-    {name: "lastname", type: "string"},
-    {name: "username", type: "string"},
-    {name: "password", type: "string"},
-    {name: "group_id", type: "number"},
-  ], () => {
-    apiLogin(req.body.apiKey).then(() => {
-      // Check if the user is taken
-      DBcon.query(
-        "SELECT `username` FROM `TL_users` WHERE `username`=?",
-        [
-          req.body.username
-        ],
-        handleQuery(res, `Something went wrong while checking the user name = '${req.body.username}'`, (result) => {
-          if (result.length > 0) { // Username is taken
-            res.send(JSON.stringify({
-              status: 400,
-              message: 'Username is taken.',
-            }));
-    
-            res.status(400);
-          } else {  // Every things good
-            // Create a new user
-            const [salt, hash] = storePassword(req.body.password);
+newApi("post", '/user', [
+  {name: "apiKey", type: "string"},
+  {name: "firstname", type: "string"},
+  {name: "lastname", type: "string"},
+  {name: "username", type: "string"},
+  {name: "password", type: "string"},
+  {name: "group_id", type: "number"},
+], (request, response, userInfo) => {
+  // Check if the user is taken
+  DBcon.query(
+    "SELECT `username` FROM `TL_users` WHERE `username`=?",
+    [ request.body.username ],
+    handleQuery(response, `Something went wrong while checking the username = '${request.body.username}'`, (result) => {
+      if (result.length > 0) { // Username is taken
+        response.send(JSON.stringify({
+          status: 400,
+          message: 'Username is taken.',
+        }));
 
-            // Commit to the database
-            DBcon.query(
-              "INSERT INTO `TL_users` ( `firstname`, `lastname`, `username`, `group_id`, `salt_hash`, `hash` ) VALUES ( ?, ?, ?, ?, ?, ?)",
-              [
-                req.body.firstname,
-                req.body.lastname,
-                req.body.username,
-                Number(req.body.group_id),
-                salt,
-                hash
-              ],
-              handleQuery(res, 'Couldn\'t save the user into the database. Please try again later', (result) => {
-                // User has been created
-                responseDone(res, {
-                  user_id: result.insertId
-                });
-              })
-            );
-          }
-        })
-      );
-    }).catch(loginFault(res));
-  });
-});
+        response.status(400);
+      } else {  // Every things good
+        // Create a new user
+        const [salt, hash] = storePassword(request.body.password);
+
+        // Commit to the database
+        DBcon.query(
+          "INSERT INTO `TL_users` ( `firstname`, `lastname`, `username`, `group_id`, `salt_hash`, `hash` ) VALUES ( ?, ?, ?, ?, ?, ?)",
+          [
+            request.body.firstname,
+            request.body.lastname,
+            request.body.username,
+            Number(request.body.group_id),
+            salt,
+            hash
+          ],
+          handleQuery(response, 'Couldn\'t save the user into the database. Please try again later', (result) => {
+            // User has been created
+            responseDone(response, {
+              user_id: result.insertId
+            });
+          })
+        );
+      }
+    })
+  );
+}, handleReject());

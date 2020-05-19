@@ -107,12 +107,12 @@ export function responseDone(res: Response, result?: object) {
 }
 
 // Check an array of items
-interface reqDataObj {
+export interface reqDataObj {
   name: string;
   type: "number" | "string";
 }
 
-export function reqDataCheck(req: Request, res: Response, items:Array<reqDataObj>, fun:() => void) {
+export function reqDataCheck(req: Request, res: Response, items:Array<reqDataObj>, done:() => void, reject:() => void) {
   let failed = false;
   let missing:string[] = [];
   let typeErr:string[] = [];
@@ -131,8 +131,9 @@ export function reqDataCheck(req: Request, res: Response, items:Array<reqDataObj
 
     if (failed) {
       missingErrorFun(res, missing, typeErr);
+      reject();
     } else {
-      fun();
+      done();
     }
   }
 

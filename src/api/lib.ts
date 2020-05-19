@@ -3,20 +3,20 @@ import { DBcon } from '../index';
 
 // Import other modules
 import { sha512_256 } from 'js-sha512';
-import { sqlError } from '../scripts';
 
 // Export
 export function apiLogin(apiKey:string):Promise<{
   user_id: number;
   username: string;
+  firstname: string;
+  lastname: string;
+  group_id: number;
 }> {
   return new Promise((resolve, reject) => {
     // Check the api key
     DBcon.query(
-      "SELECT `user_id`, `username` FROM `TL_apikeys` INNER JOIN `TL_users` USING (`user_id`) WHERE apiKey=?",
-      [
-        sha512_256(apiKey)
-      ],
+      "SELECT `user_id`, `username`, `firstname`, `lastname`, `group_id` FROM `TL_apikeys` INNER JOIN `TL_users` USING (`user_id`) WHERE apiKey=?",
+      [ sha512_256(apiKey) ],
       (error, result) => {
         if (error || result.length == 0) { // An sql error or invalid api key
           // Internal error
@@ -37,9 +37,7 @@ export function apiLogin(apiKey:string):Promise<{
           // Update the last used
           DBcon.query(
             "UPDATE `TL_apikeys` SET `lastUsed`=CURRENT_TIMESTAMP WHERE `apiKey`=?",
-            [
-              sha512_256(apiKey)
-            ],
+            [ sha512_256(apiKey) ],
             (error) => {
               // Document the error
               if (error) {

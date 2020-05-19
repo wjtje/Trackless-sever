@@ -15,7 +15,7 @@ export const DBcon = mysql.createConnection({
   host: "localhost",
   user: "yourusername",
   password: "yourpassword",
-  database: "trakless"
+  database: "trackless"
 });
 
 // Connect to the database

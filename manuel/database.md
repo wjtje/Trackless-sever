@@ -31,6 +31,8 @@ CREATE TABLE `trackless`.`TL_users` (
   `hash` TEXT NOT NULL ,
   PRIMARY KEY (`user_id`)
 ) ENGINE = InnoDB;
+
+INSERT INTO `TL_users` (`firstname`, `lastname`, `username`, `group_id`, `salt_hash`, `hash`) VALUES ('admin', 'admin', 'admin', 1, 'U736OMcfzID8YsBX', '499e653fc45c668794047f56c298ed213594863a1d18683ea07ae5efe972f9f8');
 ```
 
 ## TL_errors
@@ -108,8 +110,33 @@ CREATE TABLE `trackless`.`TL_groups` (
 ) ENGINE = InnoDB;
 
 INSERT INTO `TL_groups` (`group_id`, `groupName`) VALUES (1, 'Default');
+INSERT INTO `TL_groups` (`group_id`, `groupName`) VALUES (2, 'Admin');
 
-UPDATE `TL_groups` SET `group_id` = '0' WHERE `TL_groups`.`group_id` = 1;
+UPDATE `TL_groups` SET `group_id` = 0 WHERE `TL_groups`.`groupName` = 'Default';
+UPDATE `TL_groups` SET `group_id` = 1 WHERE `TL_groups`.`groupName` = 'Admin';
+```
+
+## TL_access
+
+A table for storing access to the system
+
+### Layout
+| Name      | Type | About                  |
+| --------- | ---- | ---------------------- |
+| access_id | INT  | index (AUTO_INCREMENT) |
+| group_id  | INT  | Number of the group.   |
+| method    | TEXT | Method of the request. |
+| url       | TEXT | Url of the request.    |
+
+### Code
+```sql
+CREATE TABLE `trackless`.`TL_access` (
+  `access_id` INT NOT NULL AUTO_INCREMENT ,
+  `group_id` INT NOT NULL ,
+  `method` TEXT NOT NULL ,
+  `url` TEXT NOT NULL ,
+  PRIMARY KEY (`access_id`)
+) ENGINE = InnoDB;
 ```
 
 #

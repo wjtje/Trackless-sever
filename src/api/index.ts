@@ -43,9 +43,9 @@ server.post('/api', (req, res) => {
     DBcon.query(
       "SELECT `salt_hash`, `hash`, `user_id` FROM `TL_users` WHERE `username`=?",
       [req.body.username],
-      handleQuery(res, 'Please check your username and password.', (result) => {
+      handleQuery(res, 'The is an error while contacting the server.', (result) => {
         // Check if the password is correct
-        if (sha512_256(req.body.password + result[0].salt_hash) === result[0].hash) {
+        if (sha512_256(req.body.password + _.get(result, '[0].salt_hash', '')) === _.get(result, '[0].hash', '')) {
           const apiKey:string = sha512_256(Date.now().toString()); // Generated using time
           const user_id:number = result[0].user_id;
 
@@ -63,7 +63,6 @@ server.post('/api', (req, res) => {
               })
             })
           );
-
         } else {
           // Password not correct
           res.send(JSON.stringify({
@@ -72,7 +71,6 @@ server.post('/api', (req, res) => {
           }));
           res.status(403);
         }
-
       })
     );
   })

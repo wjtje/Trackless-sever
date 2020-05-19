@@ -41,13 +41,16 @@ export function sqlError(res: Response, error:MysqlError, errorMessage:string) {
 }
 
 // Trow an error that something is missing
-export function missingErrorFun(res:Response) {
+export function missingErrorFun(res:Response, missing:string[], typeErr:string[]) {
   // Something is missing
   // throw an error
   res.send(JSON.stringify({
     status: 400,
-    message: missingError
+    message: missingError,
+    missing: missing,
+    typeErr: typeErr
   }));
+
   res.status(400);
 }
 
@@ -68,7 +71,7 @@ export function apiCheck(req:Request, res:Response, passed: (result: { user_id: 
   if (_.has(req.body, "apiKey")) {
     apiLogin(req.body.apiKey).then(passed).catch(loginFault(res));
   } else {
-    missingErrorFun(res);
+    missingErrorFun(res, [`You are missing 'apiKey'.`],[]);
   }
 }
 
@@ -111,20 +114,23 @@ interface reqDataObj {
 
 export function reqDataCheck(req: Request, res: Response, items:Array<reqDataObj>, fun:() => void) {
   let failed = false;
+  let missing:string[] = [];
+  let typeErr:string[] = [];
 
   // Run it async for more speed
   async function scanReqData() {
     await Promise.all(items.map(async (item) => {
-      if (
-        !_.has(req.body, item.name) ||
-        (typeof _.get(req.body, item.name)) !== item.type
-      ) {
+      if (!_.has(req.body, item.name)) {
         failed = true;
+        missing.push(`You are missing '${item.name}'.`);
+      } else if ((typeof _.get(req.body, item.name)) !== item.type) {
+        failed = true;
+        typeErr.push(`Wrong type for ${item.name}. Expected ${item.type} but got ${typeof _.get(req.body, item.name)}`);
       }
     }));
 
     if (failed) {
-      missingErrorFun(res);
+      missingErrorFun(res, missing, typeErr);
     } else {
       fun();
     }

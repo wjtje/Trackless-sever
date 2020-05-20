@@ -1,6 +1,6 @@
 import { newApi, handleReject } from "../api";
 import { DBcon } from "..";
-import { handleQuery, responseDone } from "../scripts";
+import { handleQuery, responseDone, responseError } from "../scripts";
 const util = require('util');
 const query = util.promisify(DBcon.query).bind(DBcon);
 
@@ -10,6 +10,7 @@ export interface TL_groups {
   groupName: string;
 }
 
+// List all access info
 newApi("get", "/access", [
   {name: "apiKey", type: "string"}
 ], (request, response) => {
@@ -39,4 +40,37 @@ newApi("get", "/access", [
       readAccess(); // Start the async function
     })
   )
-}, handleReject())
+}, handleReject());
+
+// Give access to a group
+newApi("post", "/access", [
+  {name: "apiKey", type: "string"},
+  {name: "group_id", type: "number"},
+  {name: "method", type: "string"},
+  {name: "url", type: "string"}
+], (request, response) => {
+  // Check if the group exsist
+  DBcon.query(
+    "SELECT `group_id` FROM `TL_groups` WHERE `group_id`=?",
+    [request.body.group_id],
+    handleQuery(response, 'Something went wrong', (result) => {
+      if (result.length === 0) {
+        responseError(response, 'The group is not found');
+      } else if (!["get","post","delete","patch"].includes(request.body.method)) {
+        responseError(response, 'The method is not allowed');
+      } else {
+        DBcon.query(
+          "INSERT INTO `TL_access` (`group_id`, `method`, `url`) VALUES (?,?,?)",
+          [
+            request.body.group_id,
+            request.body.method,
+            request.body.url
+          ],
+          handleQuery(response, 'Something went wrong while trying to save your request.', () => {
+            responseDone(response);
+          })
+        )
+      }
+    })
+  )
+}, handleReject());

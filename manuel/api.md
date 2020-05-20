@@ -14,6 +14,8 @@ All the 'know' commands.
  - GET `/group/:group_id`
  - DELETE `/group/:group_id`
  - PATCH `/group/:group_id`
+ - GET `/access`
+ - POST `/access`
 
 ## POST `/user`
 
@@ -429,6 +431,41 @@ Content-Type: application/json
 
 {
 	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
+}
+```
+
+## POST `/access`
+
+Give a group access to a function
+
+### Require
+
+| Name      | Type   | About                                 |
+| --------- | ------ | ------------------------------------- |
+| apiKey    | String | Your own apiKey to log in.            |
+| group_id  | Number | The group_id you want to give access. |
+| method    | String | The method of the function.           |
+| url       | String | The url of the function.              |
+
+### Result
+
+| Name    | Type     | About                                                        |
+| ------- | -------- | ------------------------------------------------------------ |
+| status  | Number   | The HTTP status code.                                        |
+| message | String   | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+
+### Example
+
+```http
+GET /access
+Host: localhost
+Content-Type: application/json
+
+{
+	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"group_id": 2,
+	"method": "post",
+	"url": "/access"
 }
 ```
 

@@ -5,6 +5,8 @@ import { apiLogin } from "./api/lib";
 import _ = require("lodash");
 import { sha512_256 } from "js-sha512";
 import { Response, Request } from 'express';
+const util = require('util');
+const query = util.promisify(DBcon.query).bind(DBcon);
 
 // Generate a random string
 export function generateString(length:number) : string {
@@ -180,4 +182,14 @@ export function responseNotFound(res: Response) {
   }));
 
   res.status(404);
+}
+
+// 403 Bad request
+export function responseError(res: Response, message: string) {
+  res.send(JSON.stringify({
+    status: 403,
+    message: message
+  }));
+
+  res.status(403);
 }

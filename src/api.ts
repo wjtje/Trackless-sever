@@ -35,8 +35,8 @@ export function newApi(
           // Check if the user has access running that command
           checkAccess(userInfo.group_id, method, url).then(() => {
             resolve(request, response, userInfo);
-          }).catch((reason) => {
-            reject(reason, method, url, response, 403);
+          }).catch(() => {
+            reject('No access', method, url, response, 403);
           });
         }).catch((reason) => {
           reject(reason, method, url, response);

@@ -1,6 +1,6 @@
 # API commands
 
-All the 'know' commands.
+All the 'known' commands.
 
  - POST `/user`
  - GET `/user`

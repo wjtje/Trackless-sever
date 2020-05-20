@@ -45,6 +45,9 @@ import './api/index';
 import './group/index';
 import './group/group_id';
 
+// Import access commands
+import './access/index';
+
 // Start the server
 server.listen(port, () => {
   console.log("SERVER: Started! on " + port);

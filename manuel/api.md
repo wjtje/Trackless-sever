@@ -284,10 +284,10 @@ Create a new group
 
 ### Require
 
-| Name   | Type   | About                      |
-| ------ | ------ | -------------------------- |
-| name   | String | The name of the group      |
-| apiKey | String | Your own apiKey to log in. |
+| Name      | Type   | About                      |
+| --------- | ------ | -------------------------- |
+| groupName | String | The name of the group      |
+| apiKey    | String | Your own apiKey to log in. |
 
 ### Result
 
@@ -304,7 +304,7 @@ Content-Type: application/json
 
 {
 	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx",
-	"name": "groupName"
+	"groupName": "groupName"
 }
 ```
 
@@ -393,6 +393,37 @@ Edit the name of a group
 
 ```http
 PATCH /group/:group_id HTTP/1.1
+Host: localhost
+Content-Type: application/json
+
+{
+	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"groupName": "The name"
+}
+```
+
+## GET `/access`
+
+List all the access of all the groups
+
+### Require
+
+| Name      | Type   | About                             |
+| --------- | ------ | --------------------------------- |
+| apiKey    | String | Your own apiKey to log in.        |
+
+### Result
+
+| Name    | Type     | About                                                        |
+| ------- | -------- | ------------------------------------------------------------ |
+| status  | Number   | The HTTP status code.                                        |
+| message | String   | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| result  | Array    | An array of data.                                            |
+
+### Example
+
+```http
+GET /access
 Host: localhost
 Content-Type: application/json
 

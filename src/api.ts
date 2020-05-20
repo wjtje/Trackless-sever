@@ -10,7 +10,7 @@ export function newApi(
   url: string,
   require: Array<reqDataObj>,
   resolve: (request: Request, response: Response, userInfo?: { user_id: number; username: string; firstname: string; lastname: string; group_id: number; }) => void,
-  reject: (reason: string, response?: Response, method?: "get" | "post" | "delete" | "patch", url?: string) => void,
+  reject: (reason: string, method?: "get" | "post" | "delete" | "patch", url?: string, response?: Response, status?: number) => void,
 ) {
   // Check if the types are correct
   if (!["get","post","delete","patch"].includes(method)) {
@@ -36,17 +36,17 @@ export function newApi(
           checkAccess(userInfo.group_id, method, url).then(() => {
             resolve(request, response, userInfo);
           }).catch((reason) => {
-            reject(reason, response, method, url);
+            reject(reason, method, url, response, 403);
           });
         }).catch((reason) => {
-          reject(reason, response, method, url);
+          reject(reason, method, url, response);
         });
       } else {
         // No api is given
         resolve(request, response);
       }
     }, () => {
-      reject(`Client ERR.`)
+      reject(`Client ERR.`, method, url)
     });
   }
 
@@ -56,16 +56,16 @@ export function newApi(
 
 // Handle reject
 export function handleReject() {
-  return (reason, response, method, url) => {
+  return (reason, method, url, response, status) => {
     // Something went wrong
     console.error(`${method} ${url} ${reason}`);
     
     if (response) {
       response.send(JSON.stringify({
-        status: 400,
+        status: (status == undefined)? 400:status,
         message: `Something went wrong. (${reason})`
       }));
-      response.status(400);
+      response.status((status == undefined)? 400:status);
     }
   };
 }

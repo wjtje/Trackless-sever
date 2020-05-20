@@ -5,5 +5,7 @@
 
 ## Access system
  - A way to add access to a function
- - A way to list a groups access
  - A way to remove access
+
+## Safety
+ - user_id and group_id need to be random and not Auto_Increment

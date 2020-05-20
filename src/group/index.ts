@@ -55,7 +55,8 @@ newApi("get", '/group', [
 
 // Create a new group
 newApi("post", '/group', [
-  {name: "apiKey", type: "string"}
+  {name: "apiKey", type: "string"},
+  {name: "groupName", type: "string"}
 ], (request, response) => {
   DBcon.query(
     "INSERT INTO `TL_groups` (`groupName`) VALUES (?)",

@@ -171,3 +171,13 @@ export function storePassword(password: string):string[] {
     hash
   ];
 }
+
+// 404 Not found
+export function responseNotFound(res: Response) {
+  res.send(JSON.stringify({
+    status: 404,
+    message: 'Not found'
+  }));
+
+  res.status(404);
+}

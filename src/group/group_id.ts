@@ -1,5 +1,5 @@
 import { DBcon } from "..";
-import { handleQuery, responseDone } from "../scripts";
+import { handleQuery, responseDone, responseNotFound } from "../scripts";
 import _ = require("lodash");
 import { newApi, handleReject } from "../api";
 
@@ -22,20 +22,24 @@ newApi("get", '/group/:group_id', [
       "SELECT * FROM `TL_groups` WHERE `group_id`=?",
       [request.params.group_id],
       handleQuery(response, `Could not list the group. Does it exsist?`, (resultGroup) => {
-        // Get all users
-        DBcon.query(
-          "SELECT `user_id`, `firstname`, `lastname`, `username` FROM `TL_users` WHERE `group_id`=?",
-          [request.params.group_id],
-          handleQuery(response, `Could not find any users.`, (result) => {
-            responseDone(response, {
-              result: {
-                group_id: Number(request.params.group_id),
-                groupName: _.get(resultGroup, '[0].groupName', 'undefined'),
-                users: result
-              }
+        if (resultGroup.length === 0) {
+          responseNotFound(response);
+        } else {
+          // Get all users
+          DBcon.query(
+            "SELECT `user_id`, `firstname`, `lastname`, `username` FROM `TL_users` WHERE `group_id`=?",
+            [request.params.group_id],
+            handleQuery(response, `Could not find any users.`, (result) => {
+              responseDone(response, {
+                result: {
+                  group_id: Number(request.params.group_id),
+                  groupName: _.get(resultGroup, '[0].groupName', 'undefined'),
+                  users: result
+                }
+              })
             })
-          })
-        );
+          );
+        }
       })
     );
   } else {

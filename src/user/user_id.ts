@@ -2,7 +2,7 @@
 import { server, DBcon } from '../index';
 
 // Import string and scripts we need
-import { apiCheck, handleQuery, responseDone, arrayContainOnly, storePassword } from '../scripts';
+import { apiCheck, handleQuery, responseDone, arrayContainOnly, storePassword, responseNotFound } from '../scripts';
 
 // Import other modules
 import * as _ from 'lodash';
@@ -30,10 +30,14 @@ newApi("get", '/user/:user_id', [
     "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=?",
     [request.params.user_id],
     handleQuery(response, `Couldn't find the user '${request.params.user_id}'`, (result: Array<TL_user>) => {
-      // Send the data to the user
-      responseDone(response, {
-        result: result
-      })
+      if (result.length === 0) {
+        responseNotFound(response);
+      } else {
+        // Send the data to the user
+        responseDone(response, {
+          result: result
+        })
+      }
     })
   );
 }, handleReject());

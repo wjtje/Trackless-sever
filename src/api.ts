@@ -61,11 +61,11 @@ export function handleReject() {
     console.error(`${method} ${url} ${reason}`);
     
     if (response) {
+      response.status((status == undefined)? 400:status);
       response.send(JSON.stringify({
         status: (status == undefined)? 400:status,
         message: `Something went wrong. (${reason})`
       }));
-      response.status((status == undefined)? 400:status);
     }
   };
 }

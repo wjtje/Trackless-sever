@@ -24,12 +24,12 @@ export function generateString(length:number) : string {
 // Trow an sql error and save it
 export function sqlError(res: Response, error:MysqlError, errorMessage:string) {
   // Report to the user
+  res.status(500);
+
   res.send(JSON.stringify({
     status: 500,
     message: errorMessage + ` (${error.code})`,
   }));
-
-  res.status(500);
 
   DBcon.query(
     "INSERT INTO `TL_errors` (`sqlError`, `message`) VALUES (?,?)",
@@ -46,25 +46,25 @@ export function sqlError(res: Response, error:MysqlError, errorMessage:string) {
 export function missingErrorFun(res:Response, missing:string[], typeErr:string[]) {
   // Something is missing
   // throw an error
+  res.status(400);
+
   res.send(JSON.stringify({
     status: 400,
     message: missingError,
     missing: missing,
     typeErr: typeErr
   }));
-
-  res.status(400);
 }
 
 // Trow an error that login has failed
 export function loginFault(res:Response): (reason: any) => void | PromiseLike<void> {
   return (reason) => {
     // Couldn't login
+    res.status(400);
     res.send({
       status: 400,
       message: reason
     });
-    res.status(400);
   };
 }
 
@@ -96,15 +96,11 @@ export function responseDone(res: Response, result?: object) {
       message: 'done',
       ...result
     }));
-
-    res.status(200);
   } else {
     res.send(JSON.stringify({
       status: 200,
       message: 'done'
     }));
-
-    res.status(200);
   }
 }
 
@@ -176,20 +172,20 @@ export function storePassword(password: string):string[] {
 
 // 404 Not found
 export function responseNotFound(res: Response) {
+  res.status(404);
+
   res.send(JSON.stringify({
     status: 404,
     message: 'Not found'
   }));
-
-  res.status(404);
 }
 
 // 403 Bad request
 export function responseError(res: Response, message: string) {
+  res.status(403);
+
   res.send(JSON.stringify({
     status: 403,
     message: message
   }));
-
-  res.status(403);
 }

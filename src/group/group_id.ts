@@ -4,11 +4,11 @@ import _ = require("lodash");
 import { newApi, handleReject } from "../api";
 
 function wrongType(res, req) {
+  res.status(400);
   res.send(JSON.stringify({
     status: 400,
     message: `Please check the documentation. group_id needs to be a number and not a ${typeof req.params.group_id}.`
   }));
-  res.status(400);
 }
 
 // List a group

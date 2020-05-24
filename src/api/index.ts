@@ -63,12 +63,12 @@ newApi("post", "/api", [
           })
         );
       } else {
+        response.status(403);
+        
         response.send(JSON.stringify({
           status: 403,
           message: `Please check your username or password.`
         }));
-
-        response.status(403);
       }
     })
   )

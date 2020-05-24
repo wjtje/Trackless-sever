@@ -1,9 +1,8 @@
 // Import the server and db con from index
-import { server, DBcon } from '../index';
+import { DBcon } from '../index';
 
 // Import string and scripts we need
-import { loginFault, apiCheck, handleQuery, responseDone, reqDataCheck, storePassword } from '../scripts';
-import { apiLogin } from '../api/lib';
+import { handleQuery, responseDone, storePassword } from '../scripts';
 
 // Import other modules
 import * as _ from 'lodash';
@@ -42,7 +41,7 @@ newApi("post", '/user', [
   {name: "username", type: "string"},
   {name: "password", type: "string"},
   {name: "group_id", type: "number"},
-], (request, response, userInfo) => {
+], (request, response) => {
   // Check if the user is taken
   DBcon.query(
     "SELECT `username` FROM `TL_users` WHERE `username`=?",

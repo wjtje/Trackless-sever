@@ -1,8 +1,8 @@
 // Import the server and db con from index
-import { server, DBcon } from '../index';
+import { DBcon } from '../index';
 
 // Import string and scripts we need
-import { apiCheck, handleQuery, responseDone, arrayContainOnly, storePassword, responseNotFound } from '../scripts';
+import { handleQuery, responseDone, arrayContainOnly, storePassword, responseNotFound } from '../scripts';
 
 // Import other modules
 import * as _ from 'lodash';
@@ -66,7 +66,7 @@ newApi("delete", '/user/:user_id', [
 // Update a users info
 newApi("patch", '/user/:user_id', [
   {name: "apiKey", type: "string"}
-], (request, response, userInfo) => {
+], (request, response) => {
   // Check if there are no bad values
   let objectKeys = Object.keys(request.body);
   const searchArray = [
@@ -174,20 +174,18 @@ newApi("patch", '/user/:user_id', [
     updateUser.then(() => {
       responseDone(response);
     }).catch((message) => {
+      response.status(400);
       response.send(JSON.stringify({
         status: 400,
         message: "Could not save the changes." + message
       }));
-
-      response.status(400);
     });
   }).catch(() => {
     // Something went wrong
+    response.status(400);
     response.send(JSON.stringify({
       status: 400,
       message: apiError
     }));
-
-    response.status(400);
   });
 }, handleReject());

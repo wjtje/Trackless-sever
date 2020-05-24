@@ -25,6 +25,7 @@
     "@types/mysql": "^2.15.10",
     "@types/node": "^13.13.5",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "js-base64": "^2.5.2",
     "js-sha512": "^0.8.0",

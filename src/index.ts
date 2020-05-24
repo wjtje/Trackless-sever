@@ -3,6 +3,7 @@ import * as mysql from 'mysql';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { Base64 } from 'js-base64';
+var cors = require('cors');
 
 // Settings
 const port:number = 55565;
@@ -31,6 +32,7 @@ server.use(bodyParser.urlencoded({
 }));
 server.use(bodyParser.json());
 server.use(bodyParser.raw());
+server.use(cors());
 
 // Import user commands
 import './user/create';

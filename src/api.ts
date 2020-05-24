@@ -31,7 +31,7 @@ export function newApi(
       // Check if we need to check the api key
       if (_.findIndex(require, ['name', 'apiKey']) !== -1) {
         // Try loggin in with that api key
-        apiLogin(request.body.apiKey).then((userInfo) => {
+        apiLogin((request.body.apiKey)? request.body.apiKey:request.query.apiKey).then((userInfo) => {
           // Check if the user has access running that command
           checkAccess(userInfo.group_id, method, url).then(() => {
             resolve(request, response, userInfo);

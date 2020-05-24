@@ -8,6 +8,7 @@ import { handleQuery, responseDone, arrayContainOnly, storePassword, responseNot
 import * as _ from 'lodash';
 import { apiError } from '../language';
 import { handleReject, newApi } from '../api';
+import { sha512_256 } from 'js-sha512';
 const util = require('util');
 const query = util.promisify(DBcon.query).bind(DBcon);
 
@@ -25,21 +26,40 @@ export interface TL_user {
 newApi("get", '/user/:user_id', [
   {name: "apiKey", type: "string"}
 ], (request, response) => {
-  // Get all the infomation from the database
-  DBcon.query(
-    "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=?",
-    [request.params.user_id],
-    handleQuery(response, `Couldn't find the user '${request.params.user_id}'`, (result: Array<TL_user>) => {
-      if (result.length === 0) {
-        responseNotFound(response);
-      } else {
-        // Send the data to the user
-        responseDone(response, {
-          result: result
-        })
-      }
-    })
-  );
+  // Check if the user wants to list him self
+  if (request.params.user_id == '~') {
+    // Get all the infomation from the database
+    DBcon.query(
+      "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`) INNER JOIN `TL_apikeys` USING (`user_id`) WHERE `apiKey`=?",
+      [sha512_256((request.body.apiKey)? request.body.apiKey:request.query.apiKey)],
+      handleQuery(response, `Couldn't find the user '${request.params.user_id}'`, (result: Array<TL_user>) => {
+        if (result.length === 0) {
+          responseNotFound(response);
+        } else {
+          // Send the data to the user
+          responseDone(response, {
+            result: result
+          })
+        }
+      })
+    );
+  } else {
+    // Get all the infomation from the database
+    DBcon.query(
+      "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=?",
+      [request.params.user_id],
+      handleQuery(response, `Couldn't find the user '${request.params.user_id}'`, (result: Array<TL_user>) => {
+        if (result.length === 0) {
+          responseNotFound(response);
+        } else {
+          // Send the data to the user
+          responseDone(response, {
+            result: result
+          })
+        }
+      })
+    );
+  }
 }, handleReject());
 
 // Delete a user from the system

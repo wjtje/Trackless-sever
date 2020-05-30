@@ -12,7 +12,7 @@ export interface TL_groups {
 
 // List all access info
 newApi("get", "/access", [
-  {name: "apiKey", type: "string"}
+  {name: "bearer", type: "string"}
 ], (request, response) => {
   DBcon.query(
     "SELECT * FROM `TL_groups`",
@@ -44,7 +44,7 @@ newApi("get", "/access", [
 
 // Give access to a group
 newApi("post", "/access", [
-  {name: "apiKey", type: "string"},
+  {name: "bearer", type: "string"},
   {name: "group_id", type: "number"},
   {name: "method", type: "string"},
   {name: "url", type: "string"}

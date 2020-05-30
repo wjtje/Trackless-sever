@@ -118,10 +118,10 @@ export function reqDataCheck(req: Request, res: Response, items:Array<reqDataObj
   // Run it async for more speed
   async function scanReqData() {
     await Promise.all(items.map(async (item) => {
-      if (!_.has(req.body, item.name) && !_.has(req.query, item.name)) {
+      if (!_.has(req.body, item.name) && !_.has(req.query, item.name) && item.name != 'bearer') {
         failed = true;
         missing.push(`You are missing '${item.name}'.`);
-      } else if ((typeof _.get(req.body, item.name)) !== item.type && (typeof _.get(req.query, item.name)) !== item.type) {
+      } else if ((typeof _.get(req.body, item.name)) !== item.type && (typeof _.get(req.query, item.name)) !== item.type && item.name != 'bearer') {
         failed = true;
         typeErr.push(`Wrong type for ${item.name}. Expected ${item.type} but got ${typeof _.get(req.body, item.name)}`);
       }

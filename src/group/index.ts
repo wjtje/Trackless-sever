@@ -18,7 +18,7 @@ export interface TL_groups {
 
 // List all the groups
 newApi("get", '/group', [
-  {name: "apiKey", type: "string"}
+  {name: "bearer", type: "string"}
 ], (_request, response) => {
   // List all group
   DBcon.query(
@@ -55,7 +55,7 @@ newApi("get", '/group', [
 
 // Create a new group
 newApi("post", '/group', [
-  {name: "apiKey", type: "string"},
+  {name: "bearer", type: "string"},
   {name: "groupName", type: "string"}
 ], (request, response) => {
   DBcon.query(

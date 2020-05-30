@@ -30,6 +30,12 @@
     "js-base64": "^2.5.2",
     "js-sha512": "^0.8.0",
     "lodash": "^4.17.15",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "passport": "^0.4.1",
+    "passport-http-bearer": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/passport": "^1.0.3",
+    "@types/passport-http-bearer": "^1.0.35"
   }
 }

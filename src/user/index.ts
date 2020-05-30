@@ -20,7 +20,7 @@ export interface TL_user {
 
 // List all users
 newApi("get", '/user', [
-  {name: "apiKey", type: "string"}
+  {name: "bearer", type: "string"}
 ], (_request, response) => {
   // Get all the users
   DBcon.query(
@@ -35,7 +35,7 @@ newApi("get", '/user', [
 
 // Create a new user
 newApi("post", '/user', [
-  {name: "apiKey", type: "string"},
+  {name: "bearer", type: "string"},
   {name: "firstname", type: "string"},
   {name: "lastname", type: "string"},
   {name: "username", type: "string"},

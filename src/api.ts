@@ -4,12 +4,23 @@ import { server } from './index';
 import { apiLogin } from "./api/lib";
 import _ = require("lodash");
 import { checkAccess } from "./access/lib";
+import passport = require("passport");
+
+interface RequestLocal extends Request {
+  user: {
+    user_id: number;
+    username: string;
+    firstname: string;
+    lastname: string;
+    group_id: number;
+  }
+}
 
 export function newApi(
   method: "get" | "post" | "delete" | "patch",
   url: string,
   require: Array<reqDataObj>,
-  resolve: (request: Request, response: Response, userInfo?: { user_id: number; username: string; firstname: string; lastname: string; group_id: number; }) => void,
+  resolve: (request: RequestLocal, response: Response, userInfo?: { user_id: number; username: string; firstname: string; lastname: string; group_id: number; }) => void,
   reject: (reason: string, method?: "get" | "post" | "delete" | "patch", url?: string, response?: Response, status?: number) => void,
 ) {
   // Check if the types are correct
@@ -25,21 +36,21 @@ export function newApi(
     reject(`Require needs to be an object.`);
   }
 
+  // Does the api need to be checked?
+  let apiCheck = false;
+
   // Function that wil run if the api is called
-  let apiFun = (request: Request, response: Response) => {
+  let apiFun = (request: RequestLocal, response: Response) => {
     reqDataCheck(request, response, require, () => {
       // Check if we need to check the api key
-      if (_.findIndex(require, ['name', 'apiKey']) !== -1) {
+      if (_.findIndex(require, ['name', 'bearer']) !== -1) {
         // Try loggin in with that api key
-        apiLogin((request.body.apiKey)? request.body.apiKey:request.query.apiKey).then((userInfo) => {
-          // Check if the user has access running that command
-          checkAccess(userInfo.group_id, method, url).then(() => {
-            resolve(request, response, userInfo);
-          }).catch(() => {
-            reject('No access', method, url, response, 403);
-          });
-        }).catch((reason) => {
-          reject(reason, method, url, response);
+        apiCheck = true;
+
+        checkAccess(request.user.group_id, method, url).then(() => {
+          resolve(request, response, request.user);
+        }).catch(() => {
+          reject('No access', method, url, response, 403);
         });
       } else {
         // No api is given
@@ -51,7 +62,11 @@ export function newApi(
   }
 
   // Bind the function
-  server[method](url, apiFun);
+  server[method](
+    url,
+    passport.authenticate('bearer', {session: false}),
+    apiFun
+  );
 }
 
 // Handle reject

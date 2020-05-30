@@ -19,7 +19,7 @@ export interface APIKeyNames {
 
 // List all apiKey device names
 newApi("get", "/api", [
-  {name: "apiKey", type: "string"}
+  {name: "bearer", type: "string"}
 ], (_request, response, userInfo) => {
   DBcon.query(
     "SELECT `api_id`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `user_id`=?",
@@ -58,7 +58,7 @@ newApi("post", "/api", [
           ],
           handleQuery(response, 'Something went wrong. Please try again later.', () => {
             responseDone(response, {
-              apiKey: apiKey
+              bearer: apiKey
             })
           })
         );

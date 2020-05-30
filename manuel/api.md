@@ -14,6 +14,7 @@ All the 'known' commands.
  - GET `/group/:group_id`
  - DELETE `/group/:group_id`
  - PATCH `/group/:group_id`
+ - POST `/group/:group_id/:user_id`
  - GET `/access`
  - POST `/access`
 
@@ -30,7 +31,6 @@ A quick way to create more users.
 | username  | String | The login name of the user.                       |
 | group_id  | Number | The group_id for that user.                       |
 | password  | String | The password of the user. (Please make it strong) |
-| apiKey    | String | Your own apiKey to log in.                        |
 
 ### Result
 
@@ -47,25 +47,21 @@ POST /user HTTP/1.1
 Host: localhost
 Content-Type: application/json
 
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
+
 {
 	"firstname": "John",
 	"lastname": "Doe",
 	"username": "JohnD",
 	"group_id": "0"
-	"password": "Str0ng!",
-	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
+	"password": "Str0ng!"
 }
 ```
 
 ## GET `/user`
 
 List all the users on the system
-
-### Require
-
-| Name      | Type   | About                          |
-| --------- | ------ | ------------------------------ |
-| apiKey    | String | Your own apiKey to log in.     |
 
 ### Result
 
@@ -80,11 +76,9 @@ List all the users on the system
 ```http
 GET /user HTTP/1.1
 Host: localhost
-Content-Type: application/json
 
-{
-	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
-}
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ## GET `/user/:user_id`
@@ -96,8 +90,6 @@ Get all the details from a single user
 | Name     | Type   | About                           |
 | -------- | ------ | ------------------------------- |
 | :user_id | Number | The unique number for that user |
-| apiKey   | String | Your own apiKey to log in.      |
-
 ### Result
 
 | Name    | Type           | About                                                        |
@@ -111,11 +103,9 @@ Get all the details from a single user
 ```http
 GET /user/:user_id HTTP/1.1
 Host: localhost
-Content-Type: application/json
 
-{
-	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
-}
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ## DELETE `/user/:user_id`
@@ -127,7 +117,6 @@ Get a single user
 | Name     | Type   | About                           |
 | -------- | ------ | ------------------------------- |
 | :user_id | Number | The unique number for that user |
-| apiKey   | String | Your own apiKey to log in.      |
 
 ### Result
 
@@ -141,11 +130,9 @@ Get a single user
 ```http
 DELETE /user/:user_id HTTP/1.1
 Host: localhost
-Content-Type: application/json
 
-{
-	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
-}
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ## PATCH `/user/:user_id`
@@ -157,7 +144,6 @@ Update a users info
 | Name     | Type   | About                           |
 | -------- | ------ | ------------------------------- |
 | :user_id | Number | The unique number for that user |
-| apiKey   | String | Your own apiKey to log in.      |
 | `column` | String | `Data`													|
 
 #### Options
@@ -165,7 +151,6 @@ Update a users info
  - lastname
  - username
  - password
- - group_id
 
 ### Result
 
@@ -179,11 +164,9 @@ Update a users info
 ```http
 PATCH /user/:user_id HTTP/1.1
 Host: localhost
-Content-Type: application/json
 
-{
-	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
-}
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ## POST `/api`
@@ -224,12 +207,6 @@ Content-Type: application/json
 
 List all you apiKeys and deviceNames
 
-### Require
-
-| Name   | Type   | About                      |
-| ------ | ------ | -------------------------- |
-| apiKey | String | Your own apiKey to log in. |
-
 ### Result
 
 | Name    | Type   | About                                                        |
@@ -243,22 +220,14 @@ List all you apiKeys and deviceNames
 ```http
 GET /api HTTP/1.1
 Host: localhost
-Content-Type: application/json
 
-{
-	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
-}
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ## GET `/group`
 
 List all the groups
-
-### Require
-
-| Name   | Type   | About                      |
-| ------ | ------ | -------------------------- |
-| apiKey | String | Your own apiKey to log in. |
 
 ### Result
 
@@ -273,11 +242,9 @@ List all the groups
 ```http
 GET /api HTTP/1.1
 Host: localhost
-Content-Type: application/json
 
-{
-	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
-}
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ## POST `/group`
@@ -289,7 +256,6 @@ Create a new group
 | Name      | Type   | About                      |
 | --------- | ------ | -------------------------- |
 | groupName | String | The name of the group      |
-| apiKey    | String | Your own apiKey to log in. |
 
 ### Result
 
@@ -302,12 +268,9 @@ Create a new group
 ```http
 POST /group HTTP/1.1
 Host: localhost
-Content-Type: application/json
 
-{
-	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx",
-	"groupName": "groupName"
-}
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ## GET `/group/:group_id`
@@ -319,7 +282,6 @@ Get all the details from a single group
 | Name      | Type   | About                             |
 | --------- | ------ | --------------------------------- |
 | :group_id | Number | The unique number for that group. |
-| apiKey    | String | Your own apiKey to log in.        |
 
 ### Result
 
@@ -334,11 +296,9 @@ Get all the details from a single group
 ```http
 GET /group/:group_id HTTP/1.1
 Host: localhost
-Content-Type: application/json
 
-{
-	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
-}
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ## DELETE `/group/:group_id`
@@ -351,8 +311,6 @@ If a user still in that group. He will be moved to the default group (group_id =
 | Name      | Type   | About                              |
 | --------- | ------ | ---------------------------------- |
 | :group_id | Number | The unique number for that group.  |
-| apiKey    | String | Your own apiKey to log in.         |
-
 ### Result
 
 | Name    | Type     | About                                                        |
@@ -365,11 +323,9 @@ If a user still in that group. He will be moved to the default group (group_id =
 ```http
 DELETE /group/:group_id HTTP/1.1
 Host: localhost
-Content-Type: application/json
 
-{
-	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
-}
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ## PATCH `/group/:group_id`
@@ -381,7 +337,6 @@ Edit the name of a group
 | Name      | Type   | About                             |
 | --------- | ------ | --------------------------------- |
 | :group_id | Number | The unique number for that group. |
-| apiKey    | String | Your own apiKey to log in.        |
 | groupName | String | The new name of that group.       |
 
 ### Result
@@ -398,21 +353,45 @@ PATCH /group/:group_id HTTP/1.1
 Host: localhost
 Content-Type: application/json
 
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
+
 {
-	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"groupName": "The name"
 }
 ```
 
-## GET `/access`
+## POST `/group/:group_id/:user_id`
 
-List all the access of all the groups
+Add a user to a group
 
 ### Require
 
 | Name      | Type   | About                             |
 | --------- | ------ | --------------------------------- |
-| apiKey    | String | Your own apiKey to log in.        |
+| :group_id | Number | The unique number for that group. |
+| :user_id  | Number | The user id.								       |
+
+### Result
+
+| Name    | Type     | About                                                        |
+| ------- | -------- | ------------------------------------------------------------ |
+| status  | Number   | The HTTP status code.                                        |
+| message | String   | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+
+### Example
+
+```http
+PATCH /group/:group_id HTTP/1.1
+Host: localhost
+
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+## GET `/access`
+
+List all the access of all the groups
 
 ### Result
 
@@ -427,11 +406,9 @@ List all the access of all the groups
 ```http
 GET /access
 Host: localhost
-Content-Type: application/json
 
-{
-	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx"
-}
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ## POST `/access`
@@ -442,7 +419,6 @@ Give a group access to a function
 
 | Name      | Type   | About                                 |
 | --------- | ------ | ------------------------------------- |
-| apiKey    | String | Your own apiKey to log in.            |
 | group_id  | Number | The group_id you want to give access. |
 | method    | String | The method of the function.           |
 | url       | String | The url of the function.              |
@@ -461,8 +437,10 @@ GET /access
 Host: localhost
 Content-Type: application/json
 
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
+
 {
-	"apiKey": "xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"group_id": 2,
 	"method": "post",
 	"url": "/access"

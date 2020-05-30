@@ -13,7 +13,7 @@ function wrongType(res, req) {
 
 // List a group
 newApi("get", '/group/:group_id', [
-  {name: "apiKey", type: "string"}
+  {name: "bearer", type: "string"}
 ], (request, response) => {
   // Check if the data is correct
   if (typeof Number(request.params.group_id) === "number") {
@@ -49,7 +49,7 @@ newApi("get", '/group/:group_id', [
 
 // Delete a group
 newApi("delete", '/group/:group_id', [
-  {name: "apiKey", type: "string"}
+  {name: "bearer", type: "string"}
 ], (request, response) => {
   // Check if the data is correct
   if (typeof Number(request.params.group_id) === "number" && Number(request.params.group_id) !== 0 && Number(request.params.group_id) !== 1) {
@@ -73,7 +73,7 @@ newApi("delete", '/group/:group_id', [
 
 // Edit a group
 newApi("patch", '/group/:group_id', [
-  {name: "apiKey", type: "string"},
+  {name: "bearer", type: "string"},
   {name: "groupName", type: "string"}
 ], (request, response) => {
   // Check if the data is correct
@@ -84,6 +84,31 @@ newApi("patch", '/group/:group_id', [
       [
         request.body.groupName,
         request.params.group_id
+      ],
+      handleQuery(response, `Could not save the change`, () => {
+        responseDone(response);
+      })
+    );
+  } else {
+    wrongType(response, request);
+  }
+}, handleReject());
+
+// Add a user to a group
+// WARNING!
+// With this function you can give a user a lot of control.
+// Be carful
+newApi("post", '/group/:group_id/:user_id', [
+  {name: "bearer", type: "string"},
+], (request, response) => {
+  // Check if the data is correct
+  if (Number(request.params.group_id) !== 0 && Number(request.params.group_id) !== 1) {
+    // Get all the basic information from the group
+    DBcon.query(
+      "UPDATE `TL_users` SET `group_id`=? WHERE `user_id`=?",
+      [
+        request.params.group_id,
+        request.params.user_id
       ],
       handleQuery(response, `Could not save the change`, () => {
         responseDone(response);

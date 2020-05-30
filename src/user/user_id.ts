@@ -24,14 +24,14 @@ export interface TL_user {
 
 // Get a user
 newApi("get", '/user/:user_id', [
-  {name: "apiKey", type: "string"}
+  {name: "bearer", type: "string"}
 ], (request, response) => {
   // Check if the user wants to list him self
   if (request.params.user_id == '~') {
     // Get all the infomation from the database
     DBcon.query(
-      "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`) INNER JOIN `TL_apikeys` USING (`user_id`) WHERE `apiKey`=?",
-      [sha512_256((request.body.apiKey)? request.body.apiKey:request.query.apiKey)],
+      "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`)  WHERE `user_id`=?",
+      [request.user.user_id],
       handleQuery(response, `Couldn't find the user '${request.params.user_id}'`, (result: Array<TL_user>) => {
         if (result.length === 0) {
           responseNotFound(response);
@@ -64,7 +64,7 @@ newApi("get", '/user/:user_id', [
 
 // Delete a user from the system
 newApi("delete", '/user/:user_id', [
-  {name: "apiKey", type: "string"}
+  {name: "bearer", type: "string"}
 ], (request, response) => {
   // Send the command to the database
   DBcon.query(
@@ -85,7 +85,7 @@ newApi("delete", '/user/:user_id', [
 
 // Update a users info
 newApi("patch", '/user/:user_id', [
-  {name: "apiKey", type: "string"}
+  {name: "bearer", type: "string"}
 ], (request, response) => {
   // Check if there are no bad values
   let objectKeys = Object.keys(request.body);
@@ -93,10 +93,7 @@ newApi("patch", '/user/:user_id', [
     "firstname",
     "lastname",
     "username",
-    "group_id",
     "password",
-
-    "apiKey", // Needed
   ];
 
   arrayContainOnly(objectKeys, searchArray).then(() => {

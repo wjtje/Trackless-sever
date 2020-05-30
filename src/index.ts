@@ -3,6 +3,8 @@ import * as mysql from 'mysql';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { Base64 } from 'js-base64';
+import * as passport from 'passport';
+import { Strategy as BearerStrategy } from 'passport-http-bearer';
 var cors = require('cors');
 
 // Settings
@@ -33,6 +35,18 @@ server.use(bodyParser.urlencoded({
 server.use(bodyParser.json());
 server.use(bodyParser.raw());
 server.use(cors());
+server.use(passport.initialize());
+
+// Use passport
+passport.use(new BearerStrategy(
+  function(token, done) {
+    apiLogin(token).then((user) => {
+      done(null, user);
+    }).catch((err) => {
+      done(err);
+    })
+  }
+));
 
 // Import user commands
 import './user/create';
@@ -49,6 +63,7 @@ import './group/group_id';
 
 // Import access commands
 import './access/index';
+import { apiLogin } from './api/lib';
 
 // Start the server
 server.listen(port, () => {

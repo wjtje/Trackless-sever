@@ -26,40 +26,21 @@ export interface TL_user {
 newApi("get", '/user/:user_id', [
   {name: "bearer", type: "string"}
 ], (request, response) => {
-  // Check if the user wants to list him self
-  if (request.params.user_id == '~') {
-    // Get all the infomation from the database
-    DBcon.query(
-      "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`)  WHERE `user_id`=?",
-      [request.user.user_id],
-      handleQuery(response, `Couldn't find the user '${request.params.user_id}'`, (result: Array<TL_user>) => {
-        if (result.length === 0) {
-          responseNotFound(response);
-        } else {
-          // Send the data to the user
-          responseDone(response, {
-            result: result
-          })
-        }
-      })
-    );
-  } else {
-    // Get all the infomation from the database
-    DBcon.query(
-      "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=?",
-      [request.params.user_id],
-      handleQuery(response, `Couldn't find the user '${request.params.user_id}'`, (result: Array<TL_user>) => {
-        if (result.length === 0) {
-          responseNotFound(response);
-        } else {
-          // Send the data to the user
-          responseDone(response, {
-            result: result
-          })
-        }
-      })
-    );
-  }
+  // Get all the infomation from the database
+  DBcon.query(
+    "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=?",
+    [(request.params.user_id == '~')? request.user.user_id:request.params.user_id],
+    handleQuery(response, `Couldn't find the user '${request.params.user_id}'`, (result: Array<TL_user>) => {
+      if (result.length === 0) {
+        responseNotFound(response);
+      } else {
+        // Send the data to the user
+        responseDone(response, {
+          result: result
+        })
+      }
+    })
+  );
 }, handleReject());
 
 // Delete a user from the system
@@ -69,7 +50,7 @@ newApi("delete", '/user/:user_id', [
   // Send the command to the database
   DBcon.query(
     "DELETE FROM `TL_users` WHERE `user_id`=?",
-    [Number(request.params.user_id)],
+    [(request.params.user_id == '~')? request.user.user_id:request.params.user_id],
     handleQuery(response, `Couldn't delete the user '${request.params.user_id}'`, () => {
       // Delete all apikeys
       DBcon.query(
@@ -122,7 +103,7 @@ newApi("patch", '/user/:user_id', [
       function changeUser(key: string, req, rejectChange: (error: any) => void) {
         DBcon.query("UPDATE `TL_users` SET `" + key + "`=? WHERE `user_id`=?", [
           req.body[key],
-          Number(req.params.user_id)
+          (request.params.user_id == '~')? request.user.user_id:request.params.user_id
         ], rejectChange);
       }
 
@@ -134,15 +115,11 @@ newApi("patch", '/user/:user_id', [
               // Update password
               const [salt, hash] = storePassword(request.body[key]);
 
-              await query(
-                "UPDATE `TL_users` SET `salt_hash`=?, `hash`=? where `user_id`=?",
-                [
-                  salt,
-                  hash,
-                  Number(request.params.user_id)
-                ],
-                rejectChange
-              );
+              DBcon.query("UPDATE `TL_users` SET `salt_hash`=?, `hash`=? where `user_id`=?", [
+                salt,
+                hash,
+                (request.params.user_id == '~')? request.user.user_id:request.params.user_id
+              ], rejectChange);
 
               break;
             case "group_id":
@@ -162,7 +139,7 @@ newApi("patch", '/user/:user_id', [
                 // Make the change
                 DBcon.query("UPDATE `TL_users` SET `" + key + "`=? WHERE `user_id`=?", [
                   Number(request.body[key]),
-                  Number(request.params.user_id)
+                  (request.params.user_id == '~')? request.user.user_id:request.params.user_id
                 ], rejectChange);
               }
 

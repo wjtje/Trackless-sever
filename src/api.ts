@@ -37,16 +37,13 @@ export function newApi(
   }
 
   // Does the api need to be checked?
-  let apiCheck = false;
+  let apiCheck = _.findIndex(require, ['name', 'bearer']) !== -1;
 
   // Function that wil run if the api is called
   let apiFun = (request: RequestLocal, response: Response) => {
     reqDataCheck(request, response, require, () => {
       // Check if we need to check the api key
       if (_.findIndex(require, ['name', 'bearer']) !== -1) {
-        // Try loggin in with that api key
-        apiCheck = true;
-
         checkAccess(request.user.group_id, method, url).then(() => {
           resolve(request, response, request.user);
         }).catch(() => {
@@ -62,11 +59,18 @@ export function newApi(
   }
 
   // Bind the function
-  server[method](
-    url,
-    passport.authenticate('bearer', {session: false}),
-    apiFun
-  );
+  if (apiCheck) {
+    server[method](
+      url,
+      passport.authenticate('bearer', {session: false}),
+      apiFun
+    );
+  } else {
+    server[method](
+      url,
+      apiFun
+    );
+  }
 }
 
 // Handle reject

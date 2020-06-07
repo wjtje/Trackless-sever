@@ -9,6 +9,8 @@ All the 'known' commands.
  - PATCH `/user/:user_id`
  - POST `/api`
  - GET `/api`
+ - GET `/api/:api_id`
+ - DELETE `/api/:api_id`
  - GET `/group`
  - POST `/group`
  - GET `/group/:group_id`
@@ -219,6 +221,49 @@ List all you apiKeys and deviceNames
 
 ```http
 GET /api HTTP/1.1
+Host: localhost
+
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+## GET `/api/:api_id`
+
+List a single api key
+
+### Result
+
+| Name    | Type   | About                                                        |
+| ------- | ------ | ------------------------------------------------------------ |
+| status  | Number | The HTTP status code.                                        |
+| message | String | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| result  | Array<TL_api> | An array with all the infomation.                     |
+
+### Example
+
+```http
+GET /api/:api_id HTTP/1.1
+Host: localhost
+
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+## DELETE `/api/:api_id`
+
+Remove a single api key
+
+### Result
+
+| Name    | Type   | About                                                        |
+| ------- | ------ | ------------------------------------------------------------ |
+| status  | Number | The HTTP status code.                                        |
+| message | String | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+
+### Example
+
+```http
+DELETE /api/:api_id HTTP/1.1
 Host: localhost
 
 Authorization: Bearer

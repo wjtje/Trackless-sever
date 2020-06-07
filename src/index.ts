@@ -54,7 +54,7 @@ import './user/index';
 import './user/user_id';
 
 // Import api commands
-import './api/create';
+import './api/api_id';
 import './api/index';
 
 // Import groups commands

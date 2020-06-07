@@ -48,12 +48,12 @@ newApi("post", '/user', [
     [ request.body.username ],
     handleQuery(response, `Something went wrong while checking the username = '${request.body.username}'`, (result) => {
       if (result.length > 0) { // Username is taken
+        response.status(400);
+
         response.send(JSON.stringify({
           status: 400,
           message: 'Username is taken.',
         }));
-
-        response.status(400);
       } else {  // Every things good
         // Create a new user
         const [salt, hash] = storePassword(request.body.password);

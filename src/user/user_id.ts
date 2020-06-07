@@ -130,12 +130,12 @@ newApi("patch", '/user/:user_id', [
               );
 
               if (username.length > 0) { // Username is taken
+                response.status(400);
+
                 response.send(JSON.stringify({
                   status: 400,
                   message: 'Username is taken.',
                 }));
-        
-                response.status(400);
 
                 hasFailed = true;
               } else {  // Every things good

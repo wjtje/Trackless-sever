@@ -122,25 +122,24 @@ newApi("patch", '/user/:user_id', [
               ], rejectChange);
 
               break;
-            case "group_id":
-              // List the group
-              const group = await query(
-                "SELECT `groupname` FROM `TL_groups` WHERE `group_id`=?",
-                [
-                  Number(request.body[key])
-                ]
+            case "username":
+              // Check if the username is used
+              const username = await query(
+                "SELECT `username` FROM `TL_users` WHERE `username`=?",
+                [ request.body.username ]
               );
 
-              // Does the group exsist?
-              if (group[0] == undefined) {
+              if (username.length > 0) { // Username is taken
+                response.send(JSON.stringify({
+                  status: 400,
+                  message: 'Username is taken.',
+                }));
+        
+                response.status(400);
+
                 hasFailed = true;
-                reject(' (ERR GROUP_ID)');
-              } else {
-                // Make the change
-                DBcon.query("UPDATE `TL_users` SET `" + key + "`=? WHERE `user_id`=?", [
-                  Number(request.body[key]),
-                  (request.params.user_id == '~')? request.user.user_id:request.params.user_id
-                ], rejectChange);
+              } else {  // Every things good
+                changeUser(key, request, rejectChange);
               }
 
               break;

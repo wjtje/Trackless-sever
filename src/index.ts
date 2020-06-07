@@ -48,6 +48,14 @@ passport.use(new BearerStrategy(
   }
 ));
 
+// Custom error pages
+server.use(function (req, res) {
+  res.send(JSON.stringify({
+    message: 'Couldn\'t found that api function',
+    url: req.originalUrl
+  }));
+});
+
 // Import user commands
 import './user/create';
 import './user/index';

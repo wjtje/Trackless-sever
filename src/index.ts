@@ -48,14 +48,6 @@ passport.use(new BearerStrategy(
   }
 ));
 
-// Custom error pages
-server.use(function (req, res) {
-  res.send(JSON.stringify({
-    message: 'Couldn\'t found that api function',
-    url: req.originalUrl
-  }));
-});
-
 // Import user commands
 import './user/create';
 import './user/index';
@@ -72,6 +64,14 @@ import './group/group_id';
 // Import access commands
 import './access/index';
 import { apiLogin } from './api/lib';
+
+// Custom error pages
+server.use(function (req, res) {
+  res.send(JSON.stringify({
+    message: 'Couldn\'t found that api function',
+    url: req.originalUrl
+  }));
+});
 
 // Start the server
 server.listen(port, () => {

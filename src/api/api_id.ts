@@ -18,10 +18,10 @@ newApi("get", "/api/:api_id", [
 
 newApi("delete", "/api/:api_id", [
   { name: "bearer", type: "string"}
-], (request, response) => {
+], (request, response, userInfo) => {
   DBcon.query(
-    "DELETE FROM `TL_apikeys` WHERE `api_id`=?",
-    [request.params.api_id],
+    "DELETE FROM `TL_apikeys` WHERE `api_id`=? and `user_id`=?",
+    [request.params.api_id, userInfo.user_id],
     handleQuery(response, `Something went wrong.`, () => {
       responseDone(response);
     })

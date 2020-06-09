@@ -18,6 +18,7 @@ All the 'known' commands.
  - PATCH `/group/:group_id`
  - POST `/group/:group_id/:user_id`
  - GET `/access`
+ - GET `/access/~`
  - POST `/access`
 
 ## POST `/user`
@@ -450,6 +451,28 @@ List all the access of all the groups
 
 ```http
 GET /access
+Host: localhost
+
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+## GET `/access/~`
+
+List your access
+
+### Result
+
+| Name    | Type     | About                                                        |
+| ------- | -------- | ------------------------------------------------------------ |
+| status  | Number   | The HTTP status code.                                        |
+| message | String   | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| result  | Array    | An array of data.                                            |
+
+### Example
+
+```http
+GET /access/~
 Host: localhost
 
 Authorization: Bearer

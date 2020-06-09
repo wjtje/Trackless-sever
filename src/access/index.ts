@@ -42,6 +42,21 @@ newApi("get", "/access", [
   )
 }, handleReject());
 
+// List your access
+newApi("get", "/access/~", [
+  {name: "bearer", type: "string"}
+], (request, response, userInfo) => {
+  DBcon.query(
+    "SELECT `access_id`, `method`, `url` FROM `TL_access` WHERE `group_id`=?",
+    [userInfo.group_id],
+    handleQuery(response, `Something went wrong`, (result) => {
+      responseDone(response, {
+        result: result
+      });
+    })
+  );
+}, handleReject());
+
 // Give access to a group
 newApi("post", "/access", [
   {name: "bearer", type: "string"},

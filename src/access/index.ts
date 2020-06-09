@@ -47,7 +47,7 @@ newApi("get", "/access/~", [
   {name: "bearer", type: "string"}
 ], (request, response, userInfo) => {
   DBcon.query(
-    "SELECT `access_id`, `method`, `url` FROM `TL_access` WHERE `group_id`=?",
+    "SELECT `method`, `url` FROM `TL_access` WHERE `group_id`=?",
     [userInfo.group_id],
     handleQuery(response, `Something went wrong`, (result) => {
       responseDone(response, {

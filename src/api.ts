@@ -43,10 +43,10 @@ export function newApi(
     reqDataCheck(request, response, require, () => {
       // Check if we need to check the api key
       if (_.findIndex(require, ['name', 'bearer']) !== -1) {
-        checkAccess(request.user.group_id, method, url).then(() => {
+        checkAccess(request.user.group_id, method, (Object.values(request.params).indexOf("~") > -1)? request.originalUrl:url).then(() => {
           resolve(request, response, request.user);
         }).catch(() => {
-          reject('No access', method, url, response, 403);
+          reject('No access', method, (Object.values(request.params).indexOf("~") > -1)? request.originalUrl:url, response, 403);
         });
       } else {
         // No api is given

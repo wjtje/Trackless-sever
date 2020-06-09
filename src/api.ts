@@ -1,7 +1,6 @@
-import { reqDataObj, reqDataCheck, apiCheck } from "./scripts";
-import { Request, Response, response } from 'express';
+import { reqDataObj, reqDataCheck } from "./scripts";
+import { Request, Response } from 'express';
 import { server } from './index';
-import { apiLogin } from "./api/lib";
 import _ = require("lodash");
 import { checkAccess } from "./access/lib";
 import passport = require("passport");

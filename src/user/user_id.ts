@@ -8,8 +8,7 @@ import { handleQuery, responseDone, arrayContainOnly, storePassword, responseNot
 import * as _ from 'lodash';
 import { apiError } from '../language';
 import { handleReject, newApi } from '../api';
-import { sha512_256 } from 'js-sha512';
-const util = require('util');
+import util = require('util');
 const query = util.promisify(DBcon.query).bind(DBcon);
 
 // Interfaces

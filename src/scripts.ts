@@ -5,8 +5,7 @@ import { apiLogin } from "./api/lib";
 import _ = require("lodash");
 import { sha512_256 } from "js-sha512";
 import { Response, Request } from 'express';
-const util = require('util');
-const query = util.promisify(DBcon.query).bind(DBcon);
+import util = require('util');
 
 // Generate a random string
 export function generateString(length:number) : string {

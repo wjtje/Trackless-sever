@@ -1,7 +1,7 @@
 import { newApi, handleReject } from "../api";
 import { DBcon } from "..";
 import { handleQuery, responseDone, responseError } from "../scripts";
-const util = require('util');
+import util = require('util');
 const query = util.promisify(DBcon.query).bind(DBcon);
 
 // Interfaces

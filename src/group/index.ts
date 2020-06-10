@@ -60,7 +60,7 @@ newApi("post", '/group', [
 ], (request, response) => {
   DBcon.query(
     "INSERT INTO `TL_groups` (`groupName`) VALUES (?)",
-    [request.body.name],
+    [request.body.groupName],
     handleQuery(response, 'Could not save your new group', (result) => {
       // Saved to database
       responseDone(response, {

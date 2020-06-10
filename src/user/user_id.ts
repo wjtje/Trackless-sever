@@ -124,11 +124,11 @@ newApi("patch", '/user/:user_id', [
             case "username":
               // Check if the username is used
               const username = await query(
-                "SELECT `username` FROM `TL_users` WHERE `username`=?",
+                "SELECT `user_id` FROM `TL_users` WHERE `username`=?",
                 [ request.body.username ]
               );
 
-              if (username.length > 0) { // Username is taken
+              if (username.length > 0 && _.get(username, '[0].user_id', 0) != request.params.user_id) { // Username is taken
                 response.status(400);
 
                 response.send(JSON.stringify({

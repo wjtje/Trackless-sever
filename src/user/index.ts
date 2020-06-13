@@ -24,7 +24,7 @@ newApi("get", '/user', [
 ], (_request, response) => {
   // Get all the users
   DBcon.query(
-    "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`)",
+    "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`) ORDER BY `firstname`, `lastname`, `username`",
     handleQuery(response, 'Couldn\'t select all the users.', (result: Array<TL_user>) => {
       responseDone(response, {
         result: result

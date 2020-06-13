@@ -22,7 +22,7 @@ newApi("get", '/group', [
 ], (_request, response) => {
   // List all group
   DBcon.query(
-    "SELECT * FROM `TL_groups`",
+    "SELECT * FROM `TL_groups` ORDER BY `groupname`",
     handleQuery(response, `Could not list all the groups.`, (result: Array<TL_groups>) => {
       let rslt = []; // Result
 

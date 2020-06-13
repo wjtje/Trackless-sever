@@ -19,7 +19,7 @@ newApi("get", '/group/:group_id', [
   if (typeof Number(request.params.group_id) === "number") {
     // Get all the basic information from the group
     DBcon.query(
-      "SELECT * FROM `TL_groups` WHERE `group_id`=?",
+      "SELECT * FROM `TL_groups` WHERE `group_id`=? ORDER BY `groupname`",
       [request.params.group_id],
       handleQuery(response, `Could not list the group. Does it exsist?`, (resultGroup) => {
         if (resultGroup.length === 0) {

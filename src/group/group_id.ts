@@ -101,20 +101,15 @@ newApi("patch", '/group/:group_id', [
 newApi("post", '/group/:group_id/:user_id', [
   {name: "bearer", type: "string"},
 ], (request, response) => {
-  // Check if the data is correct
-  if (Number(request.params.group_id) !== 0 && Number(request.params.group_id) !== 1) {
-    // Get all the basic information from the group
-    DBcon.query(
-      "UPDATE `TL_users` SET `group_id`=? WHERE `user_id`=?",
-      [
-        request.params.group_id,
-        request.params.user_id
-      ],
-      handleQuery(response, `Could not save the change`, () => {
-        responseDone(response);
-      })
-    );
-  } else {
-    wrongType(response, request);
-  }
+  // Get all the basic information from the group
+  DBcon.query(
+    "UPDATE `TL_users` SET `group_id`=? WHERE `user_id`=?",
+    [
+      request.params.group_id,
+      request.params.user_id
+    ],
+    handleQuery(response, `Could not save the change`, () => {
+      responseDone(response);
+    })
+  );
 }, handleReject());

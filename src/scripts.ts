@@ -120,7 +120,15 @@ export function reqDataCheck(req: Request, res: Response, items:Array<reqDataObj
       if (!_.has(req.body, item.name) && !_.has(req.query, item.name) && item.name != 'bearer') {
         failed = true;
         missing.push(`You are missing '${item.name}'.`);
-      } else if ((typeof _.get(req.body, item.name)) !== item.type && (typeof _.get(req.query, item.name)) !== item.type && item.name != 'bearer') {
+      } else if (
+        (item.type != "number")? (
+          (typeof _.get(req.body, item.name)) !== item.type &&
+          (typeof _.get(req.query, item.name)) !== item.type &&
+          item.name != 'bearer'
+        ): (
+          isNaN(_.get(req.body, item.name))
+        )
+      ) {
         failed = true;
         typeErr.push(`Wrong type for ${item.name}. Expected ${item.type} but got ${typeof _.get(req.body, item.name)}`);
       }

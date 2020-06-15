@@ -8,7 +8,7 @@ newApi("get", "/location", [
 ], (_request, response) => {
   // Get all the data
   DBcon.query(
-    "SELECT * FROM `TL_locations`",
+    "SELECT * FROM `TL_locations` ORDER BY `place`, `name`",
     handleQuery(response, "Something went wrong", (result) => {
       responseDone(response, {
         result: result

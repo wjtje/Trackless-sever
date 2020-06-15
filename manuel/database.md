@@ -121,6 +121,7 @@ UPDATE `TL_groups` SET `group_id` = 1 WHERE `TL_groups`.`groupName` = 'Admin';
 A table for storing access to the system
 
 ### Layout
+
 | Name      | Type | About                  |
 | --------- | ---- | ---------------------- |
 | access_id | INT  | index (AUTO_INCREMENT) |
@@ -129,6 +130,7 @@ A table for storing access to the system
 | url       | TEXT | Url of the request.    |
 
 ### Code
+
 ```sql
 CREATE TABLE `trackless`.`TL_access` (
   `access_id` INT NOT NULL AUTO_INCREMENT ,
@@ -136,6 +138,31 @@ CREATE TABLE `trackless`.`TL_access` (
   `method` TEXT NOT NULL ,
   `url` TEXT NOT NULL ,
   PRIMARY KEY (`access_id`)
+) ENGINE = InnoDB;
+```
+
+## TL_locations
+
+A table for storing all the locations
+
+### Layout
+
+| Name        | Type | About                  |
+| ----------- | ---- | ---------------------- |
+| location_id | INT  | index (AUTO_INCREMENT) |
+| name        | TEXT | Name of the place.     |
+| place       | TEXT | Location of the place. |
+| id          | TEXT | Internal ID.           |
+
+### Code
+
+```sql
+CREATE TABLE `trackless`.`TL_locations` (
+  `location_id` INT NOT NULL AUTO_INCREMENT ,
+  `name` TEXT NOT NULL ,
+  `place` TEXT NOT NULL ,
+  `id` TEXT NOT NULL ,
+  PRIMARY KEY (`location_id`)
 ) ENGINE = InnoDB;
 ```
 

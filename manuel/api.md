@@ -20,6 +20,10 @@ All the 'known' commands.
  - GET `/access`
  - GET `/access/~`
  - POST `/access`
+ - GET `/location`
+ - POST `/location`
+ - DELETE `/location/:location_id`
+ - PATCH `/location/:location_id`
 
 ## POST `/user`
 
@@ -513,6 +517,126 @@ Authorization: Bearer
 	"method": "post",
 	"url": "/access"
 }
+```
+
+
+## GET `/location`
+
+List all the locations on the system
+
+### Result
+
+| Name    | Type           | About                                                        |
+| ------- | -------------- | ------------------------------------------------------------ |
+| status  | Number         | The HTTP status code.                                        |
+| message | String         | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| result  | Array<object>  | An array with all the users data.                            |
+
+### Example
+
+```http
+GET /location HTTP/1.1
+Host: localhost
+
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+## POST `/location`
+
+A quick way to create more locations.
+
+### Require
+
+| Name  | Type   | About                  |
+| ----- | ------ | ---------------------- |
+| name  | String | Name of the place.     |
+| place | String | Location of the place. |
+| id    | String | Internal ID.           |
+
+### Result
+
+| Name        | Type   | About                                                        |
+| ----------- | ------ | --------------------------------------------------------- |
+| status      | Number | The HTTP status code.                                     |
+| message     | String | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| location_id | Number | The location_id for the create location                           |
+
+### Example
+
+```http
+POST /location HTTP/1.1
+Host: localhost
+Content-Type: application/json
+
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
+
+{
+	"name": "John",
+	"place": "John Town",
+	"id": "0"
+}
+```
+
+## DELETE `/location/:location_id`
+
+Delete a single location
+
+### Require
+
+| Name         | Type   | About                           |
+| ------------ | ------ | ------------------------------- |
+| :location_id | Number | The unique number for that user |
+
+### Result
+
+| Name    | Type           | About                                                        |
+| ------- | -------------- | ------------------------------------------------------------ |
+| status  | Number         | The HTTP status code.                                        |
+| message | String         | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+
+### Example
+
+```http
+DELETE /location/:location_id HTTP/1.1
+Host: localhost
+
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+## PATCH `/location/:location_id`
+
+Update a location info
+
+### Require
+
+| Name         | Type   | About                                |
+| ------------ | ------ | ------------------------------------ |
+| :location_id | Number | The unique number for that location. |
+| `column`     | String | `Data`                               |
+
+#### Options
+ - name
+ - place
+ - id
+
+### Result
+
+| Name    | Type           | About                                                        |
+| ------- | -------------- | ------------------------------------------------------------ |
+| status  | Number         | The HTTP status code.                                        |
+| message | String         | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+
+### Example
+
+```http
+PATCH /location/:location_id HTTP/1.1
+Host: localhost
+
+Authorization: Bearer
+	xxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 # 

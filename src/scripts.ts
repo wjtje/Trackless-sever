@@ -106,7 +106,7 @@ export function responseDone(res: Response, result?: object) {
 // Check an array of items
 export interface reqDataObj {
   name: string;
-  type: "number" | "string";
+  type: "number" | "string" | "time" | "date";
 }
 
 export function reqDataCheck(req: Request, res: Response, items:Array<reqDataObj>, done:() => void, reject:() => void) {
@@ -117,24 +117,52 @@ export function reqDataCheck(req: Request, res: Response, items:Array<reqDataObj
   // Run it async for more speed
   async function scanReqData() {
     await Promise.all(items.map(async (item) => {
+      // Check if it exsist
       if (!_.has(req.body, item.name) && !_.has(req.query, item.name) && item.name != 'bearer') {
+        // Return to the user that something is missing
         failed = true;
         missing.push(`You are missing '${item.name}'.`);
-      } else if (
-        (item.type != "number")? (
-          (typeof _.get(req.body, item.name)) !== item.type &&
-          (typeof _.get(req.query, item.name)) !== item.type &&
-          item.name != 'bearer'
-        ): (
-          isNaN(_.get(req.body, item.name))
-        )
-      ) {
+      } else if ((function () {
+        // Check the type
+        let returnValue:boolean;
+
+        switch(item.type) {
+          case "number":
+            // Make sure it is not an NaN
+            returnValue =  isNaN(_.get(req.body, item.name));
+            break;
+          case "string":
+            // Make sure it is a script or a bearer
+            returnValue = (
+              (typeof _.get(req.body, item.name)) !== item.type &&
+              (typeof _.get(req.query, item.name)) !== item.type &&
+              item.name != 'bearer'
+            );
+            break;
+          case "time":
+            // Use a RegExr to the the format of the string
+            returnValue = _.get(req.body, item.name).match(/[0-9]{1,3}:[0-9]{2}:[0-9]{2}/g) == null;
+            break;
+          case "date":
+            // Use a RegExr to the the format of the string
+            returnValue = _.get(req.body, item.name).match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g) == null;
+            break;
+          default:
+            // If something went wrong fail.
+            returnValue = true;
+            break;
+        }
+
+        return returnValue;
+      })()) {
+        // Return to the user that the type is wrong
         failed = true;
         typeErr.push(`Wrong type for ${item.name}. Expected ${item.type} but got ${typeof _.get(req.body, item.name)}`);
       }
     }));
 
     if (failed) {
+      // Something went wrong
       missingErrorFun(res, missing, typeErr);
       reject();
     } else {

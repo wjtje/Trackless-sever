@@ -65,6 +65,9 @@ import './group/group_id';
 import './location/index';
 import './location/location_id';
 
+// Import work commands
+import './work/index';
+
 // Import access commands
 import './access/index';
 import { apiLogin } from './api/lib';

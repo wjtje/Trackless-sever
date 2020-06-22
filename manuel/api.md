@@ -24,6 +24,7 @@ All the 'known' commands.
  - POST `/location`
  - DELETE `/location/:location_id`
  - PATCH `/location/:location_id`
+ - POST `/work`
 
 ## POST `/user`
 
@@ -637,6 +638,75 @@ Host: localhost
 
 Authorization: Bearer
 	xxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+## POST `/work`
+
+Add a work object in the database
+
+### Require
+
+| Name        | Type   | About                  |
+| ----------- | ------ | ---------------------- |
+| location_id | Number | The id for a location. |
+| time        | Time   | The time. (hhh:mm:ss)  |
+| date        | Date   | The date. (yyyy:mm:dd) |
+| description | String | The discription.       |
+
+### Example
+
+```http
+POST /work HTTP/1.1
+Host: localhost:55565
+Authorization: Bearer xxxxxxxxxxxxxxxxxxxxxxxxxx
+Content-Type: application/json
+
+{
+    "location_id": "5",
+    "time": "0:00:00",
+    "date": "2020-01-01",
+    "description": "I have done nothing at all."
+}
+```
+
+## GET `/work/user/:user_id`
+
+Able to list an users work
+
+### Result
+
+| Name    | Type           | About                                                        |
+| ------- | -------------- | ------------------------------------------------------------ |
+| status  | Number         | The HTTP status code.                                        |
+| message | String         | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| result  | Array<object>  | An array with all the users data.                            |
+
+### Example
+
+```http
+GET /work/user/~ HTTP/1.1
+Host: localhost:55565
+Authorization: Bearer xxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+## GET `/work/user/:user_id/:start/:end`
+
+Able to list an users work in a time
+
+### Result
+
+| Name    | Type           | About                                                        |
+| ------- | -------------- | ------------------------------------------------------------ |
+| status  | Number         | The HTTP status code.                                        |
+| message | String         | A custom message what happened.<br/>It is usually `done`.<br />But if it's anything else, something's gone wrong. |
+| result  | Array<object>  | An array with all the users data.                            |
+
+### Example
+
+```http
+GET /work/user/~ HTTP/1.1
+Host: localhost:55565
+Authorization: Bearer xxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 # 

@@ -67,6 +67,7 @@ import './location/location_id';
 
 // Import work commands
 import './work/index';
+import './work/user';
 
 // Import access commands
 import './access/index';

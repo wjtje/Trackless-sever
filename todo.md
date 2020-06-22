@@ -8,7 +8,7 @@
 
 ## Work system
 
- - Able to list your own work
+ - Check if user_id and location_id is valid
  - Able to list all work
  - Able to remove work
  - Able to edit work

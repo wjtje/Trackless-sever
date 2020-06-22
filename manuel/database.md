@@ -166,6 +166,35 @@ CREATE TABLE `trackless`.`TL_locations` (
 ) ENGINE = InnoDB;
 ```
 
+## TL_work
+
+A table for storing all the work that has been done
+
+### Layout
+
+| Name        | Type | About                  |
+| ----------- | ---- | ---------------------- |
+| work_id     | INT  | index (AUTO_INCREMENT) |
+| user_id     | INT  | Who did it?            |
+| location_id | INT  | Where?                 |
+| time        | TIME | How long?              |
+| date        | DATE | When?                  |
+| description | TEXT | What?                  |
+
+### Code
+
+```sql
+CREATE TABLE `trackless`.`TL_work` (
+  `work_id` INT NOT NULL AUTO_INCREMENT ,
+  `user_id` INT NOT NULL ,
+  `location_id` INT NOT NULL ,
+  `time` TIME NOT NULL ,
+  `date` DATE NOT NULL ,
+  `description` TEXT NOT NULL ,
+  PRIMARY KEY (`work_id`)
+) ENGINE = InnoDB;
+```
+
 #
 
 >  Copyright 2020 Wjtje

@@ -12,3 +12,7 @@
  - Able to list all work
  - Able to remove work
  - Able to edit work
+
+ ## Location system
+
+  - Able to get last used (For auto fill and suggestions)

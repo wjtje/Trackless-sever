@@ -43,7 +43,15 @@ export function newApi(
     reqDataCheck(request, response, require, () => {
       // Check if we need to check the api key
       if (_.findIndex(require, ['name', 'bearer']) !== -1) {
-        checkAccess(request.user.group_id, method, (Object.values(request.params).indexOf("~") > -1)? request.originalUrl:url).then(() => {
+        checkAccess(request.user.group_id, method, (function() {
+          // Check if the user want to list his own stuff
+          if (_.get(request.params, 'user_id', 'none') === '~') {
+            // Replace :user_id with ~
+            return url.replace(':user_id', '~');
+          } else {
+            return url;
+          }
+        })()).then(() => {
           resolve(request, response, request.user);
         }).catch(() => {
           reject('No access', method, (Object.values(request.params).indexOf("~") > -1)? request.originalUrl:url, response, 403);

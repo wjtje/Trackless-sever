@@ -6,7 +6,7 @@ import { DBcon } from "..";
 newApi('post', '/work', [
   {name: "bearer", type: "string"},
   {name: "location_id", type: "number"},
-  {name: "time", type: "time"},
+  {name: "time", type: "number"},
   {name: "date", type: "date"},
   {name: "description", type: "string"},
 ], (request, response, user) => {

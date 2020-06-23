@@ -49,7 +49,6 @@ passport.use(new BearerStrategy(
 ));
 
 // Import user commands
-import './user/create';
 import './user/index';
 import './user/user_id';
 

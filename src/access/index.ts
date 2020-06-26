@@ -22,9 +22,6 @@ new Api({
       {name: 'url', check: string},
     ]
   },
-  permissions: {
-
-  },
   get: (request, response) => {
     DBcon.query(
       "SELECT * FROM `TL_groups`",

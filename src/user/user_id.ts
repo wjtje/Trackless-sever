@@ -34,7 +34,7 @@ new Api({
       [(request.params.user_id == '~')? user.user_id:request.params.user_id],
       handleQuery(response, `Couldn't find the user '${request.params.user_id}'`, (result: Array<TL_user>) => {
         if (result.length === 0) {
-          responseNotFound(response);
+          responseNotFound(response, `Could not found user_id=${request.params.user_id}`);
         } else {
           // Send the data to the user
           responseDone(response, {

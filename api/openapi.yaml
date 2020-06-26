@@ -1,0 +1,507 @@
+openapi: "3.0.0"
+servers:
+  - url: http://localhost:55565
+info:
+  version: '0.2.2'
+  title: 'Trackless API'
+  contact:
+    name: wjtje
+    url: https://www.wjtje.ga
+  license:
+    name: Apache 2.0 License
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+components:
+  responses:
+    userResponse:
+      description: Successful pull of users info
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+                description: The HTTP status code
+              message:
+                type: string
+                example: done
+                description: A message from the server about your request
+              result:
+                type: array
+                description: An array with the user information
+                items:
+                  properties:
+                    user_id:
+                      type: integer
+                      example: 5
+                      description: The uniqe id for that user
+                    firstname:
+                      type: string
+                      example: Jhon
+                      description: The firstname for that user
+                    lastname:
+                      type: string
+                      example: Doe
+                      description: The lastname for that user
+                    username:
+                      type: string
+                      example: Jdoe
+                      description: The username for that user
+                    group_id:
+                      type: integer
+                      example: 2
+                      description: The uniqe number for the group that the user is a part of
+                    groupName:
+                      type: string
+                      example: Employee
+                      description: The name for the group that the user is a part of
+    responseDone:
+      description: A basic response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+                description: The HTTP status code
+              message:
+                type: string
+                example: done
+                description: A message from the server about your request
+    responseServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+                description: The HTTP status code
+              message:
+                type: string
+                example: Internal server error
+                description: A message from the server about your request
+    responseForbidden:
+      description: Basic forbidden response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 403
+                description: The HTTP status code
+              message:
+                type: string
+                example: You don't have access to do that
+                description: A message from the server about your request
+
+  parameters:
+    user_id:
+      name: user_id
+      in: path
+      description: The user_id for the user you want information about. Use ~ to view your own information.
+      schema:
+        type: integer
+      required: true
+      example: 5
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /login:
+    post:
+      tags:
+        - api
+      description: Creates a new bearer token / api key
+      requestBody:
+        required: true
+        description: Your login details
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: Jdoe
+                  description: Your username
+                password:
+                  type: string
+                  example: R@nd0mStr1ng
+                  description: Your password
+                deviceName:
+                  type: string
+                  example: My computer at work
+                  description: A name for the key
+      responses:
+        200:
+          description: Bearer token response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                    description: The HTTP status code
+                  message:
+                    type: string
+                    example: done
+                    description: A message from the server about your request
+                  bearer:
+                    type: string
+                    example: dRxroTvcr5wHnnOSujCT
+                    description: Your bearer token / api key
+        403:
+          description: Faulty username or password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 403
+                    description: The HTTP status code
+                  message:
+                    type: string
+                    example: Please check your username or password.
+                    description: A message from the server about your request
+        500:
+          $ref: "#/components/responses/responseServerError"
+
+  /api:
+    get:
+      tags:
+        - api
+      description: List all your api keys
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: List of your api keys
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                    description: The HTTP status code
+                  message:
+                    type: string
+                    example: done
+                    description: A message from the server about the request
+                  result:
+                    type: array
+                    items:
+                      properties:
+                        api_id:
+                          type: integer
+                          example: 2
+                          description: A uniqe id for that api key
+                        createDate:
+                          type: string
+                          example: '2020-05-19T14:46:00.000Z'
+                          description: The timestamp when this key was created
+                        lastUsed:
+                          type: string
+                          example: '2020-05-19T14:46:00.000Z'
+                          description: The timestamp when this key was last used
+                        deviceName:
+                          type: string
+                          example: My phone
+                          description: A name for that key
+        403:
+          $ref: "#/components/responses/responseForbidden"
+        500:
+          $ref: "#/components/responses/responseServerError"
+
+  /access/~:
+    get:
+      tags:
+        - access
+      description: List all your access
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Result access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                    description: The HTTP status code
+                  message:
+                    type: string
+                    example: done
+                    description: A message from the server about the request
+                  result:
+                    type: array
+                    items:
+                      properties:
+                        access_id: 
+                          type: integer
+                          example: 2
+                        method:
+                          type: string
+                          example: get
+                        url:
+                          type: string
+                          example: /access
+        403:
+          $ref: "#/components/responses/responseForbidden"
+        500:
+          $ref: "#/components/responses/responseServerError"
+  
+  /access:
+    get:
+      tags:
+        - access
+      description: List access for each group on the system
+      security:
+       - bearerAuth: []
+      responses:
+        200:
+          description: Access response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                    description: The HTTP status code
+                  message:
+                    type: string
+                    example: done
+                    description: A message from the server about the request
+                  result:
+                    type: array
+                    items:
+                      properties:
+                        group_id:
+                          type: integer
+                          example: 3
+                        groupName:
+                          type: string
+                          example: Employee
+                        access:
+                          type: array
+                          items:
+                            properties:
+                              access_id: 
+                                type: integer
+                                example: 2
+                              method:
+                                type: string
+                                example: get
+                              url:
+                                type: string
+                                example: /access
+        403:
+          $ref: "#/components/responses/responseForbidden"
+        500:
+          $ref: "#/components/responses/responseServerError"
+    post:
+      tags:
+        - access
+      description: Give a group access to a command
+      security:
+       - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                group_id:
+                  type: integer
+                  example: 5
+                  description: The group_id with you want to give access
+                method:
+                  type: string
+                  example: get
+                  description: The method of the request
+                url:
+                  type: string
+                  example: /user/~
+                  description: The url of the request
+      responses:
+        200:
+          $ref: "#/components/responses/responseDone"
+        403:
+          $ref: "#/components/responses/responseForbidden"
+        500:
+          $ref: "#/components/responses/responseServerError"
+
+  /user/{user_id}:
+    get:
+      tags:
+        - user
+      description: Get a single user from the system
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          $ref: '#/components/responses/userResponse'
+        403:
+          $ref: "#/components/responses/responseForbidden"
+        404:
+          description: The user_id is not valid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 404
+                    description: The HTTP status code
+                  message:
+                    type: string
+                    example: Could not found that user_id=5
+                    description: A message from the server about your request
+        500:
+          $ref: "#/components/responses/responseServerError"
+    delete:
+      tags:
+        - user
+      description: Remove a single user from the system
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          $ref: "#/components/responses/responseDone"
+        403:
+          $ref: "#/components/responses/responseForbidden"
+        500:
+          $ref: "#/components/responses/responseServerError"
+    patch:
+      tags:
+        - user
+      description: Edit a single user on the system
+      parameters:
+       - $ref: "#/components/parameters/user_id"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstname:
+                  type: string
+                  example: Jhon
+                lastname:
+                  type: string 
+                  example: Doe
+                username:
+                  type: string
+                  example: Jdoe
+                password:
+                  type: string
+                  example: A_D1ff3r3nt_Pa55w0rd
+      responses:
+        200:
+          $ref: "#/components/responses/responseDone"
+        403:
+          $ref: "#/components/responses/responseForbidden"
+        500:
+          $ref: "#/components/responses/responseServerError"
+
+  /user:
+    get:
+      tags:
+        - user
+      description: Obtain information about all the users on the system
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          $ref: '#/components/responses/userResponse'    
+        403:
+          $ref: "#/components/responses/responseForbidden"
+        500:
+          $ref: "#/components/responses/responseServerError"             
+    post:
+      tags:
+        - user
+      description: Create a new user on the system
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstname:
+                  type: string
+                  example: Jhon
+                  description: The firstname for that user
+                lastname:
+                  type: string
+                  example: Doe
+                  description: The lastname for that user
+                username:
+                  type: string
+                  example: Jdoe
+                  description: The username for that user
+                password:
+                  type: string
+                  example: Str0ng!P@ssw0rd
+                  description: The password for that user
+                group_id:
+                  type: integer
+                  example: 2
+                  description: The uniqe number for the group that the user is a part of
+      responses:
+        200:
+          description: The user is created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                    description: The HTTP status code
+                  message:
+                    type: string
+                    example: done
+                    description: A message from the server about your request
+                  user_id:
+                    type: integer
+                    example: 5
+                    description: The uniqe user_id for the newly created user
+        403:
+          $ref: "#/components/responses/responseForbidden"
+        500:
+          $ref: "#/components/responses/responseServerError"

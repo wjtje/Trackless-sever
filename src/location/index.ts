@@ -4,14 +4,6 @@ import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseDone } from "../scripts/response";
 
-/**
- * @oas [get] /location
- * description: "Get all the locations from the server."
- */
-/**
- * @oas [post] /location
- * description: "Create a new location"
- */
 new Api({
   url: '/location',
   auth: true,

@@ -72,10 +72,6 @@ function responseWork(result: TLWork[], response:Response) {
   });
 }
 
-/**
- * @oas [get] /work/user/:user_id
- * description: "Get all the work for a user."
- */
 new Api({
   url: '/work/user/:user_id',
   auth: true,
@@ -91,10 +87,6 @@ new Api({
   },
 });
 
-/**
- * @oas [get] /work/user/:user_id/:start/:end
- * description: "Get all the work for a user within a date limit."
- */
 new Api({
   url: '/work/user/:user_id/:start/:end',
   auth: true,

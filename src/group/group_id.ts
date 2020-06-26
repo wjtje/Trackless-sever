@@ -21,18 +21,6 @@ function wrongType(request:Request, response:Response) {
   }));
 }
 
-/**
- * @oas [get] /group/:group_id
- * description: "Get information for a group."
- */
-/**
- * @oas [delete] /group/:group_id
- * description: "Removes a group."
- */
-/**
- * @oas [patch] /group/:group_id
- * description: "Edits a group name."
- */
 new Api({
   url: '/group/:group_id',
   auth: true,

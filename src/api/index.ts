@@ -16,10 +16,6 @@ export interface APIKeyNames {
   deviceName: string;
 }
 
-/**
- * @oas [get] /api
- * description: "Return all your api keys."
- */
 new Api({
   url: '/api',
   auth: true,
@@ -36,10 +32,6 @@ new Api({
   },
 });
 
-/**
- * @oas [post] /login
- * description: "Create a new api key."
- */
 server.post('/login', (request, response) => {
   requiredDataCheck(request, response, [
     {name: 'username', check: string},

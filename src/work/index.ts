@@ -4,10 +4,6 @@ import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseDone } from "../scripts/response";
 
-/**
- * @oas [post] /work
- * description: "Add new work to the system."
- */
 new Api({
   url: '/work',
   auth: true,

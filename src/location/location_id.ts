@@ -4,14 +4,6 @@ import { handleQuery } from "../scripts/handle";
 import { responseDone } from "../scripts/response";
 import { arrayContainOnly } from "../scripts/dataCheck";
 
-/**
- * @oas [delete] /location/:location_id
- * description: "Remove a location for the server."
- */
-/**
- * @oas [patch] /location/:location_id
- * description: "Edit a location on the server"
- */
 new Api({
   url: '/location/:location_id',
   auth: true,

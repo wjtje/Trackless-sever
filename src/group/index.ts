@@ -13,14 +13,6 @@ export interface TL_groups {
   groupName: string;
 }
 
-/**
- * @oas [get] /group
- * description: "Get information for all the groups on the system."
- */
-/**
- * @oas [post] /group
- * description: "Creates a new group"
- */
 new Api({
   url: '/group',
   auth: true,

@@ -18,18 +18,6 @@ export interface TL_user {
   groupName: string;
 }
 
-/**
- * @oas [get] /user/:user_id
- * description: "Returns a single user from the system."
- */
-/**
- * @oas [delete] /user/:user_id
- * description: "Removes a user from the system."
- */
-/**
- * @oas [patch] /user/:user_id
- * description: "Edits a user from the system."
- */
 new Api({
   url: '/user/:user_id',
   auth: true,

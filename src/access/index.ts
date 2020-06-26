@@ -12,14 +12,6 @@ export interface TL_groups {
   groupName: string;
 }
 
-/**
- * @oas [get] /access
- * description: "Returns all the access from the system."
- */
-/**
- * @oas [post] /access
- * description: "Give a group access to the server."
- */
 new Api({
   url: '/access',
   auth: true,
@@ -89,10 +81,6 @@ new Api({
   }
 });
 
-/**
- * @oas [get] /access/~
- * description: "Return your access"
- */
 new Api({
   url: '/access/~',
   auth: true,

@@ -14,14 +14,6 @@ interface TL_user {
   groupName: string;
 }
 
-/**
- * @oas [get] /user
- * description: "Returns all users from the system."
- */
-/**
- * @oas [post] /user
- * description: "Creates a new user"
- */
 new Api({
   url: "/user",
   auth: true,
@@ -35,7 +27,7 @@ new Api({
     ]
   },
   permissions: {
-
+    
   },
   get: (request, response) => {
     DBcon.query(

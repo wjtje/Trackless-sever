@@ -3,14 +3,6 @@ import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseDone } from "../scripts/response";
 
-/**
- * @oas [get] /api/:api_id
- * description: "Get information for an api key."
- */
-/**
- * @oas [delete] /api/:api_id
- * description: "Remove an api key from the system."
- */
 new Api({
   url: '/api/:api_id',
   auth: true,

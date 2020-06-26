@@ -1,13 +1,13 @@
 {
   "name": "trackless-server",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
     "dev": "nodemon --exec \"tsc && node --inspect dist\\index.js\" -e ts",
     "build": "tsc --sourceMap false --outDir build",
     "start": "node .\\build\\index.js",
-    "docs": "npm run build && cd build && oas generate ../baseApi.json"
+    "docs": "npm run build && cd build && oas generate ../baseApi.yaml"
   },
   "repository": {
     "type": "git",
@@ -38,7 +38,6 @@
     "@types/mysql": "^2.15.10",
     "@types/node": "^13.13.5",
     "@types/passport": "^1.0.3",
-    "@types/passport-http-bearer": "^1.0.35",
-    "swagger-inline": "^3.1.0"
+    "@types/passport-http-bearer": "^1.0.35"
   }
 }

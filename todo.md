@@ -1,6 +1,8 @@
 # To-Do
 
  - Better system for checking a date (script.ts line: returnValue = _.get(req.body, item.name).match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g) == null;)
+ - Global language file
+ - New access system
 
 ## Access system
 

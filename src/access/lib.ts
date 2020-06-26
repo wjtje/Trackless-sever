@@ -6,7 +6,7 @@
 
 import { DBcon } from "..";
 
-export function checkAccess(group_id: number, method: "get" | "post" | "delete" | "patch", url: string) : Promise<string> {
+export function checkAccess(group_id: number, method: string, url: string) : Promise<string> {
   return new Promise((resolve, reject) => {
     if (group_id === 0) {
       reject('group_id 0 does not have any access.');

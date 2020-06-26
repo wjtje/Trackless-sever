@@ -1,10 +1,12 @@
-// Import the server and db con from index
 import { DBcon } from '../index';
-
-// Import other modules
 import { sha512_256 } from 'js-sha512';
 
-// Export
+/**
+ * Check the api key in the database
+ * 
+ * @since 0.2-beta.1
+ * @param apiKey 
+ */
 export function apiLogin(apiKey:string):Promise<{
   user_id: number;
   username: string;

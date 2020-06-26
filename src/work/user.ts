@@ -1,9 +1,9 @@
-import { newApi, handleReject } from "../api";
+import { responseDone } from "../scripts/response";
+import Api from "../scripts/api";
 import { DBcon } from "..";
-import { handleQuery, responseDone } from "../scripts";
-import { Response } from "express";
+import { handleQuery } from "../scripts/handle";
+import { Response } from 'express';
 
-// Interfaces
 export interface TLWork {
   work_id:     number;
   user_id:     number;
@@ -21,7 +21,13 @@ export interface TLWork {
   groupName:   string;
 }
 
-// Custom functions for this module
+/**
+ * Custom function for returning work
+ * 
+ * @since 0.2-beta.1
+ * @param result 
+ * @param response 
+ */
 function responseWork(result: TLWork[], response:Response) {
   let tmp: {
     work_id: number;
@@ -66,34 +72,44 @@ function responseWork(result: TLWork[], response:Response) {
   });
 }
 
-// Get an users work
-newApi("get", "/work/user/:user_id", [
-  {name: "bearer", type: "string"},
-], (request, response, user) => {
-  // Get all the work for that user
-  DBcon.query(
-    "SELECT `work_id`, `user_id`, `location_id`, `group_id`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`user_id`) INNER JOIN `TL_locations` USING (`location_id`) INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=? ORDER BY `date` LIMIT 2000",
-    [(request.params.user_id == '~')? request.user.user_id:request.params.user_id],
-    handleQuery(response, "Something went wrong", (result:Array<TLWork>) => {
-      responseWork(result, response);
-    })
-  )
-}, handleReject());
+/**
+ * @oas [get] /work/user/:user_id
+ * description: "Get all the work for a user."
+ */
+new Api({
+  url: '/work/user/:user_id',
+  auth: true,
+  get: (request, response, user) => {
+    // Get all the work for that user
+    DBcon.query(
+      "SELECT `work_id`, `user_id`, `location_id`, `group_id`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`user_id`) INNER JOIN `TL_locations` USING (`location_id`) INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=? ORDER BY `date` LIMIT 2000",
+      [(request.params.user_id == '~')? user.user_id:request.params.user_id],
+      handleQuery(response, "Something went wrong", (result:Array<TLWork>) => {
+        responseWork(result, response);
+      })
+    );
+  },
+});
 
-// Get a users work between a start a
-newApi("get", "/work/user/:user_id/:start/:end", [
-  {name: "bearer", type: "string"},
-], (request, response, user) => {
-  // Get all the work for that user
-  DBcon.query(
-    "SELECT `work_id`, `user_id`, `location_id`, `group_id`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`user_id`) INNER JOIN `TL_locations` USING (`location_id`) INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=? AND `date` >= ? AND `date` <= ? ORDER BY `date` LIMIT 2000",
-    [
-      (request.params.user_id == '~')? request.user.user_id:request.params.user_id,
-      request.params.start,
-      request.params.end
-    ],
-    handleQuery(response, "Something went wrong", (result:Array<TLWork>) => {
-      responseWork(result, response);
-    })
-  )
-}, handleReject());
+/**
+ * @oas [get] /work/user/:user_id/:start/:end
+ * description: "Get all the work for a user within a date limit."
+ */
+new Api({
+  url: '/work/user/:user_id/:start/:end',
+  auth: true,
+  get: (request, response, user) => {
+    // Get all the work for that user
+    DBcon.query(
+      "SELECT `work_id`, `user_id`, `location_id`, `group_id`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`user_id`) INNER JOIN `TL_locations` USING (`location_id`) INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=? AND `date` >= ? AND `date` <= ? ORDER BY `date` LIMIT 2000",
+      [
+        (request.params.user_id == '~')? user.user_id:request.params.user_id,
+        request.params.start,
+        request.params.end
+      ],
+      handleQuery(response, "Something went wrong", (result:Array<TLWork>) => {
+        responseWork(result, response);
+      })
+    )
+  }
+})

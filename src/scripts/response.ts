@@ -8,32 +8,49 @@ import { Response } from 'express';
  * @param {object} result
  */
 export function responseDone(response:Response, result?: object) {
-  if (result) {
-    response.send(JSON.stringify({
+  response.send(JSON.stringify({
+    info: {
       status: 200,
-      message: 'done',
-      ...result
-    }));
-  } else {
-    response.send(JSON.stringify({
-      status: 200,
-      message: 'done'
-    }));
-  }
+      message: 'Success.',
+    },
+    ...(result)? result: null,
+  }));
 }
 
 /**
- * Inform the user that there is something wrong with theire request
+ * Inform the user that the resource has been created
+ * 
+ * @since 0.2-beta.2
+ * @param {Response} response 
+ * @param {object} createResult
+ */
+export function responseCreated(response:Response, createResult?:object) {
+  // #/components/responses/201
+  response.status(201);
+  response.send(JSON.stringify({
+    info: {
+      status: 201,
+      message: 'Your request has been fulfilled.',
+    },
+    ...(createResult)? createResult: null,
+  }));
+}
+
+/**
+ * Inform the user that there is something wrong with their request
  * 
  * @since 0.2-beta.1
  * @param {Response} response 
- * @param {string|object} message 
+ * @param {object} error More details about the error that happend
  */
-export function responseBadRequest(response:Response, message?:string|object) {
+export function responseBadRequest(response:Response, error: object) {
   response.status(400);
   response.send(JSON.stringify({
-    status: 400,
-    message: (message)? message:'Bad request'
+    info: {
+      status: 400,
+      message: 'There is something wrong with your request.',
+    },
+    ...(error)? error: null,
   }));
 }
 
@@ -41,14 +58,15 @@ export function responseBadRequest(response:Response, message?:string|object) {
  * Inform the user that he/she has no access
  * 
  * @since 0.2-beta.1
- * @param {Response} response 
- * @param {object} message 
+ * @param {Response} response
  */
-export function responseForbidden(response:Response, message?:string) {
+export function responseForbidden(response:Response) {
   response.status(403);
   response.send(JSON.stringify({
-    status: 403,
-    message: (message)? message:'You don\'t have access to do that'
+    info: {
+      status: 403,
+      message: 'You don\'t have access to do this request.',
+    },
   }));
 }
 
@@ -57,13 +75,14 @@ export function responseForbidden(response:Response, message?:string) {
  * 
  * @since 0.2-beta.1
  * @param {Response} response 
- * @param {object} message 
  */
-export function responseNotFound(response:Response, message?: string) {
+export function responseNotFound(response:Response) {
   response.status(404);
   response.send(JSON.stringify({
-    status: 404,
-    message: (message)? message:'Not found'
+    info: {
+      status: 404,
+      message: 'The resource you are looking for is not here.'
+    }
   }));
 }
 
@@ -71,13 +90,16 @@ export function responseNotFound(response:Response, message?: string) {
  * Inform the user that something internaly went wrong
  * 
  * @since 0.2-beta.1
- * @param {Response} response 
- * @param {object} message 
+ * @param {Response} response
+ * @param {object} error More details about the error that happend
  */
-export function responseServerError(response:Response, message?: string) {
+export function responseServerError(response:Response, error?: object) {
   response.status(500);
   response.send(JSON.stringify({
-    status: 500,
-    message: (message)? message:'Internal server error'
+    info: {
+      status: 500,
+      message: ' Something internally went wrong.',
+    },
+    ...(error)? error: null,
   }));
 }

@@ -1,13 +1,12 @@
 import Api from "../scripts/api";
 import { DBcon, server } from "..";
 import { handleQuery } from "../scripts/handle";
-import { responseDone } from "../scripts/response";
+import { responseDone, responseCreated, responseBadRequest } from "../scripts/response";
 import { requiredDataCheck } from "../scripts/dataCheck";
 import { string } from "../scripts/types";
 import { sha512_256 } from "js-sha512";
 import * as _ from 'lodash';
 import { missingError } from "../scripts/error";
-import { response } from "express";
 
 export interface APIKeyNames {
   api_id:     number;
@@ -23,7 +22,7 @@ new Api({
     DBcon.query(
       "SELECT `api_id`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `user_id`=?",
       [user.user_id],
-      handleQuery(response, `Something went wrong`, (result: Array<APIKeyNames>) => {
+      handleQuery(response, (result: Array<APIKeyNames>) => {
         responseDone(response, {
           result: result
         })
@@ -42,7 +41,7 @@ server.post('/login', (request, response) => {
     DBcon.query(
       "SELECT `salt_hash`, `hash`, `user_id` FROM `TL_users` WHERE `username`=?",
       [request.body.username],
-      handleQuery(response, `Could not contact the server. Please try again later.`, (result) => {
+      handleQuery(response, (result) => {
         // Check the password
         if (sha512_256(request.body.password + _.get(result, '[0].salt_hash', '')) === _.get(result, '[0].hash', '')) {
           const apiKey:string = sha512_256(Date.now().toString()); // Generated using time
@@ -56,19 +55,18 @@ server.post('/login', (request, response) => {
               request.body.deviceName,
               user_id
             ],
-            handleQuery(response, 'Something went wrong. Please try again later.', () => {
-              responseDone(response, {
+            handleQuery(response, () => {
+              responseCreated(response, {
                 bearer: apiKey
               })
             })
           );
         } else {
-          response.status(403);
-          
-          response.send(JSON.stringify({
-            status: 403,
-            message: `Please check your username or password.`
-          }));
+          responseBadRequest(response, {
+            error: {
+              message: 'Please check your username or password.'
+            }
+          });
         }
       })
     )

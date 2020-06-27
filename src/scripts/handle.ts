@@ -9,10 +9,10 @@ import { sqlError } from './error';
  * @param errorMessage 
  * @param then 
  */
-export function handleQuery(response: Response, errorMessage:string, then: (result: any) => void) {
+export function handleQuery(response: Response, then: (result: any) => void) {
   return (error, result) => {
     if (error) {
-      sqlError(response, error, errorMessage);
+      sqlError(response, error, 'Something went wrong while contacting the database.');
     } else {
       then(result);
     }

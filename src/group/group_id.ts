@@ -97,10 +97,6 @@ new Api({
   }
 });
 
-/**
- * @oas [post] /group/:group_id/:user_id
- * description: "Add a user to a group."
- */
 new Api({
   url: '/group/:group_id/:user_id',
   auth: true,

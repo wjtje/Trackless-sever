@@ -13,7 +13,12 @@ import { DBcon } from '..';
  */
 export function sqlError(response:Response, error:MysqlError, errorMessage:string) {
   // Report to the user
-  responseServerError(response, `${errorMessage} - ${error.code}`)
+  responseServerError(response, {
+    error: {
+      message: errorMessage,
+      code: error.code,
+    }
+  });
 
   // Save it in the database
   DBcon.query(
@@ -35,7 +40,9 @@ export function sqlError(response:Response, error:MysqlError, errorMessage:strin
  */
 export function missingError(response:Response, missing:Array<string>, typeErr:Array<string>) {
   responseBadRequest(response, {
-    missing: missing,
-    typeErr: typeErr
+    error: {
+      missing: missing,
+      typeErr: typeErr
+    },
   });
 }

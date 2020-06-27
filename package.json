@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec \"tsc && node --inspect dist\\index.js\" -e ts",
     "build": "tsc --sourceMap false --outDir build",
-    "start": "node .\\build\\index.js",
-    "docs": "npm run build && cd build && oas generate ../baseApi.yaml"
+    "start": "node .\\build\\index.js"
   },
   "repository": {
     "type": "git",

@@ -16,4 +16,3 @@ This project is still in beta.
  - `dev` Compile the code and run it. Refresh if a file changes.
  - `build` Compile the code without sourcemap.
  - `start` Run the code in the build folder.
- - `docs` Create the documentation. (`npm install -g oas`)

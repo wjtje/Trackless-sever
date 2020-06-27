@@ -98,36 +98,101 @@ components:
               type: string
               example: Something internally went wrong.
               description: A message from the server about your request
-    responseApi:
-      $ref: "#/components/schemas/responseInfo200"
+
+    group_id:
       type: object
       properties:
-        length:
+        group_id:
           type: integer
-          example: 1
-          description: The length of the result
-        result:
+          example: 6
+          description: A unique number for a group
+    method:
+      type: object
+      properties:
+        method:
+          type: string
+          example: get
+    url:
+      type: object
+      properties:
+        url:
+          type: string
+          example: /access
+    groupName:
+      type: object
+      properties:
+        groupName:
+          type: string
+          example: Employee
+          description: A groups name
+    access_id:
+      type: object
+      properties:
+        access_id:
+          type: integer
+          example: 3
+          description: An unique number for this access rule
+
+    access:
+      type: object
+      properties:
+        access:
           type: array
           items:
             type: object
-            properties:
-              api_id:
-                type: integer
-                example: 1
-                description: The uniqe number of the api key / bearer token
-              createDate:
-                type: string
-                example: 2020-05-19 11:15:50
-                description: The date when the api key / bearer token was created
-              lastUsed:
-                type: string
-                example: 2020-05-20 11:46:34
-                description: The date when the api key / bearer token was last used
-              deviceName:
-                type: string
-                example: My phone
-                description: A name for the api key / bearer token
-    
+            allOf:
+              - $ref: "#/components/schemas/access_id"
+              - $ref: "#/components/schemas/method"
+              - $ref: "#/components/schemas/url"
+
+    responseApi:
+      allOf:
+       - $ref: "#/components/schemas/responseInfo200"
+       - type: object
+         properties:
+          length:
+            type: integer
+            example: 1
+            description: The length of the result
+          result:
+            type: array
+            items:
+              type: object
+              properties:
+                api_id:
+                  type: integer
+                  example: 1
+                  description: The unique number of the api key / bearer token
+                createDate:
+                  type: string
+                  example: 2020-05-19 11:15:50
+                  description: The date when the api key / bearer token was created
+                lastUsed:
+                  type: string
+                  example: 2020-05-20 11:46:34
+                  description: The date when the api key / bearer token was last used
+                deviceName:
+                  type: string
+                  example: My phone
+                  description: A name for the api key / bearer token
+    responseAccess:
+      allOf:
+       - $ref: "#/components/schemas/responseInfo200"
+       - type: object
+         properties:
+          length:
+            type: integer
+            example: 1
+            description: The length of the result
+          result:
+            type: array
+            items:
+              type: object
+              allOf:
+                - $ref: "#/components/schemas/group_id"
+                - $ref: "#/components/schemas/access"
+                  
+  
   responses:
     200:
       description: Your request has been fulfilled. But there is not response.
@@ -165,13 +230,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/responseInfo500"
-              
-    
+  
   parameters:
     api_id:
       in: path
       name: api_id
-      description: The uniqe number of the api key / bearer token
+      description: The unique number of the api key / bearer token
       example: 3
       schema: 
         type: integer
@@ -184,6 +248,86 @@ components:
       bearerFormat: JWT
 
 paths:
+  /access:
+    get:
+      tags:
+        - access
+      description: See who has access to what command
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: An array with the result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseAccess"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+    post:
+      tags:
+        - access
+      description: Give a group access to a command
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/group_id"
+      responses:
+        201:
+          description: Your request has been fulfilled. The resource has been created.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/responseInfo201"
+                  - $ref: "#/components/schemas/access_id"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/responseInfo400"
+                  - properties:
+                      error:
+                        type: object
+                        properties:
+                          message:
+                            type: string
+                            example: The group is not found.
+
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+
+  /access/~:
+    get:
+      tags:
+        - access
+      description: See what you can do on the server
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: An array with the result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseAccess"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+
+
   /api/{api_id}:
     get:
       tags:

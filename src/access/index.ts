@@ -1,7 +1,7 @@
 import * as util from 'util';
 import { DBcon } from '..';
 import Api from '../scripts/api';
-import { responseDone, responseNotFound, responseBadRequest } from '../scripts/response';
+import { responseDone, responseBadRequest, responseCreated } from '../scripts/response';
 import { handleQuery } from '../scripts/handle';
 import { number, string } from '../scripts/types';
 
@@ -25,7 +25,7 @@ new Api({
   get: (request, response) => {
     DBcon.query(
       "SELECT * FROM `TL_groups`",
-      handleQuery(response, `Could not list all the groups.`, (result: Array<TL_groups>) => {
+      handleQuery(response, (result: Array<TL_groups>) => {
         let rslt = [];
   
         async function readAccess() {
@@ -42,6 +42,7 @@ new Api({
           }));
   
           responseDone(response, {
+            length: rslt.length,
             result: rslt
           });
         }
@@ -55,11 +56,19 @@ new Api({
     DBcon.query(
       "SELECT `group_id` FROM `TL_groups` WHERE `group_id`=?",
       [request.body.group_id],
-      handleQuery(response, 'Something went wrong', (result) => {
+      handleQuery(response, (result) => {
         if (result.length === 0) {
-          responseNotFound(response, 'The group is not found');
+          responseBadRequest(response, {
+            error: {
+              message: 'The group is not found.'
+            }
+          })
         } else if (!["get","post","delete","patch"].includes(request.body.method)) {
-          responseBadRequest(response, 'The method is not allowed');
+          responseBadRequest(response, {
+            error: {
+              message: 'The method is not allowed.'
+            }
+          });
         } else {
           DBcon.query(
             "INSERT INTO `TL_access` (`group_id`, `method`, `url`) VALUES (?,?,?)",
@@ -68,8 +77,10 @@ new Api({
               request.body.method,
               request.body.url
             ],
-            handleQuery(response, 'Something went wrong while trying to save your request.', () => {
-              responseDone(response);
+            handleQuery(response, (result) => {
+              responseCreated(response, {
+                access_id: result.insertId
+              });
             })
           )
         }
@@ -85,8 +96,9 @@ new Api({
     DBcon.query(
       "SELECT `method`, `url` FROM `TL_access` WHERE `group_id`=?",
       [user.group_id],
-      handleQuery(response, `Something went wrong`, (result) => {
+      handleQuery(response, (result) => {
         responseDone(response, {
+          length: result.length,
           result: result
         });
       })

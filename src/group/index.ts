@@ -4,7 +4,7 @@ import { DBcon } from '..';
 import Api from '../scripts/api';
 import { string } from '../scripts/types';
 import { handleQuery } from '../scripts/handle';
-import { responseDone } from '../scripts/response';
+import { responseDone, responseCreated } from '../scripts/response';
 
 const query = util.promisify(DBcon.query).bind(DBcon);
 
@@ -25,7 +25,7 @@ new Api({
     // List all group
     DBcon.query(
       "SELECT * FROM `TL_groups` ORDER BY `groupname`",
-      handleQuery(response, `Could not list all the groups.`, (result: Array<TL_groups>) => {
+      handleQuery(response, (result: Array<TL_groups>) => {
         let rslt = []; // Result
 
         // Get all users for each group
@@ -46,8 +46,9 @@ new Api({
           }));
 
           responseDone(response, {
-            result: rslt
-          })
+            length: rslt.length,
+            result: rslt,
+          });
         }
 
         readUser(); // Start the async function
@@ -58,9 +59,9 @@ new Api({
     DBcon.query(
       "INSERT INTO `TL_groups` (`groupName`) VALUES (?)",
       [request.body.groupName],
-      handleQuery(response, 'Could not save your new group', (result) => {
+      handleQuery(response, (result) => {
         // Saved to database
-        responseDone(response, {
+        responseCreated(response, {
           group_id: result.insertId
         });
       })

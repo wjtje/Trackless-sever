@@ -167,6 +167,31 @@ components:
           type: string
           example: Jdoe
           description: The username of the user
+    location_id:
+      type: object
+      properties:
+        location_id:
+          type: integer
+          example: 10
+          description: A unique number for a location
+    locationName:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the location
+    locationPlace:
+      type: object
+      properties:
+        place:
+          type: string
+          description: The place of the location
+    locationId:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A custom id for the location
 
     access:
       type: object
@@ -239,7 +264,32 @@ components:
       allOf:
         - $ref: "#/components/schemas/responseInfo200"
         - $ref: "#/components/schemas/length"
-        - $ref: "#/components/schemas/users"
+        - type: object
+          properties:
+            result:
+              type: array
+              items:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/group_id"
+                  - $ref: "#/components/schemas/groupName"
+                  - $ref: "#/components/schemas/users"
+    responseLocation:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/responseInfo200"
+        - $ref: "#/components/schemas/length"
+        - type: object
+          properties:
+            result:
+              type: array
+              items:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/location_id"
+                  - $ref: "#/components/schemas/locationName"
+                  - $ref: "#/components/schemas/locationPlace"
+                  - $ref: "#/components/schemas/locationId"
                   
   
   responses:
@@ -302,6 +352,14 @@ components:
       name: user_id
       description: The unique number for a user
       example: 5
+      schema:
+        type: integer
+      required: true
+    location_id:
+      in: path
+      name: location_id
+      description: The unique number for a location
+      example: 15
       schema:
         type: integer
       required: true
@@ -579,6 +637,109 @@ paths:
                 allOf:
                   - $ref: "#/components/schemas/responseInfo201"
                   - $ref: "#/components/schemas/group_id"
+
+  /location/{location_id}:
+    get:
+      tags:
+        - location
+      description: Get infomation about a single location
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/location_id"
+      responses:
+        200:
+          description: An array with the result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseLocation"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      tags:
+        - location
+      description: Remove a location
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/location_id"
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+    patch:
+      tags:
+        - location
+      description: Change a location
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/location_id"
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+
+  /location:
+    get:
+      tags:
+        - location
+      description: List all the locations on the server
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: An array with the result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseLocation"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+    post:
+      tags:
+        - location
+      description: Create a new location
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: "#/components/schemas/locationName"
+                - $ref: "#/components/schemas/locationPlace"
+                - $ref: "#/components/schemas/locationId"
+      responses:
+        201:
+          $ref: "#/components/responses/201"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
 
   /login:
     post:

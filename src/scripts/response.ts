@@ -43,7 +43,7 @@ export function responseCreated(response:Response, createResult?:object) {
  * @param {Response} response 
  * @param {object} error More details about the error that happend
  */
-export function responseBadRequest(response:Response, error: object) {
+export function responseBadRequest(response:Response, error?: object) {
   response.status(400);
   response.send(JSON.stringify({
     info: {

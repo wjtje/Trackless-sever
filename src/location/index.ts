@@ -2,7 +2,7 @@ import Api from "../scripts/api";
 import { string } from "../scripts/types";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
-import { responseDone } from "../scripts/response";
+import { responseDone, responseCreated } from "../scripts/response";
 
 new Api({
   url: '/location',
@@ -18,10 +18,11 @@ new Api({
     // Get all the data
     DBcon.query(
       "SELECT * FROM `TL_locations` ORDER BY `place`, `name`",
-      handleQuery(response, "Something went wrong", (result) => {
+      handleQuery(response, (result) => {
         responseDone(response, {
+          length: result.length,
           result: result
-        })
+        });
       })
     )
   },
@@ -34,9 +35,9 @@ new Api({
         request.body.place,
         request.body.id,
       ],
-      handleQuery(response, 'Could not save your new location.', (result) => {
+      handleQuery(response, (result) => {
         // Saved to the database
-        responseDone(response, {
+        responseCreated(response, {
           location_id: result.insertId
         });
       })

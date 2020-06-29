@@ -2,6 +2,7 @@
 
  - Global language file
  - New access system
+ - Check if a id exsist. (:location_id, :api_id, etc...)
 
 ## Access system
 

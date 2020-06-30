@@ -50,6 +50,9 @@ export default class Api {
               if (_.get(request.params, 'user_id', 'none') === '~') {
                 // Replace :user_id with ~
                 return apiObject.url.replace(':user_id', '~');
+              } else if (_.get(request.params, 'group_id', 'none') === '~') {
+                // Replace :group_id with ~
+                return apiObject.url.replace(':group_id', '~');
               } else {
                 return apiObject.url;
               }

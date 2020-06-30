@@ -68,7 +68,8 @@ function responseWork(result: TLWork[], response:Response) {
   });
 
   responseDone(response, {
-    result: tmp
+    length: tmp.length,
+    result: tmp,
   });
 }
 
@@ -80,7 +81,7 @@ new Api({
     DBcon.query(
       "SELECT `work_id`, `user_id`, `location_id`, `group_id`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`user_id`) INNER JOIN `TL_locations` USING (`location_id`) INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=? ORDER BY `date` LIMIT 2000",
       [(request.params.user_id == '~')? user.user_id:request.params.user_id],
-      handleQuery(response, "Something went wrong", (result:Array<TLWork>) => {
+      handleQuery(response, (result:Array<TLWork>) => {
         responseWork(result, response);
       })
     );
@@ -99,7 +100,7 @@ new Api({
         request.params.start,
         request.params.end
       ],
-      handleQuery(response, "Something went wrong", (result:Array<TLWork>) => {
+      handleQuery(response, (result:Array<TLWork>) => {
         responseWork(result, response);
       })
     )

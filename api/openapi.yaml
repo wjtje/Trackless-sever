@@ -199,6 +199,30 @@ components:
         id:
           type: string
           description: A custom id for the location
+    time:
+      type: object
+      properties:
+        time:
+          type: number
+          description: How long the work took
+    date:
+      type: object
+      properties:
+        date:
+          type: string
+          description: yyyy-mm-dd
+    description:
+      type: object
+      properties:
+        description:
+          type: string
+    work_id:
+      type: object
+      properties:
+        work_id:
+          type: integer
+          example: 67
+          description: A unique number for a work
 
     access:
       type: object
@@ -315,6 +339,44 @@ components:
                   - $ref: "#/components/schemas/username"
                   - $ref: "#/components/schemas/group_id"
                   - $ref: "#/components/schemas/groupName"
+    responseWork:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/responseInfo200"
+        - $ref: "#/components/schemas/length"
+        - type: object
+          properties:
+            result:
+              type: array
+              items:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/work_id"
+                  - type: object
+                    properties:
+                      user:
+                        allOf:
+                          - $ref: "#/components/schemas/user_id"
+                          - $ref: "#/components/schemas/firstname"
+                          - $ref: "#/components/schemas/lastname"
+                          - $ref: "#/components/schemas/username"
+                  - type: object
+                    properties:
+                      group:
+                        allOf:
+                          - $ref: "#/components/schemas/group_id"
+                          - $ref: "#/components/schemas/groupName"
+                  - type: object
+                    properties:
+                      location:
+                        allOf:
+                          - $ref: "#/components/schemas/location_id"
+                          - $ref: "#/components/schemas/locationName"
+                          - $ref: "#/components/schemas/locationPlace"
+                          - $ref: "#/components/schemas/locationId"
+                  - $ref: "#/components/schemas/time"
+                  - $ref: "#/components/schemas/date"
+                  - $ref: "#/components/schemas/description"
                   
   
   responses:
@@ -893,7 +955,100 @@ paths:
           $ref: "#/components/responses/403"
         500:
           $ref: "#/components/responses/500"
-        
+  
+  /work:
+    post:
+      tags:
+        - work
+      description: Add new work to the system
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/location_id"
+                - $ref: "#/components/schemas/time"
+                - $ref: "#/components/schemas/date"
+                - $ref: "#/components/schemas/description"
+      responses:
+        201:
+          description: The resource has been created
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/responseInfo201"
+                  - $ref: "#/components/schemas/work_id"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+
+  /work/user/{user_id}:
+    get:
+      tags:
+        - work
+      description: List all the work for a single user.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+      responses:
+        200:
+          description: An array with the result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseWork"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+  
+  /work/user/{user_id}/{start}/{end}:
+    get:
+      tags:
+        - work
+      description: List all the work for a single user.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+        - in: path
+          name: start
+          description: The start date
+          example: '2020-06-30'
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: end
+          description: The end date
+          example: '2020-07-06'
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: An array with the result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseWork"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
 
   /login:
     post:

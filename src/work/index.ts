@@ -28,7 +28,7 @@ new Api({
         request.body.date,
         request.body.description,
       ],
-      handleQuery(response, "Something went wrong", (result) => {
+      handleQuery(response, (result) => {
         // Response with the new id
         responseDone(response, {
           work_id: result.insertId

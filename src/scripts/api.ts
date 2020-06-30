@@ -36,7 +36,11 @@ export default class Api {
     const routeFunction = (request:RequestLocal, response:Response) => {
       // Check if the method exsist on that route
       if (this.apiObject[request.method.toLowerCase()] == undefined) {
-        responseBadRequest(response, `There is no method '${request.method}' on '${this.apiObject.url}'`);
+        responseBadRequest(response, {
+          error: {
+            message: `There is no method '${request.method}' on '${this.apiObject.url}'`,
+          },
+        });
       } else {
         requiredDataCheck(request, response, _.get(this.apiObject.require, request.method.toLowerCase(), [])).then(() => {
           // Do we need auth?

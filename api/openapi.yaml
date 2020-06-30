@@ -572,6 +572,8 @@ paths:
           $ref: "#/components/responses/200"
         403:
           $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
         500:
           $ref: "#/components/responses/500"
   
@@ -633,6 +635,8 @@ paths:
           $ref: "#/components/responses/400"
         403:
           $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
         500:
           $ref: "#/components/responses/500"
     patch:
@@ -764,6 +768,8 @@ paths:
           $ref: "#/components/responses/400"
         403:
           $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
         500:
           $ref: "#/components/responses/500"
     patch:
@@ -781,6 +787,8 @@ paths:
           $ref: "#/components/responses/400"
         403:
           $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
         500:
           $ref: "#/components/responses/500"
 
@@ -874,6 +882,8 @@ paths:
           $ref: "#/components/responses/400"
         403:
           $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
         500:
           $ref: "#/components/responses/500"
     patch:
@@ -901,6 +911,8 @@ paths:
           $ref: "#/components/responses/400"
         403:
           $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
         500:
           $ref: "#/components/responses/500"
 

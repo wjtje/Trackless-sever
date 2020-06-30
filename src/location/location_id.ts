@@ -2,7 +2,6 @@ import Api from "../scripts/api";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseDone, responseBadRequest, responseNotFound } from "../scripts/response";
-import { arrayContainOnly } from "../scripts/dataCheck";
 import { Request, Response } from 'express';
 import { number } from "../scripts/types";
 import { itemPatch } from "../scripts/patch";
@@ -15,7 +14,18 @@ import { itemPatch } from "../scripts/patch";
  */
 function checkLocation(request:Request, response:Response, then: () => void) {
   if (number(request.params.location_id)) {
-    then()
+    DBcon.query(
+      "SELECT `location_id` FROM `TL_locations` WHERE `location_id`=?",
+      [request.params.location_id],
+      handleQuery(response, (result) => {
+        if (result.length === 0) {
+          // The location does not exsist
+          responseNotFound(response);
+        } else {
+          then();
+        }
+      })
+    )
   } else {
     responseBadRequest(response, {
       error: {

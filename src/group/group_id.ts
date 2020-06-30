@@ -4,21 +4,37 @@ import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseNotFound, responseDone, responseBadRequest } from "../scripts/response";
 import * as _ from 'lodash';
-import { Request, Response, response } from 'express';
+import { Request, Response } from 'express';
 
 /**
- * Custom function for reporting to the user that group_id is wrong
- * 
- * @since 0.2-beta.1
- * @param res 
- * @param req 
+ * @since 0.2-beta.2
+ * @param {Request} request
+ * @param {Response} response
+ * @param {() => void} then 
  */
-function wrongType(request:Request, response:Response) {
-  responseBadRequest(response, {
-    error: {
-      message: `Please check the documentation. group_id needs to be a number and not a ${typeof request.params.group_id}.`
-    }
-  });
+function checkGroupId(request:Request, response:Response, then: () => void) {
+  // Check if api_id is a number
+  if (number(request.params.api_id)) {
+    DBcon.query(
+      "SELECT `group_id` FROM `TL_groups` WHERE `group_id`=?",
+      [request.params.group_id],
+      handleQuery(response, (result) => {
+        if (result.length === 0) {
+          // The group does not exsist
+          responseNotFound(response);
+        } else {
+          then();
+        }
+      })
+    )
+  } else {
+    // Bad request group_id is not a number
+    responseBadRequest(response, {
+      error: {
+        message: `group_id needs to be a valid number`
+      }
+    })
+  }
 }
 
 new Api({
@@ -30,43 +46,36 @@ new Api({
     ],
   },
   get: (request, response) => {
-    if (number(request.params.group_id)) {
-      // Get all the basic information from the group
+    checkGroupId(request, response, () => {
+      // Group_id is valid return the info
       DBcon.query(
         "SELECT * FROM `TL_groups` WHERE `group_id`=? ORDER BY `groupname`",
         [request.params.group_id],
         handleQuery(response, (resultGroup) => {
-          if (resultGroup.length === 0) {
-            // Group does not exsist
-            responseNotFound(response);
-          } else {
-            // Get all users
-            DBcon.query(
-              "SELECT `user_id`, `firstname`, `lastname`, `username` FROM `TL_users` WHERE `group_id`=?",
-              [request.params.group_id],
-              handleQuery(response, (result) => {
-                responseDone(response, {
-                  length: resultGroup.length,
-                  result: [
-                    {
-                      group_id: Number(request.params.group_id),
-                      groupName: _.get(resultGroup, '[0].groupName', 'undefined'),
-                      users: result
-                    },
-                  ],
-                })
+          // Get all users
+          DBcon.query(
+            "SELECT `user_id`, `firstname`, `lastname`, `username` FROM `TL_users` WHERE `group_id`=?",
+            [request.params.group_id],
+            handleQuery(response, (result) => {
+              responseDone(response, {
+                length: resultGroup.length,
+                result: [
+                  {
+                    group_id: Number(request.params.group_id),
+                    groupName: _.get(resultGroup, '[0].groupName', 'undefined'),
+                    users: result
+                  },
+                ],
               })
-            );
-          }
+            })
+          );
         })
       );
-    } else {
-      // Group_id is not a number
-      wrongType(request, response);
-    }
+    });
   },
   delete: (request, response) => {
-    if (number(request.params.group_id)) {
+    checkGroupId(request, response, () => {
+      // Group_id is valid remove it
       DBcon.query(
         "DELETE FROM `TL_groups` WHERE `group_id`=?",
         [request.params.group_id],
@@ -80,13 +89,11 @@ new Api({
           responseDone(response);
         })
       );
-    } else {
-      // Group_id is not a number
-      wrongType(request, response);
-    }
+    });
   },
   patch: (request, response) => {
-    if (number(request.params.group_id)) {
+    checkGroupId(request, response, () => {
+      // Group_id is valid edit it
       DBcon.query(
         "SELECT * FROM `TL_groups` WHERE `group_id`=? ORDER BY `groupname`",
         [request.params.group_id],
@@ -108,10 +115,7 @@ new Api({
           }
         })
       );
-    } else {
-      // Group_id is not a number
-      wrongType(request, response);
-    }
+    });
   }
 });
 

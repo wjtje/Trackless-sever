@@ -2,7 +2,8 @@ import Api from "../scripts/api";
 import { number, string } from "../scripts/types";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
-import { responseDone } from "../scripts/response";
+import { responseDone, responseBadRequest } from "../scripts/response";
+import { result } from "lodash";
 
 new Api({
   url: '/work',
@@ -18,22 +19,38 @@ new Api({
     ]
   },
   post: (request, response, user) => {
-    // Push the new work to the server
+    // Check if the location_id is valid
     DBcon.query(
-      "INSERT INTO `TL_work` (`user_id`, `location_id`, `time`, `date`, `description`) VALUES (?,?,?,?,?)",
-      [
-        user.user_id,
-        request.body.location_id,
-        request.body.time,
-        request.body.date,
-        request.body.description,
-      ],
+      "SELECT `location_id` FROM `TL_locations` WHERE `location_id`=?",
+      [request.body.location_id],
       handleQuery(response, (result) => {
-        // Response with the new id
-        responseDone(response, {
-          work_id: result.insertId
-        })
+        if (result.length === 0) {
+          responseBadRequest(response, {
+            error: {
+              message: 'location_id is not valid'
+            }
+          })
+        } else {
+          // Location_id is valid 
+          // Push the new work to the server
+          DBcon.query(
+            "INSERT INTO `TL_work` (`user_id`, `location_id`, `time`, `date`, `description`) VALUES (?,?,?,?,?)",
+            [
+              user.user_id,
+              request.body.location_id,
+              request.body.time,
+              request.body.date,
+              request.body.description,
+            ],
+            handleQuery(response, (result) => {
+              // Response with the new id
+              responseDone(response, {
+                work_id: result.insertId
+              })
+            })
+          );
+        }
       })
-    );
+    )
   },
 });

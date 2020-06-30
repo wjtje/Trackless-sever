@@ -518,6 +518,25 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
+  /access/{access_id}:
+    delete:
+      tags:
+        - access
+      description: Remove access to a group
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+
   /access/~:
     get:
       tags:

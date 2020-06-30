@@ -70,6 +70,7 @@ import './work/user';
 
 // Import access commands
 import './access/index';
+import './access/access_id';
 import { apiLogin } from './api/lib';
 
 // Custom error pages

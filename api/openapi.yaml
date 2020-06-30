@@ -167,6 +167,13 @@ components:
           type: string
           example: Jdoe
           description: The username of the user
+    password:
+      type: object
+      properties:
+        password:
+          type: string
+          example: SomethingStrong
+          description: The password of the user
     location_id:
       type: object
       properties:
@@ -290,6 +297,24 @@ components:
                   - $ref: "#/components/schemas/locationName"
                   - $ref: "#/components/schemas/locationPlace"
                   - $ref: "#/components/schemas/locationId"
+    responseUser:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/responseInfo200"
+        - $ref: "#/components/schemas/length"
+        - type: object
+          properties:
+            result:
+              type: array
+              items:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/user_id"
+                  - $ref: "#/components/schemas/firstname"
+                  - $ref: "#/components/schemas/lastname"
+                  - $ref: "#/components/schemas/username"
+                  - $ref: "#/components/schemas/group_id"
+                  - $ref: "#/components/schemas/groupName"
                   
   
   responses:
@@ -454,7 +479,7 @@ paths:
     get:
       tags:
         - api
-      description: Get information from a single api key / bearer token.
+      description: Get infomation from a single api key / bearer token.
       security:
         - bearerAuth: []
       parameters:
@@ -733,13 +758,142 @@ paths:
                 - $ref: "#/components/schemas/locationId"
       responses:
         201:
-          $ref: "#/components/responses/201"
+          description: The resource has been created
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/responseInfo201"
+                  - $ref: "#/components/schemas/location_id"
         400:
           $ref: "#/components/responses/400"
         403:
           $ref: "#/components/responses/403"
         500:
           $ref: "#/components/responses/500"
+
+  /user/{user_id}:
+    get:
+      tags:
+        - user
+      description: List all the infomation about a single user.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+      responses:
+        200:
+          description: An array with the result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseUser"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      tags:
+        - user
+      description: Remove a single user.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+    patch:
+      tags:
+        - user
+      description: Edit a users infomation.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/firstname"
+                - $ref: "#/components/schemas/lastname"
+                - $ref: "#/components/schemas/username"
+                - $ref: "#/components/schemas/password"
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+
+  /user:
+    get:
+      tags:
+        - user
+      description: Get infomation about all the users on the system.
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: An array with the result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseUser"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+    post:
+      tags:
+        - user
+      description: Create a new user
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/firstname"
+                - $ref: "#/components/schemas/lastname"
+                - $ref: "#/components/schemas/username"
+                - $ref: "#/components/schemas/password"
+                - $ref: "#/components/schemas/group_id"
+      responses:
+        201:
+          description: The resource has been created
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/responseInfo201"
+                  - $ref: "#/components/schemas/user_id"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+        
 
   /login:
     post:

@@ -1,11 +1,12 @@
 import Api from "../scripts/api";
 import { DBcon } from "..";
-import { responseNotFound, responseDone } from "../scripts/response";
+import { responseNotFound, responseDone, responseBadRequest } from "../scripts/response";
 import { handleQuery } from "../scripts/handle";
 import { arrayContainOnly } from "../scripts/dataCheck";
 import { storePassword } from "../scripts/security";
 import * as util from 'util';
 import * as _ from 'lodash';
+import { itemPatch } from "../scripts/patch";
 
 const query = util.promisify(DBcon.query).bind(DBcon);
 
@@ -24,155 +25,91 @@ new Api({
   require: {
 
   },
-  permissions: {
-
-  },
   get: (request, response, user) => {
     // Get all the infomation from the database
     DBcon.query(
       "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=?",
       [(request.params.user_id == '~')? user.user_id:request.params.user_id],
-      handleQuery(response, `Couldn't find the user '${request.params.user_id}'`, (result: Array<TL_user>) => {
+      handleQuery(response, (result: Array<TL_user>) => {
         if (result.length === 0) {
-          responseNotFound(response, `Could not found user_id=${request.params.user_id}`);
+          responseNotFound(response);
         } else {
           // Send the data to the user
           responseDone(response, {
-            result: result
-          })
+            length: result.length,
+            result: result,
+          });
         }
       })
     );
   },
   delete: (request, response, user) => {
+    // Remove the user
     DBcon.query(
       "DELETE FROM `TL_users` WHERE `user_id`=?",
       [(request.params.user_id == '~')? user.user_id:request.params.user_id],
-      handleQuery(response, `Couldn't delete the user '${request.params.user_id}'`, () => {
+      handleQuery(response, () => {
         // Delete all apikeys
         DBcon.query(
           "DELETE FROM `TL_apikeys` WHERE `user_id`=?",
-          [request.params.user_id]
+          [request.params.user_id],
+          handleQuery(response, () => {
+            responseDone(response);
+          })
         );
-  
-        // Done
-        responseDone(response);
       })
     );
   },
   patch: (request, response, user) => {
-    // Check if there are no bad values
-    let objectKeys = Object.keys(request.body);
-    const searchArray = [
+    itemPatch(request, response, [
       "firstname",
       "lastname",
       "username",
-      "password",
-    ];
+      "password"
+    ], async (key, request, rejectChange) => {
+      // Create a custom function for changing the user
+      function changeUser() {
+        DBcon.query("UPDATE `TL_users` SET `" + key + "`=? WHERE `user_id`=?", [
+          request.body[key],
+          (request.params.user_id == '~')? user.user_id:request.params.user_id
+        ], rejectChange);
+      }
 
-    arrayContainOnly(objectKeys, searchArray).then(() => {
-      // Run the function async
-      const updateUser = new Promise((resolve, reject) => {
-        let hasFailed = false;
+      switch (key) {
+        case "username":
+          // Check if the username is used
+          const username = await query(
+            "SELECT `user_id` FROM `TL_users` WHERE `username`=?",
+            [ request.body.username ]
+          );
 
-        // Custom function for rejecting the change
-        const rejectChange = (error) => {
-          if (error) {
-            // Could not save it
-            hasFailed = true;
-            reject(' (SAVE ERR)');
+          if (username.length > 0 && _.get(username, '[0].user_id', 0) != request.params.user_id) { // Username is taken
+            responseBadRequest(response, {
+              error: {
+                message: `the username is already taken. Please choose an other one.`
+              }
+            });
 
-            // Save the error
-            DBcon.query(
-              "INSERT INTO `TL_errors` (`sqlError`) VALUES (?)",
-              [
-                JSON.stringify(error)
-              ]
-            );
+            rejectChange(true);
+          } else {  // Every things good
+            changeUser();
           }
-        };
 
-        // Custom function for chaning user
-        function changeUser(key: string, req, rejectChange: (error: any) => void) {
-          DBcon.query("UPDATE `TL_users` SET `" + key + "`=? WHERE `user_id`=?", [
-            req.body[key],
+          break;
+        case "password":
+          // Update password
+          const {salt, hash} = storePassword(request.body[key]);
+
+          DBcon.query("UPDATE `TL_users` SET `salt_hash`=?, `hash`=? where `user_id`=?", [
+            salt,
+            hash,
             (request.params.user_id == '~')? user.user_id:request.params.user_id
           ], rejectChange);
-        }
 
-        // Change each key
-        async function changeKey() {
-          await Promise.all(objectKeys.map(async (key:string) => {
-            switch (key) {
-              case "password":
-                // Update password
-                const {salt, hash} = storePassword(request.body[key]);
-
-                DBcon.query("UPDATE `TL_users` SET `salt_hash`=?, `hash`=? where `user_id`=?", [
-                  salt,
-                  hash,
-                  (request.params.user_id == '~')? user.user_id:request.params.user_id
-                ], rejectChange);
-
-                break;
-              case "username":
-                // Check if the username is used
-                const username = await query(
-                  "SELECT `user_id` FROM `TL_users` WHERE `username`=?",
-                  [ request.body.username ]
-                );
-
-                if (username.length > 0 && _.get(username, '[0].user_id', 0) != request.params.user_id) { // Username is taken
-                  response.status(400);
-
-                  response.send(JSON.stringify({
-                    status: 400,
-                    message: 'Username is taken.',
-                  }));
-
-                  hasFailed = true;
-                } else {  // Every things good
-                  changeUser(key, request, rejectChange);
-                }
-
-                break;
-              case "apiKey":
-                // Do nothing with the api key;
-                break;
-              default:
-                //  Make the change
-                changeUser(key, request, rejectChange);
-                break;
-            }
-          }));
-
-          // Done?
-          if (!hasFailed) {
-            resolve();
-          }
-        }
-
-        // Run it async for speed
-        changeKey();
-      });
-
-      // Run the code
-      updateUser.then(() => {
-        responseDone(response);
-      }).catch((message) => {
-        response.status(400);
-        response.send(JSON.stringify({
-          status: 400,
-          message: "Could not save the changes." + message
-        }));
-      });
-    }).catch(() => {
-      // Something went wrong
-      response.status(400);
-      response.send(JSON.stringify({
-        status: 400,
-        message: 'Please check the documentation.'
-      }));
+          break;
+        default:
+          changeUser()
+      }
     });
   },
 });

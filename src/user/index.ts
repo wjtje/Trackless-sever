@@ -1,6 +1,6 @@
 import Api from "../scripts/api";
 import { DBcon } from "..";
-import { responseDone } from "../scripts/response";
+import { responseDone, responseBadRequest, responseCreated } from "../scripts/response";
 import { string, number } from '../scripts/types';
 import { storePassword } from "../scripts/security";
 import { handleQuery } from "../scripts/handle";
@@ -26,16 +26,14 @@ new Api({
       {name: "group_id", check: number},
     ]
   },
-  permissions: {
-    
-  },
   get: (request, response) => {
     DBcon.query(
       "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`) ORDER BY `firstname`, `lastname`, `username`",
-      handleQuery(response, 'Couldn\'t select all the users.', (result: Array<TL_user>) => {
+      handleQuery(response, (result: Array<TL_user>) => {
         responseDone(response, {
-          result: result
-        })
+          length: result.length,
+          result: result,
+        });
       })
     );
   },
@@ -44,14 +42,13 @@ new Api({
     DBcon.query(
       "SELECT `username` FROM `TL_users` WHERE `username`=?",
       [ request.body.username ],
-      handleQuery(response, `Something went wrong while checking the username = '${request.body.username}'`, (result) => {
+      handleQuery(response, (result) => {
         if (result.length > 0) { // Username is taken
-          response.status(400);
-
-          response.send(JSON.stringify({
-            status: 400,
-            message: 'Username is taken.',
-          }));
+          responseBadRequest(response, {
+            error: {
+              message: `the username is already taken. Please choose an other one.`
+            }
+          });
         } else {  // Every things good
           // Create a new user
           const {salt, hash} = storePassword(request.body.password);
@@ -67,9 +64,9 @@ new Api({
               salt,
               hash
             ],
-            handleQuery(response, 'Couldn\'t save the user into the database. Please try again later', (result) => {
+            handleQuery(response, (result) => {
               // User has been created
-              responseDone(response, {
+              responseCreated(response, {
                 user_id: result.insertId
               });
             })

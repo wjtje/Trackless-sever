@@ -88,20 +88,3 @@ new Api({
     )
   }
 });
-
-new Api({
-  url: '/access/~',
-  auth: true,
-  get: (request, response, user) => {
-    DBcon.query(
-      "SELECT `method`, `url` FROM `TL_access` WHERE `group_id`=?",
-      [user.group_id],
-      handleQuery(response, (result) => {
-        responseDone(response, {
-          length: result.length,
-          result: result
-        });
-      })
-    );
-  }
-});

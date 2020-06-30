@@ -3,7 +3,6 @@ import { number, string } from "../scripts/types";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseDone, responseBadRequest } from "../scripts/response";
-import { result } from "lodash";
 
 new Api({
   url: '/work',

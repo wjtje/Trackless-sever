@@ -450,6 +450,14 @@ components:
       schema:
         type: integer
       required: true
+    access_id:
+      in: path
+      name: access_id
+      description: The unique number for an access rule
+      example: 25
+      schema:
+        type: integer
+      required: true
   
   securitySchemes:
     bearerAuth:
@@ -525,6 +533,8 @@ paths:
       description: Remove access to a group
       security:
         - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/access_id"
       responses:
         200:
           $ref: "#/components/responses/200"
@@ -537,13 +547,15 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
-  /access/~:
+  /access/group/{group_id}:
     get:
       tags:
         - access
       description: See what you can do on the server
       security:
         - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/group_id"
       responses:
         200:
           description: An array with the result

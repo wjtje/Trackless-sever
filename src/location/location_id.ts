@@ -1,45 +1,15 @@
 import Api from "../scripts/api";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
-import { responseDone, responseBadRequest, responseNotFound } from "../scripts/response";
-import { Request, Response } from 'express';
-import { number } from "../scripts/types";
+import { responseDone, responseNotFound } from "../scripts/response";
 import { itemPatch } from "../scripts/patch";
-
-/**
- * @since 0.2-beta.2
- * @param {Request} request
- * @param {Response} response
- * @param {() => void} then
- */
-function checkLocation(request:Request, response:Response, then: () => void) {
-  if (number(request.params.location_id)) {
-    DBcon.query(
-      "SELECT `location_id` FROM `TL_locations` WHERE `location_id`=?",
-      [request.params.location_id],
-      handleQuery(response, (result) => {
-        if (result.length === 0) {
-          // The location does not exsist
-          responseNotFound(response);
-        } else {
-          then();
-        }
-      })
-    )
-  } else {
-    responseBadRequest(response, {
-      error: {
-        message: 'Your location_id is not correct'
-      }
-    });
-  }
-}
+import { checkLocationId } from "../scripts/idCheck";
 
 new Api({
   url: '/location/:location_id',
   auth: true,
   get: (request, response) => {
-    checkLocation(request, response, () => {
+    checkLocationId(request, response, () => {
       // Get from the database
       DBcon.query("SELECT * FROM `TL_locations` WHERE `location_id`=?", [request.params.location_id], handleQuery(response, (result) => {
         if (result.length === 0) {
@@ -55,7 +25,7 @@ new Api({
     });
   },
   delete: (request, response) => {
-    checkLocation(request, response, () => {
+    checkLocationId(request, response, () => {
       // Delete from database
       DBcon.query(
         "DELETE FROM `TL_locations` WHERE `location_id`=?",
@@ -67,7 +37,8 @@ new Api({
     });
   },
   patch: (request, response) => {
-    checkLocation(request, response, () => {
+    checkLocationId(request, response, () => {
+      // Setup the patch function
       itemPatch(request, response, [
         "name",
         "place",

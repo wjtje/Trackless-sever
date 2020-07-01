@@ -1,47 +1,14 @@
 import Api from "../scripts/api";
 import { DBcon } from "..";
-import { responseNotFound, responseDone, responseBadRequest } from "../scripts/response";
+import { responseDone, responseBadRequest } from "../scripts/response";
 import { handleQuery } from "../scripts/handle";
 import { storePassword } from "../scripts/security";
 import * as util from 'util';
 import * as _ from 'lodash';
 import { itemPatch } from "../scripts/patch";
-import { Request, Response } from 'express';
-import { number } from "../scripts/types";
+import { checkUserId } from "../scripts/idCheck";
 
 const query = util.promisify(DBcon.query).bind(DBcon);
-
-/**
- * @since 0.2-beta.2
- * @param {Request} request
- * @param {Response} response
- * @param {() => void} then
- */
-function checkUser(request:Request, response:Response, then: () => void) {
-  if (number(request.params.user_id)) {
-    DBcon.query(
-      "SELECT `user_id` FROM `TL_users` WHERE `user_id`=?",
-      [request.params.user_id],
-      handleQuery(response, (result) => {
-        if (result.length === 0) {
-          // The user does not exsist
-          responseNotFound(response);
-        } else {
-          then();
-        }
-      })
-    )
-  } else if (request.params.user_id == '~') {
-    // Your self does always exsist
-    then();
-  } else {
-    responseBadRequest(response, {
-      error: {
-        message: 'Your user_id is not correct'
-      }
-    });
-  }
-}
 
 export interface TL_user {
   user_id:   number;
@@ -59,7 +26,7 @@ new Api({
 
   },
   get: (request, response, user) => {
-    checkUser(request, response, () => {
+    checkUserId(request, response, () => {
       // Get all the infomation from the database
       DBcon.query(
         "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=?",
@@ -75,7 +42,7 @@ new Api({
     });
   },
   delete: (request, response, user) => {
-    checkUser(request, response, () => {
+    checkUserId(request, response, () => {
       // Remove the user
       DBcon.query(
         "DELETE FROM `TL_users` WHERE `user_id`=?",
@@ -94,7 +61,7 @@ new Api({
     });
   },
   patch: (request, response, user) => {
-    checkUser(request, response, () => {
+    checkUserId(request, response, () => {
       itemPatch(request, response, [
         "firstname",
         "lastname",

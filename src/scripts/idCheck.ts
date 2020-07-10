@@ -5,6 +5,7 @@ import { handleQuery } from "./handle";
 import { responseNotFound, responseBadRequest } from "./response";
 import { userInfo } from "../scripts/interfaces";
 import _ = require("lodash");
+import { accessNoNumber, apiNoNumber, groupNoNumber, locationNoNumber, userNoNumber, workNoNumber } from "../global/language";
 
 /**
  * Checks if the access id exsist
@@ -33,7 +34,7 @@ export function checkAccessId(request:Request, response:Response, then: () => vo
   } else {
     responseBadRequest(response, {
       error: {
-        message: 'Access_id needs to be a number.'
+        message: accessNoNumber,
       }
     });
   }
@@ -67,7 +68,7 @@ export function checkApiId(request:Request, response:Response, user:userInfo, th
     // Bad request api_id is not a number
     responseBadRequest(response, {
       error: {
-        message: `api_id needs to be a valid number`
+        message: apiNoNumber
       }
     })
   }
@@ -102,7 +103,7 @@ export function checkGroupId(request:Request, response:Response, then: () => voi
     // Bad request group_id is not a number
     responseBadRequest(response, {
       error: {
-        message: `group_id needs to be a valid number`
+        message: groupNoNumber
       }
     })
   }
@@ -133,7 +134,7 @@ export function checkLocationId(request:Request, response:Response, then: () => 
   } else {
     responseBadRequest(response, {
       error: {
-        message: 'Your location_id is not correct'
+        message: locationNoNumber
       }
     });
   }
@@ -167,7 +168,7 @@ export function checkUserId(request:Request, response:Response, then: () => void
   } else {
     responseBadRequest(response, {
       error: {
-        message: 'Your user_id is not correct'
+        message: userNoNumber
       }
     });
   }
@@ -198,7 +199,7 @@ export function checkWorkId(request:Request, response:Response, then: () => void
   } else {
     responseBadRequest(response, {
       error: {
-        message: 'Your work_id is not correct'
+        message: workNoNumber
       }
     });
   }
@@ -231,7 +232,7 @@ export function checkWorkIdUser(request:Request, response:Response, user:userInf
     } else {
       responseBadRequest(response, {
         error: {
-          message: 'Your work_id is not correct'
+          message: workNoNumber
         }
       });
     }

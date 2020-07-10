@@ -38,12 +38,13 @@ server.use(cors());
 server.use(passport.initialize());
 
 // Use passport
+//TODO: Custom json response
 passport.use(new BearerStrategy(
   function(token, done) {
     apiLogin(token).then((user) => {
       done(null, user);
     }).catch((err) => {
-      done(err);
+      done(null, false);
     })
   }
 ));
@@ -76,11 +77,12 @@ import { apiLogin } from './api/lib';
 
 // Import server commands
 import './server/about';
+import { apiFunctionNotFound } from './global/language';
 
 // Custom error pages
 server.use(function (req, res) {
   res.send(JSON.stringify({
-    message: 'Couldn\'t found that api function',
+    message: apiFunctionNotFound,
     url: req.originalUrl
   }));
 });

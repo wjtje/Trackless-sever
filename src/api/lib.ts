@@ -1,5 +1,6 @@
 import { DBcon } from '../index';
 import { sha512_256 } from 'js-sha512';
+import { accountNotFound } from '../global/language';
 
 /**
  * Check the api key in the database
@@ -32,7 +33,7 @@ export function apiLogin(apiKey:string):Promise<{
 
           // Reject the request
           reject(
-            (error)? error.code : 'Could not find your account.'
+            (error)? error.code : accountNotFound
           );
         } else {
           // Api key is correct

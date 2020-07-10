@@ -3,6 +3,7 @@ import { number, string } from "../scripts/types";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseDone, responseBadRequest } from "../scripts/response";
+import { locationIdNotValid } from "../global/language";
 
 new Api({
   url: '/work',
@@ -12,6 +13,7 @@ new Api({
       {name: 'location_id', check: number},
       {name: 'time', check: number},
       {name: 'date', check: (testValue: any) => {
+        //TODO: Add moment js
         return /[0-9]{4}-[0-9]{2}-[0-9]{2}/g.test(testValue);
       }},
       {name: 'description', check: string},
@@ -26,7 +28,7 @@ new Api({
         if (result.length === 0) {
           responseBadRequest(response, {
             error: {
-              message: 'location_id is not valid'
+              message: locationIdNotValid
             }
           })
         } else {

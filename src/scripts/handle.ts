@@ -1,5 +1,6 @@
 import { Response, Request } from 'express';
 import { sqlError } from './error';
+import { databaseError } from '../global/language';
 
 /**
  * A function for handling a query
@@ -12,7 +13,7 @@ import { sqlError } from './error';
 export function handleQuery(response: Response, then: (result: any) => void) {
   return (error, result) => {
     if (error) {
-      sqlError(response, error, 'Something went wrong while contacting the database.');
+      sqlError(response, error, databaseError);
     } else {
       then(result);
     }

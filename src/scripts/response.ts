@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { request200, request201, request400, request403, request404, request500 } from '../global/language';
 
 /**
  * Inform the user that their call was successful
@@ -11,7 +12,7 @@ export function responseDone(response:Response, result?: object) {
   response.send(JSON.stringify({
     info: {
       status: 200,
-      message: 'Success.',
+      message: request200,
     },
     ...(result)? result: null,
   }));
@@ -30,7 +31,7 @@ export function responseCreated(response:Response, createResult?:object) {
   response.send(JSON.stringify({
     info: {
       status: 201,
-      message: 'Your request has been fulfilled.',
+      message: request201,
     },
     ...(createResult)? createResult: null,
   }));
@@ -48,7 +49,7 @@ export function responseBadRequest(response:Response, error?: object) {
   response.send(JSON.stringify({
     info: {
       status: 400,
-      message: 'There is something wrong with your request.',
+      message: request400,
     },
     ...(error)? error: null,
   }));
@@ -65,7 +66,7 @@ export function responseForbidden(response:Response) {
   response.send(JSON.stringify({
     info: {
       status: 403,
-      message: 'You don\'t have access to do this request.',
+      message: request403,
     },
   }));
 }
@@ -81,7 +82,7 @@ export function responseNotFound(response:Response) {
   response.send(JSON.stringify({
     info: {
       status: 404,
-      message: 'The resource you are looking for is not here.'
+      message: request404
     }
   }));
 }
@@ -98,7 +99,7 @@ export function responseServerError(response:Response, error?: object) {
   response.send(JSON.stringify({
     info: {
       status: 500,
-      message: ' Something internally went wrong.',
+      message: request500,
     },
     ...(error)? error: null,
   }));

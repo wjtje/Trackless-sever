@@ -7,6 +7,7 @@ import { requiredDataCheck } from './dataCheck';
 import * as _ from "lodash";
 import { checkAccess } from '../access/lib';
 import { missingError } from './error';
+import { methodNotFound } from '../global/language';
 
 // Create the api class
 export default class Api {
@@ -38,7 +39,7 @@ export default class Api {
       if (this.apiObject[request.method.toLowerCase()] == undefined) {
         responseBadRequest(response, {
           error: {
-            message: `There is no method '${request.method}' on '${this.apiObject.url}'`,
+            message: methodNotFound(request.method, this.apiObject.url),
           },
         });
       } else {

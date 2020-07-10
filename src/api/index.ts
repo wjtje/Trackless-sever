@@ -7,6 +7,7 @@ import { string } from "../scripts/types";
 import { sha512_256 } from "js-sha512";
 import * as _ from 'lodash';
 import { missingError } from "../scripts/error";
+import { checkUsernamePasswd } from "../global/language";
 
 export interface APIKeyNames {
   api_id:     number;
@@ -64,7 +65,7 @@ server.post('/login', (request, response) => {
         } else {
           responseBadRequest(response, {
             error: {
-              message: 'Please check your username or password.'
+              message: checkUsernamePasswd
             }
           });
         }

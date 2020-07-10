@@ -5,11 +5,12 @@
  */
 
 import { DBcon } from "..";
+import { group0noAccess, noAccess } from "../global/language";
 
 export function checkAccess(group_id: number, method: string, url: string) : Promise<string> {
   return new Promise((resolve, reject) => {
     if (group_id === 0) {
-      reject('group_id 0 does not have any access.');
+      reject(group0noAccess);
     } else if (group_id === 1) {
       resolve();
     } else {
@@ -22,7 +23,7 @@ export function checkAccess(group_id: number, method: string, url: string) : Pro
         if (error) {
           reject();
         } else if (result.length === 0) {
-          reject('You don\'t have access to do that');
+          reject(noAccess);
         } else {
           resolve();
         }

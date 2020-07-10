@@ -4,6 +4,7 @@ import { responseDone, responseBadRequest, responseCreated } from "../scripts/re
 import { string, number } from '../scripts/types';
 import { storePassword } from "../scripts/security";
 import { handleQuery } from "../scripts/handle";
+import { usernameTaken } from "../global/language";
 
 interface TL_user {
   user_id:   number;
@@ -46,7 +47,7 @@ new Api({
         if (result.length > 0) { // Username is taken
           responseBadRequest(response, {
             error: {
-              message: `the username is already taken. Please choose an other one.`
+              message: usernameTaken
             }
           });
         } else {  // Every things good

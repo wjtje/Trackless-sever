@@ -2,6 +2,7 @@ import { arrayContainOnly } from "./dataCheck";
 import { DBcon } from "..";
 import { responseDone, responseBadRequest } from "./response";
 import { Request, Response } from "express";
+import { errorRequestBody } from "../global/language";
 
 /**
  * A function for a patch request
@@ -55,7 +56,7 @@ export function itemPatch(request: Request, response: Response, editArray: Array
   }).catch(() => {
     responseBadRequest(response, {
       error: {
-        message: 'Your requestBody contains something wrong.'
+        message: errorRequestBody
       }
     });
   });

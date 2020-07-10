@@ -4,6 +4,7 @@ import Api from '../scripts/api';
 import { responseDone, responseBadRequest, responseCreated } from '../scripts/response';
 import { handleQuery } from '../scripts/handle';
 import { number, string } from '../scripts/types';
+import { groupNotFound, methodNotAllowd } from '../global/language';
 
 const query = util.promisify(DBcon.query).bind(DBcon);
 
@@ -60,13 +61,13 @@ new Api({
         if (result.length === 0) {
           responseBadRequest(response, {
             error: {
-              message: 'The group is not found.'
+              message: groupNotFound
             }
           })
         } else if (!["get","post","delete","patch"].includes(request.body.method)) {
           responseBadRequest(response, {
             error: {
-              message: 'The method is not allowed.'
+              message: methodNotAllowd
             }
           });
         } else {

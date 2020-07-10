@@ -24,7 +24,7 @@
     "express": "^4.17.1",
     "js-base64": "^2.5.2",
     "js-sha512": "^0.8.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "mysql": "^2.18.1",
     "passport": "^0.4.1",
     "passport-http-bearer": "^1.0.1"

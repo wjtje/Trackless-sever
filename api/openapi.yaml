@@ -458,6 +458,14 @@ components:
       schema:
         type: integer
       required: true
+    work_id:
+      in: path
+      name: work_id
+      description: The unique number for an work item
+      example: 146
+      schema:
+        type: integer
+      required: true
   
   securitySchemes:
     bearerAuth:
@@ -1056,7 +1064,7 @@ paths:
         500:
           $ref: "#/components/responses/500"
   
-  /work/user/{user_id}/{start}/{end}:
+  /work/user/{user_id}/date/{start}/{end}:
     get:
       tags:
         - work
@@ -1090,6 +1098,82 @@ paths:
           $ref: "#/components/responses/400"
         403:
           $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+
+  /work/user/{user_id}/{work_id}:
+    get:
+      tags:
+        - work
+      description: Get information about a single work item
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+        - $ref: "#/components/parameters/work_id"
+      responses:
+        200:
+          description: An array with the result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseWork"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      tags:
+        - work
+      description: Remove work from the system
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+        - $ref: "#/components/parameters/work_id"
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
+        500:
+          $ref: "#/components/responses/500"
+    patch:
+      tags:
+        - work
+      description: Edit a work item
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+        - $ref: "#/components/parameters/work_id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/location_id"
+                - $ref: "#/components/schemas/time"
+                - $ref: "#/components/schemas/date"
+                - $ref: "#/components/schemas/description"
+      responses:
+        200:
+          $ref: "#/components/responses/200"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        404:
+          $ref: "#/components/responses/404"
         500:
           $ref: "#/components/responses/500"
 

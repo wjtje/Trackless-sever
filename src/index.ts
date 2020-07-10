@@ -74,6 +74,9 @@ import './access/access_id';
 import './access/group';
 import { apiLogin } from './api/lib';
 
+// Import server commands
+import './server/about';
+
 // Custom error pages
 server.use(function (req, res) {
   res.send(JSON.stringify({

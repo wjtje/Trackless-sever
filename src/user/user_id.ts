@@ -5,7 +5,7 @@ import { handleQuery } from "../scripts/handle";
 import { storePassword } from "../scripts/security";
 import * as util from 'util';
 import * as _ from 'lodash';
-import { itemPatch } from "../scripts/patch";
+import { itemPatch, handlePatchRequest } from "../scripts/patch";
 import { checkUserId } from "../scripts/idCheck";
 
 const query = util.promisify(DBcon.query).bind(DBcon);
@@ -67,36 +67,30 @@ new Api({
         "lastname",
         "username",
         "password"
-      ], async (key, request, rejectChange) => {
+      ], (key, resolve, reject) => {
         // Create a custom function for changing the user
         function changeUser() {
           DBcon.query("UPDATE `TL_users` SET `" + key + "`=? WHERE `user_id`=?", [
             request.body[key],
             (request.params.user_id == '~')? user.user_id:request.params.user_id
-          ], rejectChange);
+          ], handlePatchRequest(reject, resolve));
         }
         
         // Custom function for changing the username and password
         switch (key) {
           case "username":
             // Check if the username is used
-            const username = await query(
+            DBcon.query(
               "SELECT `user_id` FROM `TL_users` WHERE `username`=?",
-              [ request.body.username ]
-            );
-  
-            if (username.length > 0 && _.get(username, '[0].user_id', 0) != request.params.user_id) { // Username is taken
-              responseBadRequest(response, {
-                error: {
-                  message: `the username is already taken. Please choose an other one.`
+              [request.body.username],
+              (error, result) => {
+                if (result.length === 0) {
+                  changeUser();
+                } else {
+                  reject('The username has been taken.');
                 }
-              });
-  
-              rejectChange(true);
-            } else {  // Every things good
-              changeUser();
-            }
-  
+              }
+            );
             break;
           case "password":
             // Update password
@@ -106,7 +100,7 @@ new Api({
               salt,
               hash,
               (request.params.user_id == '~')? user.user_id:request.params.user_id
-            ], rejectChange);
+            ], handlePatchRequest(reject, resolve));
   
             break;
           default:

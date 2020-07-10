@@ -57,6 +57,7 @@ export default class Api {
                 return apiObject.url;
               }
             })(this.apiObject)).then(() => {
+              // Run the request
               this.apiObject[request.method.toLowerCase()](request, response, request.user);
             }).catch(() => {
               responseForbidden(response);
@@ -72,14 +73,21 @@ export default class Api {
     }
 
     // Custom functions for adding passport
-    const passportCheck = (this.apiObject.auth) ? passport.authenticate('bearer', { session: false }) : routeFunction;
-    const routerCheck = (this.apiObject.auth) ? routeFunction : null;
+    const passportCheck = passport.authenticate('bearer', { session: false });
 
     // Create a new route
-    server.route(this.apiObject.url)
-      .get(passportCheck, routerCheck)
-      .post(passportCheck, routerCheck)
-      .patch(passportCheck, routerCheck)
-      .delete(passportCheck, routerCheck)
+    if (this.apiObject.auth) {
+        server.route(this.apiObject.url)
+          .get(passportCheck, routeFunction)
+          .post(passportCheck, routeFunction)
+          .patch(passportCheck, routeFunction)
+          .delete(passportCheck, routeFunction)
+    } else {
+      server.route(this.apiObject.url)
+        .get(routeFunction)
+        .post(routeFunction)
+        .patch(routeFunction)
+        .delete(routeFunction)
+    }
   }
 }

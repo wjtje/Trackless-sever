@@ -4,6 +4,7 @@ import { DBcon } from "..";
 import { handleQuery } from "./handle";
 import { responseNotFound, responseBadRequest } from "./response";
 import { userInfo } from "../scripts/interfaces";
+import _ = require("lodash");
 
 /**
  * Checks if the access id exsist
@@ -168,4 +169,69 @@ export function checkUserId(request:Request, response:Response, then: () => void
       }
     });
   }
+}
+
+/**
+ * Checks if the work id exsist
+ * 
+ * @since 0.3-beta.1
+ * @param {Request} request
+ * @param {Response} response
+ * @param {() => void} then
+ */
+export function checkWorkId(request:Request, response:Response, then: () => void) {
+  if (number(request.params.work_id)) {
+    DBcon.query(
+      "SELECT `work_id` FROM `TL_work` WHERE `work_id`=?",
+      [request.params.work_id],
+      handleQuery(response, (result) => {
+        if (result.length === 0) {
+          // The work does not exsist
+          responseNotFound(response);
+        } else {
+          then();
+        }
+      })
+    )
+  } else {
+    responseBadRequest(response, {
+      error: {
+        message: 'Your work_id is not correct'
+      }
+    });
+  }
+}
+
+/**
+ * Checks if the work id exsist
+ * 
+ * @since 0.3-beta.1
+ * @param {Request} request
+ * @param {Response} response
+ * @param {() => void} then
+ */
+export function checkWorkIdUser(request:Request, response:Response, user:userInfo, then: () => void) {
+  checkUserId(request, response, () => {
+    // Check the work id
+    if (number(request.params.work_id)) {
+      DBcon.query(
+        "SELECT `work_id` FROM `TL_work` WHERE `work_id`=? AND `user_id`=?",
+        [request.params.work_id, (request.params.user_id == '~')? user.user_id:request.params.user_id,],
+        handleQuery(response, (result) => {
+          if (result.length === 0) {
+            // The work does not exsist
+            responseNotFound(response);
+          } else {
+            then();
+          }
+        })
+      )
+    } else {
+      responseBadRequest(response, {
+        error: {
+          message: 'Your work_id is not correct'
+        }
+      });
+    }
+  });
 }

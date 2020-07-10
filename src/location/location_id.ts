@@ -2,7 +2,7 @@ import Api from "../scripts/api";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseDone, responseNotFound } from "../scripts/response";
-import { itemPatch } from "../scripts/patch";
+import { itemPatch, handlePatchRequest } from "../scripts/patch";
 import { checkLocationId } from "../scripts/idCheck";
 
 new Api({
@@ -43,11 +43,12 @@ new Api({
         "name",
         "place",
         "id",
-      ], (key, request, rejectChange) => {
+      ], (key, resolve, reject) => {
         // Update the key
         DBcon.query(
           "UPDATE `TL_locations` SET `" + key + "`=? WHERE `location_id`=?",
-          [request.body[key], request.params.location_id]
+          [request.body[key], request.params.location_id],
+          handlePatchRequest(reject, resolve)
         )
       });
     });

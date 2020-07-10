@@ -24,56 +24,34 @@ import { Request, Response } from "express";
  *    )
  *  });
  */
-export function itemPatch(request: Request, response: Response, editArray: Array<string>, changeKey: (key: string, request: Request, rejectChange: (error: any) => void) => void) {
+export function itemPatch(request: Request, response: Response, editArray: Array<string>, changeKey: (key: string, resolve: (value?:any) => void, reject: (value?:any) => void) => void) {
   let objectKeys = Object.keys(request.body);
 
   // Make sure the objects keys does not contain anything wrong
   arrayContainOnly(objectKeys, editArray).then(() => {
-    // Run the function async
-    const updateUser = new Promise((resolve, reject) => {
-      let hasFailed = false;
+    // Start a transaction
+    DBcon.query("START TRANSACTION");
 
-      // Custom function for rejecting the change
-      const rejectChange = (error) => {
-        if (error) {
-          // Could not save it
-          hasFailed = true;
-          reject(' (SAVE ERR)');
+    // Run change function in a promise
+    Promise.all(objectKeys.map((key: string) => {
+      return new Promise((resolve, reject) => {
+        changeKey(key, resolve, reject);
+      });
+    })).then(() => {
+      // Done
+      DBcon.query("COMMIT");
 
-          // Save the error
-          DBcon.query(
-            "INSERT INTO `TL_errors` (`sqlError`) VALUES (?)",
-            [
-              JSON.stringify(error)
-            ]
-          );
-        }
-      };
-
-      // Change each key
-      // Run it async for more speed
-      (async function runAsync() {
-        await Promise.all(objectKeys.map(async (key: string) => {
-          changeKey(key, request, rejectChange);
-        }));
-
-        // Done?
-        if (!hasFailed) {
-          resolve();
-        }
-      })();
-    });
-
-    // Run the code
-    updateUser.then(() => {
       responseDone(response);
-    }).catch((message) => {
+    }).catch((error) => {
+      // Something went wrong
+      DBcon.query("ROLLBACK");
+
       responseBadRequest(response, {
         error: {
-          message: message
+          message: (typeof error === 'object')? error.code : error
         }
       });
-    });
+    })
   }).catch(() => {
     responseBadRequest(response, {
       error: {
@@ -81,4 +59,22 @@ export function itemPatch(request: Request, response: Response, editArray: Array
       }
     });
   });
+}
+
+/**
+ * New function for handling a request
+ * 
+ * @since 0.3-beta.1
+ * @param reject 
+ * @param resolve 
+ */
+export function handlePatchRequest(reject: (value?: any) => void, resolve: (value?: any) => void) {
+  return (error) => {
+    if (error) {
+      reject(error);
+    }
+    else {
+      resolve();
+    }
+  };
 }

@@ -15,7 +15,7 @@ Base64.extendString();
 
 // Setup the connection with the database
 export const DBcon = mysql.createConnection({
-  host: "localhost",
+  host: "trackless",
   user: "yourusername",
   password: "yourpassword",
   database: "trackless"

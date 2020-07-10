@@ -83,7 +83,7 @@ export function checkApiId(request:Request, response:Response, user:userInfo, th
  */
 export function checkGroupId(request:Request, response:Response, then: () => void) {
   // Check if api_id is a number
-  if (number(request.params.api_id)) {
+  if (number(request.params.group_id)) {
     DBcon.query(
       "SELECT `group_id` FROM `TL_groups` WHERE `group_id`=?",
       [request.params.group_id],
@@ -96,6 +96,8 @@ export function checkGroupId(request:Request, response:Response, then: () => voi
         }
       })
     )
+  } else if (request.params.group_id == '~') {
+    then();
   } else {
     // Bad request group_id is not a number
     responseBadRequest(response, {

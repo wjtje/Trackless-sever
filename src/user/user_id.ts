@@ -84,7 +84,7 @@ new Api({
               "SELECT `user_id` FROM `TL_users` WHERE `username`=?",
               [request.body.username],
               (error, result) => {
-                if (result.length === 0) {
+                if (result.length === 0 || result[0].user_id == (request.params.user_id == '~')? user.user_id:request.params.user_id) {
                   changeUser();
                 } else {
                   reject('The username has been taken.');

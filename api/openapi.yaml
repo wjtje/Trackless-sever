@@ -1232,3 +1232,21 @@ paths:
                             description: A message from the server about your request
         500:
           $ref: "#/components/responses/500"
+  
+  /server/about:
+    get:
+      tags:
+        - server
+      description: Get the server version
+      responses:
+        200:
+          description: Return the server version
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    example: 0.3-beta.1
+                    description: The server version

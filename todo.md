@@ -11,10 +11,7 @@ Use todo+ to see inline todo's
 
  - Able to list all work
 
-### Location system
-
-  - Able to get last used (For auto fill and suggestions)
-
 ## Bugs
 
  - new Api() won't run correctly when auth is disabled
+ - When there is no valid json given return a correct error

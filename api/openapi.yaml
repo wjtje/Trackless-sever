@@ -882,6 +882,58 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
+  /location/user/{user_id}/last:
+    get:
+      tags:
+        - location
+      description: Command for getting the last used location_id for a user
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+      responses:
+        200:
+          description: A response with the result
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/responseInfo200"
+                  - $ref: "#/components/schemas/location_id"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+  
+  /location/user/{user_id}/most:
+    get:
+      tags:
+        - location
+      description: Command for getting the two most used location_id's from a user in the last week
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/user_id"
+      responses:
+        200:
+          description: A response with the result
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/responseInfo200"
+                  - type: object
+                    properties:
+                      location_id:
+                        type: array
+                        items:
+                          type: number
+                          
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+
   /user/{user_id}:
     get:
       tags:

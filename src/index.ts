@@ -64,6 +64,7 @@ import './group/group_id';
 // Import location commands
 import './location/index';
 import './location/location_id';
+import './location/user';
 
 // Import work commands
 import './work/index';

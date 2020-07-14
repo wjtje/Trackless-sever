@@ -1,4 +1,4 @@
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { sqlError } from './error';
 import { databaseError } from '../global/language';
 

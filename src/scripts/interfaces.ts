@@ -98,3 +98,16 @@ export interface RequestLocal extends Request {
     group_id: number;
   }
 }
+
+/**
+ * Custom interface for the express error object
+ * 
+ * @since 0.3-beta.3
+ */
+export interface ExpressError {
+  expose:     boolean;
+  statusCode: number;
+  status:     number;
+  body:       string;
+  type:       string;
+}

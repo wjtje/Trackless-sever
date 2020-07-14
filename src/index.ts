@@ -6,6 +6,8 @@ import { Base64 } from 'js-base64';
 import * as passport from 'passport';
 import { Strategy as BearerStrategy } from 'passport-http-bearer';
 var cors = require('cors');
+import { apiFunctionNotFound } from './global/language';
+import { serverError } from './scripts/error';
 
 // Settings
 const port:number = 55565;
@@ -33,9 +35,11 @@ server.use(bodyParser.urlencoded({
   extended: true
 }));
 server.use(bodyParser.json());
-server.use(bodyParser.raw());
 server.use(cors());
 server.use(passport.initialize());
+
+// Custom error
+server.use(serverError() as any);
 
 // Use passport
 //TODO: Custom json response
@@ -78,7 +82,6 @@ import { apiLogin } from './api/lib';
 
 // Import server commands
 import './server/about';
-import { apiFunctionNotFound } from './global/language';
 
 // Custom error pages
 server.use(function (req, res) {

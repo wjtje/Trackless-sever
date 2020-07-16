@@ -14,4 +14,3 @@ Use todo+ to see inline todo's
 ## Bugs
 
  - new Api() won't run correctly when auth is disabled
- - When there is no valid json given return a correct error

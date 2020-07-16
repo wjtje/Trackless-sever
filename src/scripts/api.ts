@@ -1,7 +1,7 @@
-import { apiObject, RequestLocal } from './interfaces';
+import { apiObject, RequestLocal, userInfo } from './interfaces';
 import { server } from '..';
 import { Request, Response } from 'express';
-import { responseBadRequest, responseForbidden } from './response';
+import { responseBadRequest, responseForbidden, responseServerError } from './response';
 import * as passport from "passport";
 import { requiredDataCheck } from './dataCheck';
 import * as _ from "lodash";
@@ -74,10 +74,23 @@ export default class Api {
     }
 
     // Custom functions for adding passport
-    const passportCheck = passport.authenticate('bearer', { session: false });
+    const passportCheck = (request: Request, response: Response, next: (any?: any) => void) => {
+      passport.authenticate('bearer', (error, user: userInfo | boolean) => {
+        // Check if there is an error
+        if (error) {
+          responseServerError(response, {
+            message: 'Something went wrong while trying to authenticate you.'
+          });
+        } else if (!user) { // Check if the user object is given
+          responseForbidden(response);
+        } else {
+          return next();
+        }
+      })(request, response, next);
+    };
 
     // Create a new route
-    if (this.apiObject.auth) {
+    if (this.apiObject.auth === true) {
         server.route(this.apiObject.url)
           .get(passportCheck, routeFunction)
           .post(passportCheck, routeFunction)

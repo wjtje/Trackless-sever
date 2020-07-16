@@ -6,7 +6,3 @@ Use todo+ to see inline todo's
 ## Longterm
 
  - New access system (v0.4-beta.1)
-
-### Work system
-
- - Able to list all work

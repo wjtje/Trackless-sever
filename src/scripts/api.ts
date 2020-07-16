@@ -46,7 +46,7 @@ export default class Api {
         requiredDataCheck(request, response, _.get(this.apiObject.require, request.method.toLowerCase(), [])).then(() => {
           // Do we need auth?
           if (this.apiObject.auth) {
-            checkAccess(request.user.group_id, request.method.toLowerCase(), (function(apiObject) {
+            checkAccess(_.get(request.user, 'group_id', 0), request.method.toLowerCase(), (function(apiObject) {
               // Check if the user want to list his own stuff
               if (_.get(request.params, 'user_id', 'none') === '~') {
                 // Replace :user_id with ~
@@ -84,7 +84,8 @@ export default class Api {
         } else if (!user) { // Check if the user object is given
           responseForbidden(response);
         } else {
-          return next();
+          request.user = user;
+          next();
         }
       })(request, response, next);
     };
@@ -92,10 +93,10 @@ export default class Api {
     // Create a new route
     if (this.apiObject.auth === true) {
         server.route(this.apiObject.url)
-          .get(passportCheck, routeFunction)
-          .post(passportCheck, routeFunction)
-          .patch(passportCheck, routeFunction)
-          .delete(passportCheck, routeFunction)
+          .get([passportCheck, routeFunction])
+          .post([passportCheck, routeFunction])
+          .patch([passportCheck, routeFunction])
+          .delete([passportCheck, routeFunction])
     } else {
       server.route(this.apiObject.url)
         .get(routeFunction)

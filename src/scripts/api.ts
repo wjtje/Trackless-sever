@@ -64,7 +64,7 @@ export default class Api {
               responseForbidden(response);
             });
           } else {
-            this.apiObject[request.method](request, response);
+            this.apiObject[request.method.toLowerCase()](request, response);
           }
         }).catch(([missing, typeErr]) => {
           // Something is missing report to the user

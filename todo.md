@@ -10,7 +10,3 @@ Use todo+ to see inline todo's
 ### Work system
 
  - Able to list all work
-
-## Bugs
-
- - new Api() won't run correctly when auth is disabled

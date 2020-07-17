@@ -927,7 +927,18 @@ paths:
                       location_id:
                         type: array
                         items:
-                          type: number
+                          type: object
+                          allOf:
+                            - $ref: "#/components/schemas/location_id"
+                            - $ref: "#/components/schemas/locationName"
+                            - $ref: "#/components/schemas/locationPlace"
+                            - $ref: "#/components/schemas/locationId"
+                            - type: object
+                              properties:
+                                occurrence:
+                                  type: number
+                                  description: How many times it was used
+                                  example: 10
                           
         403:
           $ref: "#/components/responses/403"

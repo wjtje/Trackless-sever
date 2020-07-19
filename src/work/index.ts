@@ -4,6 +4,7 @@ import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseDone, responseBadRequest } from "../scripts/response";
 import { locationIdNotValid } from "../global/language";
+import moment = require("moment");
 
 new Api({
   url: '/work',
@@ -13,8 +14,7 @@ new Api({
       {name: 'location_id', check: number},
       {name: 'time', check: number},
       {name: 'date', check: (testValue: any) => {
-        //TODO: Add moment js
-        return /[0-9]{4}-[0-9]{2}-[0-9]{2}/g.test(testValue);
+        return moment(testValue, "YYYY-MM-DD").isValid();
       }},
       {name: 'description', check: string},
     ]

@@ -42,7 +42,6 @@ server.use(passport.initialize());
 server.use(serverError() as any);
 
 // Use passport
-//TODO: Custom json response
 passport.use(new BearerStrategy(
   function(token, done) {
     apiLogin(token).then((user) => {

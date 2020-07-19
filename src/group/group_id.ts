@@ -1,8 +1,8 @@
 import Api from "../scripts/api";
-import { string, number } from "../scripts/types";
+import { mysqlTEXT } from "../scripts/types";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
-import { responseNotFound, responseDone, responseBadRequest } from "../scripts/response";
+import { responseNotFound, responseDone } from "../scripts/response";
 import * as _ from 'lodash';
 import { checkGroupId, checkUserId } from "../scripts/idCheck";
 
@@ -11,7 +11,7 @@ new Api({
   auth: true,
   require: {
     patch: [
-      {name: 'groupName', check: string},
+      {name: 'groupName', check: mysqlTEXT},
     ],
   },
   get: (request, response) => {

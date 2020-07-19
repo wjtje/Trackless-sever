@@ -1,7 +1,7 @@
 import Api from "../scripts/api";
 import { DBcon } from "..";
 import { responseDone, responseBadRequest, responseCreated } from "../scripts/response";
-import { string, number } from '../scripts/types';
+import { mysqlTEXT, mysqlINT } from '../scripts/types';
 import { storePassword } from "../scripts/security";
 import { handleQuery } from "../scripts/handle";
 import { usernameTaken } from "../global/language";
@@ -20,11 +20,11 @@ new Api({
   auth: true,
   require: {
     post: [
-      {name: "firstname", check: string},
-      {name: "lastname", check: string},
-      {name: "username", check: string},
-      {name: "password", check: string},
-      {name: "group_id", check: number},
+      {name: "firstname", check: mysqlTEXT},
+      {name: "lastname", check: mysqlTEXT},
+      {name: "username", check: mysqlTEXT},
+      {name: "password", check: mysqlTEXT},
+      {name: "group_id", check: mysqlINT},
     ]
   },
   get: (request, response) => {

@@ -3,7 +3,7 @@ import { DBcon, server } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseDone, responseCreated, responseBadRequest } from "../scripts/response";
 import { requiredDataCheck } from "../scripts/dataCheck";
-import { string } from "../scripts/types";
+import {  mysqlTEXT } from "../scripts/types";
 import { sha512_256 } from "js-sha512";
 import * as _ from 'lodash';
 import { missingError } from "../scripts/error";
@@ -34,9 +34,9 @@ new Api({
 
 server.post('/login', (request, response) => {
   requiredDataCheck(request, response, [
-    {name: 'username', check: string},
-    {name: 'password', check: string},
-    {name: 'deviceName', check: string},
+    {name: 'username', check: mysqlTEXT},
+    {name: 'password', check: mysqlTEXT},
+    {name: 'deviceName', check: mysqlTEXT},
   ]).then(() => {
     // Get the infomation needed from the server
     DBcon.query(

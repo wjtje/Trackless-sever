@@ -1,5 +1,5 @@
 import Api from "../scripts/api";
-import { number, string } from "../scripts/types";
+import { number, string, mysqlINT, mysqlDATE, mysqlTEXT } from "../scripts/types";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseDone, responseBadRequest } from "../scripts/response";
@@ -11,12 +11,10 @@ new Api({
   auth: true,
   require: {
     post: [
-      {name: 'location_id', check: number},
-      {name: 'time', check: number},
-      {name: 'date', check: (testValue: any) => {
-        return moment(testValue, "YYYY-MM-DD").isValid();
-      }},
-      {name: 'description', check: string},
+      {name: 'location_id', check: mysqlINT},
+      {name: 'time', check: mysqlINT},
+      {name: 'date', check: mysqlDATE},
+      {name: 'description', check: mysqlTEXT},
     ]
   },
   post: (request, response, user) => {

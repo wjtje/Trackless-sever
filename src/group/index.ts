@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import * as util from 'util';
 import { DBcon } from '..';
 import Api from '../scripts/api';
-import { string } from '../scripts/types';
+import { mysqlTEXT } from '../scripts/types';
 import { handleQuery } from '../scripts/handle';
 import { responseDone, responseCreated } from '../scripts/response';
 
@@ -18,7 +18,7 @@ new Api({
   auth: true,
   require: {
     post: [
-      {name: 'groupName', check: string},
+      {name: 'groupName', check: mysqlTEXT},
     ],
   },
   get: (request, response) => {

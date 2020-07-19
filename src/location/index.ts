@@ -1,5 +1,5 @@
 import Api from "../scripts/api";
-import { string } from "../scripts/types";
+import { mysqlTEXT } from "../scripts/types";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseDone, responseCreated } from "../scripts/response";
@@ -9,9 +9,9 @@ new Api({
   auth: true,
   require: {
     post: [
-      {name: 'name', check: string},
-      {name: 'place', check: string},
-      {name: 'id', check: string},
+      {name: 'name', check: mysqlTEXT},
+      {name: 'place', check: mysqlTEXT},
+      {name: 'id', check: mysqlTEXT},
     ],
   },
   get: (request, response) => {

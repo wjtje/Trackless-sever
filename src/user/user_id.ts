@@ -23,9 +23,6 @@ export interface TL_user {
 new Api({
   url: '/user/:user_id',
   auth: true,
-  require: {
-
-  },
   get: (request, response, user) => {
     checkUserId(request, response, () => {
       // Get all the infomation from the database

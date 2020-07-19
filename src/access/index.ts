@@ -3,7 +3,7 @@ import { DBcon } from '..';
 import Api from '../scripts/api';
 import { responseDone, responseBadRequest, responseCreated } from '../scripts/response';
 import { handleQuery } from '../scripts/handle';
-import { number, string } from '../scripts/types';
+import { mysqlINT, mysqlTEXT } from '../scripts/types';
 import { groupNotFound, methodNotAllowd } from '../global/language';
 
 const query = util.promisify(DBcon.query).bind(DBcon);
@@ -18,9 +18,9 @@ new Api({
   auth: true,
   require: {
     post: [
-      {name: 'group_id', check: number},
-      {name: 'method', check: string},
-      {name: 'url', check: string},
+      {name: 'group_id', check: mysqlINT},
+      {name: 'method', check: mysqlTEXT},
+      {name: 'url', check: mysqlTEXT},
     ]
   },
   get: (request, response) => {

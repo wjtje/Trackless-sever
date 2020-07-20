@@ -1,10 +1,9 @@
 import Api from "../scripts/api";
-import { number, string, mysqlINT, mysqlDATE, mysqlTEXT } from "../scripts/types";
+import { mysqlINT, mysqlDATE, mysqlTEXT } from "../scripts/types";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseDone, responseBadRequest } from "../scripts/response";
 import { locationIdNotValid } from "../global/language";
-import moment = require("moment");
 
 new Api({
   url: '/work',

@@ -1,4 +1,4 @@
-import moment = require("moment");
+import moment from "moment";
 
 /**
  * tests a value if it is a string

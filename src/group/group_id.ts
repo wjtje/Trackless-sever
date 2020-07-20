@@ -3,7 +3,7 @@ import { mysqlTEXT } from "../scripts/types";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseNotFound, responseDone } from "../scripts/response";
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { checkGroupId, checkUserId } from "../scripts/idCheck";
 
 new Api({

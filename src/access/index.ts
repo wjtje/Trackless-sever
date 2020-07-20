@@ -1,4 +1,4 @@
-import * as util from 'util';
+import util from 'util';
 import { DBcon } from '..';
 import Api from '../scripts/api';
 import { responseDone, responseBadRequest, responseCreated } from '../scripts/response';

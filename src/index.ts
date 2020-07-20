@@ -1,11 +1,11 @@
 // Import all packages
-import * as mysql from 'mysql';
-import * as express from 'express';
-import * as bodyParser from 'body-parser';
+import mysql from 'mysql';
+import express from 'express';
+import bodyParser from 'body-parser';
 import { Base64 } from 'js-base64';
-import * as passport from 'passport';
+import passport from 'passport';
 import { Strategy as BearerStrategy } from 'passport-http-bearer';
-var cors = require('cors');
+import cors from 'cors';
 import { apiFunctionNotFound } from './global/language';
 import { serverError } from './scripts/error';
 
@@ -83,6 +83,7 @@ import { apiLogin } from './api/lib';
 import './server/about';
 
 // Custom error pages
+// TODO: update 404
 server.use(function (req, res) {
   res.send(JSON.stringify({
     message: apiFunctionNotFound,

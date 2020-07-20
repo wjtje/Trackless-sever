@@ -1,10 +1,10 @@
 import Api from "../scripts/api";
 import { DBcon } from "..";
-import { responseDone, responseBadRequest } from "../scripts/response";
+import { responseDone } from "../scripts/response";
 import { handleQuery } from "../scripts/handle";
 import { storePassword } from "../scripts/security";
-import * as util from 'util';
-import * as _ from 'lodash';
+import util from 'util';
+import _ from 'lodash';
 import { itemPatch, handlePatchRequest } from "../scripts/patch";
 import { checkUserId } from "../scripts/idCheck";
 import { usernameTaken } from "../global/language";

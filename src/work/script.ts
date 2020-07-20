@@ -1,6 +1,6 @@
 import { responseDone } from "../scripts/response";
 import { Response } from "express";
-import * as moment from 'moment';
+import moment from 'moment';
 
 export interface TLWork {
   work_id:     number;

@@ -1,6 +1,6 @@
 import { requireObject } from "./interfaces";
 import { Request, Response } from "express";
-import * as _ from "lodash";
+import _ from "lodash";
 
 /**
  * Check of the request contains all the required data

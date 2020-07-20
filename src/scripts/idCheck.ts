@@ -4,7 +4,7 @@ import { DBcon } from "..";
 import { handleQuery } from "./handle";
 import { responseNotFound, responseBadRequest } from "./response";
 import { userInfo } from "../scripts/interfaces";
-import _ = require("lodash");
+import _ from "lodash";
 import { accessNoNumber, apiNoNumber, groupNoNumber, locationNoNumber, userNoNumber, workNoNumber } from "../global/language";
 
 /**

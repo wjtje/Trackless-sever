@@ -5,7 +5,7 @@ import { responseDone, responseCreated, responseBadRequest } from "../scripts/re
 import { requiredDataCheck } from "../scripts/dataCheck";
 import {  mysqlTEXT } from "../scripts/types";
 import { sha512_256 } from "js-sha512";
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { missingError } from "../scripts/error";
 import { checkUsernamePasswd } from "../global/language";
 

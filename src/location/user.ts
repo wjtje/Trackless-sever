@@ -2,8 +2,8 @@ import Api from "../scripts/api";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseDone } from "../scripts/response";
-import _ = require("lodash");
-import moment = require("moment");
+import _ from "lodash";
+import moment from "moment";
 
 // Get last used location for that user
 new Api({

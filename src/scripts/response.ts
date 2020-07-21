@@ -9,6 +9,7 @@ import { request200, request201, request400, request403, request404, request500 
  * @param {object} result
  */
 export function responseDone(response:Response, result?: object) {
+  response.type('json');
   response.send(JSON.stringify({
     info: {
       status: 200,
@@ -26,7 +27,7 @@ export function responseDone(response:Response, result?: object) {
  * @param {object} createResult
  */
 export function responseCreated(response:Response, createResult?:object) {
-  // #/components/responses/201
+  response.type('json');
   response.status(201);
   response.send(JSON.stringify({
     info: {
@@ -45,6 +46,7 @@ export function responseCreated(response:Response, createResult?:object) {
  * @param {object} error More details about the error that happend
  */
 export function responseBadRequest(response:Response, error?: object) {
+  response.type('json');
   response.status(400);
   response.send(JSON.stringify({
     info: {
@@ -62,6 +64,7 @@ export function responseBadRequest(response:Response, error?: object) {
  * @param {Response} response
  */
 export function responseForbidden(response:Response) {
+  response.type('json');
   response.status(403);
   response.send(JSON.stringify({
     info: {
@@ -78,6 +81,7 @@ export function responseForbidden(response:Response) {
  * @param {Response} response 
  */
 export function responseNotFound(response:Response) {
+  response.type('json');
   response.status(404);
   response.send(JSON.stringify({
     info: {
@@ -95,6 +99,7 @@ export function responseNotFound(response:Response) {
  * @param {object} error More details about the error that happend
  */
 export function responseServerError(response:Response, error?: object) {
+  response.type('json');
   response.status(500);
   response.send(JSON.stringify({
     info: {

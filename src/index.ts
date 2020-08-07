@@ -1,5 +1,5 @@
 // Import all packages
-import mysql from 'mysql';
+import { createConnection as mysqlCreateConnection } from 'mysql';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { Base64 } from 'js-base64';
@@ -16,7 +16,7 @@ const port:number = 55565;
 Base64.extendString();
 
 // Setup the connection with the database
-export const DBcon = mysql.createConnection({
+export const DBcon = mysqlCreateConnection({
   host: "trackless",
   user: "yourusername",
   password: "yourpassword",

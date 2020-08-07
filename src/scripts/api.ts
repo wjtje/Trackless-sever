@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { responseBadRequest, responseForbidden, responseServerError } from './response';
 import passport from "passport";
 import { requiredDataCheck } from './dataCheck';
-import _ from "lodash";
+import { get as _get } from "lodash";
 import { checkAccess } from '../access/lib';
 import { missingError } from './error';
 import { methodNotFound } from '../global/language';
@@ -43,15 +43,15 @@ export default class Api {
           },
         });
       } else {
-        requiredDataCheck(request, response, _.get(this.apiObject.require, request.method.toLowerCase(), [])).then(() => {
+        requiredDataCheck(request, response, _get(this.apiObject.require, request.method.toLowerCase(), [])).then(() => {
           // Do we need auth?
           if (this.apiObject.auth) {
-            checkAccess(_.get(request.user, 'group_id', 0), request.method.toLowerCase(), (function(apiObject) {
+            checkAccess(_get(request.user, 'group_id', 0), request.method.toLowerCase(), (function(apiObject) {
               // Check if the user want to list his own stuff
-              if (_.get(request.params, 'user_id', 'none') === '~') {
+              if (_get(request.params, 'user_id', 'none') === '~') {
                 // Replace :user_id with ~
                 return apiObject.url.replace(':user_id', '~');
-              } else if (_.get(request.params, 'group_id', 'none') === '~') {
+              } else if (_get(request.params, 'group_id', 'none') === '~') {
                 // Replace :group_id with ~
                 return apiObject.url.replace(':group_id', '~');
               } else {

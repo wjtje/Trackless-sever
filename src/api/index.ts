@@ -5,7 +5,7 @@ import { responseDone, responseCreated, responseBadRequest } from "../scripts/re
 import { requiredDataCheck } from "../scripts/dataCheck";
 import {  mysqlTEXT } from "../scripts/types";
 import { sha512_256 } from "js-sha512";
-import _ from 'lodash';
+import { get as _get } from 'lodash';
 import { missingError } from "../scripts/error";
 import { checkUsernamePasswd } from "../global/language";
 
@@ -44,7 +44,7 @@ server.post('/login', (request, response) => {
       [request.body.username],
       handleQuery(response, (result) => {
         // Check the password
-        if (sha512_256(request.body.password + _.get(result, '[0].salt_hash', '')) === _.get(result, '[0].hash', '')) {
+        if (sha512_256(request.body.password + _get(result, '[0].salt_hash', '')) === _get(result, '[0].hash', '')) {
           const apiKey:string = sha512_256(Date.now().toString()); // Generated using time
           const user_id:number = result[0].user_id;
 

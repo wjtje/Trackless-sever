@@ -1,6 +1,6 @@
 import { requireObject } from "./interfaces";
 import { Request, Response } from "express";
-import _ from "lodash";
+import { get as _get, has as _has } from "lodash";
 
 /**
  * Check of the request contains all the required data
@@ -18,13 +18,13 @@ export function requiredDataCheck(request:Request, response:Response, require:Ar
 
   return new Promise(async (resolve, reject) => {
     await Promise.all(require.map(async (i) => {
-      if (!_.has(request.body, i.name) && !_.has(request.params, i.name)) {
+      if (!_has(request.body, i.name) && !_has(request.params, i.name)) {
         // Return to the user that something is missing
         failed = true;
         missing.push(i.name);
       } else if (
-        !i.check(_.get(request.body, i.name)) &&
-        !i.check(_.get(request.params, i.name))
+        !i.check(_get(request.body, i.name)) &&
+        !i.check(_get(request.params, i.name))
       ) {
         // Return to the user that the type is not correct
         failed = true;

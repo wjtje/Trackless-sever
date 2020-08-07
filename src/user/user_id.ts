@@ -3,13 +3,12 @@ import { DBcon } from "..";
 import { responseDone } from "../scripts/response";
 import { handleQuery } from "../scripts/handle";
 import { storePassword } from "../scripts/security";
-import util from 'util';
-import _ from 'lodash';
+import { promisify } from 'util';
 import { itemPatch, handlePatchRequest } from "../scripts/patch";
 import { checkUserId } from "../scripts/idCheck";
 import { usernameTaken } from "../global/language";
 
-const query = util.promisify(DBcon.query).bind(DBcon);
+const query = promisify(DBcon.query).bind(DBcon);
 
 export interface TL_user {
   user_id:   number;

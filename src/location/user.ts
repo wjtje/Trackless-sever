@@ -2,7 +2,7 @@ import Api from "../scripts/api";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseDone } from "../scripts/response";
-import _ from "lodash";
+import { get as _get } from "lodash";
 import moment from "moment";
 
 // Get last used location for that user
@@ -16,7 +16,7 @@ new Api({
       [userInfo.user_id],
       handleQuery(response, (result) => {
         responseDone(response, {
-          location_id: _.get(result, '[0].location_id', 0)
+          location_id: _get(result, '[0].location_id', 0)
         })
       })
     )
@@ -47,8 +47,8 @@ new Api({
       handleQuery(response, (result) => {
         responseDone(response, {
           location_id: [
-            _.get(result, '[0]', blank),
-            _.get(result, '[1]', blank),
+            _get(result, '[0]', blank),
+            _get(result, '[1]', blank),
           ]
         })
       })

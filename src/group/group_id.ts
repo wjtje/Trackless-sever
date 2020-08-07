@@ -3,7 +3,7 @@ import { mysqlTEXT } from "../scripts/types";
 import { DBcon } from "..";
 import { handleQuery } from "../scripts/handle";
 import { responseNotFound, responseDone } from "../scripts/response";
-import _ from 'lodash';
+import { get as _get } from 'lodash';
 import { checkGroupId, checkUserId } from "../scripts/idCheck";
 
 new Api({
@@ -31,7 +31,7 @@ new Api({
                 result: [
                   {
                     group_id: Number(request.params.group_id),
-                    groupName: _.get(resultGroup, '[0].groupName', 'undefined'),
+                    groupName: _get(resultGroup, '[0].groupName', 'undefined'),
                     users: result
                   },
                 ],

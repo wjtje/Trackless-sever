@@ -35,7 +35,7 @@ export const mysqlINT = (testValue:any) : boolean => {
   // Check if the value is not NaN
   if (isNaN(Number(testValue))) {
     return false; // It is not a INT
-  } else if (Number(testValue) > 2147483647) {  // Check if the value is not to big
+  } else if (Number(testValue) > 2147483647 || Number(testValue) < -2147483648) {  // Check if the value is not to big or to small
     return false; // It is not a INT
   } else {
     return true

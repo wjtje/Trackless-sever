@@ -22,10 +22,12 @@ export function sqlError(response:Response, error:MysqlError, errorMessage:strin
   });
 
   // Save it in the database
+  // TODO: Add the user_id to the error
   DBcon.query(
-    "INSERT INTO `TL_errors` (`sqlError`, `message`) VALUES (?,?)",
+    "INSERT INTO `TL_errors` (`user_id`, `error_code`, `error_message`) VALUES (?,?)",
     [
-      JSON.stringify(error),
+      0,
+      error.code,
       errorMessage
     ]
   );
@@ -72,10 +74,11 @@ export function serverError() {
 
         // Save to the database
         DBcon.query(
-          "INSERT INTO `TL_errors` (`sqlError`, `message`) VALUES (?,?)",
+          "INSERT INTO `TL_errors` (`user_id`, `error_code`, `error_message`) VALUES (?,?,?)",
           [
+            0,
             error.type,
-            'New error'
+            'New server error'
           ]
         );
     }

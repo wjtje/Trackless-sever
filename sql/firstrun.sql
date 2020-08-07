@@ -16,8 +16,9 @@ INSERT INTO `TL_users` (`firstname`, `lastname`, `username`, `group_id`, `salt_h
 CREATE TABLE `trackless`.`TL_errors` (
     `error_id` INT NOT NULL AUTO_INCREMENT ,
     `dateTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-    `sqlError` LONGTEXT NOT NULL ,
-    `message` TEXT NOT NULL ,
+    `user_id` INT NOT NULL,
+    `error_code` LONGTEXT NOT NULL ,
+    `error_message` LONGTEXT NOT NULL ,
     PRIMARY KEY (`error_id`)
 ) ENGINE = InnoDB;
 

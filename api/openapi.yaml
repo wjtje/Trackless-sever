@@ -3,7 +3,7 @@ servers:
   - url: http://localhost:55565
 
 info:
-  version: '0.2.2'
+  version: '0.3.4'
   title: 'Trackless API'
   contact:
     name: wjtje

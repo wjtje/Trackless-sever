@@ -83,8 +83,8 @@ import { apiLogin } from './api/lib';
 import './server/about';
 
 // Custom error pages
-// TODO: update 404
 server.use(function (req, res) {
+  res.status(404);
   res.send(JSON.stringify({
     message: apiFunctionNotFound,
     url: req.originalUrl

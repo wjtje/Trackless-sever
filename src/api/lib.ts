@@ -1,6 +1,7 @@
 import { DBcon } from '../index';
 import { sha512_256 } from 'js-sha512';
 import { accountNotFound } from '../global/language';
+import { get as _get } from 'lodash';
 
 /**
  * Check the api key in the database
@@ -24,10 +25,11 @@ export function apiLogin(apiKey:string):Promise<{
         if (error || result.length == 0) { // An sql error or invalid api key
           // Internal error
           DBcon.query(
-            "INSERT INTO `TL_errors` (`sqlError`, `message`) VALUES (?,?)",
+            "INSERT INTO `TL_errors` (`user_id`, `error_code`, `error_message`) VALUES (?,?,?)",
             [
-              JSON.stringify(error),
-              'None'
+              0,
+              _get(error, 'code', 'Wrong api key'),
+              'Api key not found or internal error'
             ]
           );
 
@@ -45,10 +47,11 @@ export function apiLogin(apiKey:string):Promise<{
               // Document the error
               if (error) {
                 DBcon.query(
-                  "INSERT INTO `TL_errors` (`sqlError`, `message`) VALUES (?,?)",
+                  "INSERT INTO `TL_errors` (`user_id`, `error_code`, `error_message`) VALUES (?,?,?)",
                   [
-                    JSON.stringify(error),
-                    'None'
+                    0,
+                    error.code,
+                    'Something went wrong'
                   ]
                 );
               }

@@ -1,8 +1,8 @@
-import Api from "../scripts/api";
-import { mysqlTEXT } from "../scripts/types";
-import { DBcon } from "..";
-import { handleQuery } from "../scripts/handle";
-import { responseDone, responseCreated } from "../scripts/response";
+import Api from "../../scripts/api";
+import { mysqlTEXT } from "../../scripts/types";
+import { DBcon } from "../../";
+import { handleQuery } from "../../scripts/handle";
+import { responseDone, responseCreated } from "../../scripts/response";
 
 new Api({
   url: '/location',

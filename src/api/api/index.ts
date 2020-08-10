@@ -1,13 +1,13 @@
-import Api from "../scripts/api";
-import { DBcon, server } from "..";
-import { handleQuery } from "../scripts/handle";
-import { responseDone, responseCreated, responseBadRequest } from "../scripts/response";
-import { requiredDataCheck } from "../scripts/dataCheck";
-import {  mysqlTEXT } from "../scripts/types";
+import Api from "../../scripts/api";
+import { DBcon, server } from "../..";
+import { handleQuery } from "../../scripts/handle";
+import { responseDone, responseCreated, responseBadRequest } from "../../scripts/response";
+import { requiredDataCheck } from "../../scripts/dataCheck";
+import {  mysqlTEXT } from "../../scripts/types";
 import { sha512_256 } from "js-sha512";
 import { get as _get } from 'lodash';
-import { missingError } from "../scripts/error";
-import { checkUsernamePasswd } from "../global/language";
+import { missingError } from "../../scripts/error";
+import { checkUsernamePasswd } from "../../global/language";
 
 export interface APIKeyNames {
   api_id:     number;

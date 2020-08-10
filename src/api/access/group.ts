@@ -1,8 +1,8 @@
-import Api from "../scripts/api";
-import { DBcon } from "..";
-import { handleQuery } from "../scripts/handle";
-import { responseDone } from "../scripts/response";
-import { checkGroupId } from "../scripts/idCheck";
+import Api from "../../scripts/api";
+import { DBcon } from "../..";
+import { handleQuery } from "../../scripts/handle";
+import { responseDone } from "../../scripts/response";
+import { checkGroupId } from "../../scripts/idCheck";
 
 new Api({
   url: '/access/group/:group_id',

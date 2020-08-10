@@ -1,9 +1,9 @@
-import Api from "../scripts/api";
-import { mysqlINT, mysqlDATE, mysqlTEXT } from "../scripts/types";
-import { DBcon } from "..";
-import { handleQuery } from "../scripts/handle";
-import { responseDone, responseBadRequest } from "../scripts/response";
-import { locationIdNotValid } from "../global/language";
+import Api from "../../scripts/api";
+import { mysqlINT, mysqlDATE, mysqlTEXT } from "../../scripts/types";
+import { DBcon } from "../..";
+import { handleQuery } from "../../scripts/handle";
+import { responseDone, responseBadRequest } from "../../scripts/response";
+import { locationIdNotValid } from "../../global/language";
 
 new Api({
   url: '/work',

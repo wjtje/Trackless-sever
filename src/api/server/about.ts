@@ -1,5 +1,5 @@
-import { version } from "../global/about";
-import Api from "../scripts/api";
+import { version } from "../../global/about";
+import Api from "../../scripts/api";
 
 new Api({
   url: '/server/about',

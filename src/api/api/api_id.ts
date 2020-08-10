@@ -1,8 +1,8 @@
-import Api from "../scripts/api";
-import { DBcon } from "..";
-import { handleQuery } from "../scripts/handle";
-import { responseDone } from "../scripts/response";
-import { checkApiId } from "../scripts/idCheck";
+import Api from "../../scripts/api";
+import { DBcon } from "../..";
+import { handleQuery } from "../../scripts/handle";
+import { responseDone } from "../../scripts/response";
+import { checkApiId } from "../../scripts/idCheck";
 
 
 interface TL_api {

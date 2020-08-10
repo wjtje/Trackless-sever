@@ -1,8 +1,8 @@
-import { DBcon } from "..";
-import { handleQuery } from "../scripts/handle";
-import { responseDone } from "../scripts/response";
-import Api from "../scripts/api";
-import { checkAccessId } from "../scripts/idCheck";
+import { DBcon } from "../../";
+import { handleQuery } from "../../scripts/handle";
+import { responseDone } from "../../scripts/response";
+import Api from "../../scripts/api";
+import { checkAccessId } from "../../scripts/idCheck";
 
 new Api({
   url: '/access/:access_id',

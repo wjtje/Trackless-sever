@@ -1,7 +1,7 @@
-import Api from "../scripts/api";
-import { DBcon } from "..";
-import { handleQuery } from "../scripts/handle";
-import { responseDone } from "../scripts/response";
+import Api from "../../scripts/api";
+import { DBcon } from "../..";
+import { handleQuery } from "../../scripts/handle";
+import { responseDone } from "../../scripts/response";
 import { get as _get, result } from "lodash";
 import moment from "moment";
 import { promisify } from 'util';

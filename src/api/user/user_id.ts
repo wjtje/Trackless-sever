@@ -1,12 +1,12 @@
-import Api from "../scripts/api";
-import { DBcon } from "..";
-import { responseDone } from "../scripts/response";
-import { handleQuery } from "../scripts/handle";
-import { storePassword } from "../scripts/security";
+import Api from "../../scripts/api";
+import { DBcon } from "../../";
+import { responseDone } from "../../scripts/response";
+import { handleQuery } from "../../scripts/handle";
+import { storePassword } from "../../scripts/security";
 import { promisify } from 'util';
-import { itemPatch, handlePatchRequest } from "../scripts/patch";
-import { checkUserId } from "../scripts/idCheck";
-import { usernameTaken } from "../global/language";
+import { itemPatch, handlePatchRequest } from "../../scripts/patch";
+import { checkUserId } from "../../scripts/idCheck";
+import { usernameTaken } from "../../global/language";
 
 const query = promisify(DBcon.query).bind(DBcon);
 

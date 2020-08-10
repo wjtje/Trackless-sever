@@ -1,4 +1,4 @@
-import { responseDone } from "../scripts/response";
+import { responseDone } from "../../scripts/response";
 import { Response } from "express";
 import moment from 'moment';
 

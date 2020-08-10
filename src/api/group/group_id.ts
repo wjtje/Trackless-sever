@@ -1,10 +1,10 @@
-import Api from "../scripts/api";
-import { mysqlTEXT } from "../scripts/types";
-import { DBcon } from "..";
-import { handleQuery } from "../scripts/handle";
-import { responseNotFound, responseDone } from "../scripts/response";
+import Api from "../../scripts/api";
+import { mysqlTEXT } from "../../scripts/types";
+import { DBcon } from "../..";
+import { handleQuery } from "../../scripts/handle";
+import { responseNotFound, responseDone } from "../../scripts/response";
 import { get as _get } from 'lodash';
-import { checkGroupId, checkUserId } from "../scripts/idCheck";
+import { checkGroupId, checkUserId } from "../../scripts/idCheck";
 
 new Api({
   url: '/group/:group_id',

@@ -1,10 +1,10 @@
-import Api from "../scripts/api";
-import { DBcon } from "..";
-import { responseDone, responseBadRequest, responseCreated } from "../scripts/response";
-import { mysqlTEXT, mysqlINT } from '../scripts/types';
-import { storePassword } from "../scripts/security";
-import { handleQuery } from "../scripts/handle";
-import { usernameTaken } from "../global/language";
+import Api from "../../scripts/api";
+import { DBcon } from "../..";
+import { responseDone, responseBadRequest, responseCreated } from "../../scripts/response";
+import { mysqlTEXT, mysqlINT } from '../../scripts/types';
+import { storePassword } from "../../scripts/security";
+import { handleQuery } from "../../scripts/handle";
+import { usernameTaken } from "../../global/language";
 
 interface TL_user {
   user_id:   number;

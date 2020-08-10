@@ -1,4 +1,3 @@
-// Import all packages
 import { createConnection as mysqlCreateConnection } from 'mysql';
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -8,6 +7,7 @@ import { Strategy as BearerStrategy } from 'passport-http-bearer';
 import cors from 'cors';
 import { apiFunctionNotFound } from './global/language';
 import { serverError } from './scripts/error';
+import { apiLogin } from './scripts/apiLogin';
 
 // Settings
 const port:number = 55565;
@@ -53,34 +53,33 @@ passport.use(new BearerStrategy(
 ));
 
 // Import user commands
-import './user/index';
-import './user/user_id';
+import './api/user/index';
+import './api/user/user_id';
 
 // Import api commands
-import './api/api_id';
-import './api/index';
+import './api/api/api_id';
+import './api/api/index';
 
 // Import groups commands
-import './group/index';
-import './group/group_id';
+import './api/group/index';
+import './api/group/group_id';
 
 // Import location commands
-import './location/index';
-import './location/location_id';
-import './location/user';
+import './api/location/index';
+import './api/location/location_id';
+import './api/location/user';
 
 // Import work commands
-import './work/index';
-import './work/user';
+import './api/work/index';
+import './api/work/user';
 
 // Import access commands
-import './access/index';
-import './access/access_id';
-import './access/group';
-import { apiLogin } from './api/lib';
+import './api/access/index';
+import './api/access/access_id';
+import './api/access/group';
 
 // Import server commands
-import './server/about';
+import './api/server/about';
 
 // Custom error pages
 server.use(function (req, res) {

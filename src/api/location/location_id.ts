@@ -1,9 +1,9 @@
-import Api from "../scripts/api";
-import { DBcon } from "..";
-import { handleQuery } from "../scripts/handle";
-import { responseDone, responseNotFound } from "../scripts/response";
-import { itemPatch, handlePatchRequest } from "../scripts/patch";
-import { checkLocationId } from "../scripts/idCheck";
+import Api from "../../scripts/api";
+import { DBcon } from "../../";
+import { handleQuery } from "../../scripts/handle";
+import { responseDone, responseNotFound } from "../../scripts/response";
+import { itemPatch, handlePatchRequest } from "../../scripts/patch";
+import { checkLocationId } from "../../scripts/idCheck";
 
 new Api({
   url: '/location/:location_id',

@@ -1,10 +1,10 @@
 import { promisify } from 'util';
-import { DBcon } from '..';
-import Api from '../scripts/api';
-import { responseDone, responseBadRequest, responseCreated } from '../scripts/response';
-import { handleQuery } from '../scripts/handle';
-import { mysqlINT, mysqlTEXT } from '../scripts/types';
-import { groupNotFound, methodNotAllowd } from '../global/language';
+import { DBcon } from '../../';
+import Api from '../../scripts/api';
+import { responseDone, responseBadRequest, responseCreated } from '../../scripts/response';
+import { handleQuery } from '../../scripts/handle';
+import { mysqlINT, mysqlTEXT } from '../../scripts/types';
+import { groupNotFound, methodNotAllowd } from '../../global/language';
 
 const query = promisify(DBcon.query).bind(DBcon);
 

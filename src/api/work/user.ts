@@ -1,10 +1,10 @@
-import Api from "../scripts/api";
-import { DBcon } from "..";
-import { handleQuery } from "../scripts/handle";
+import Api from "../../scripts/api";
+import { DBcon } from "../../";
+import { handleQuery } from "../../scripts/handle";
 import { TLWork, responseWork } from "./script";
-import { checkUserId, checkWorkId, checkWorkIdUser } from "../scripts/idCheck";
-import { responseDone } from "../scripts/response";
-import { itemPatch, handlePatchRequest } from "../scripts/patch";
+import { checkUserId, checkWorkIdUser } from "../../scripts/idCheck";
+import { responseDone } from "../../scripts/response";
+import { itemPatch, handlePatchRequest } from "../../scripts/patch";
 
 new Api({
   url: '/work/user/:user_id',

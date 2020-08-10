@@ -5,7 +5,7 @@ import { responseBadRequest, responseForbidden, responseServerError } from './re
 import passport from "passport";
 import { requiredDataCheck } from './dataCheck';
 import { get as _get } from "lodash";
-import { checkAccess } from '../access/lib';
+import { checkAccess } from './checkAccess';
 import { missingError } from './error';
 import { methodNotFound } from '../global/language';
 

@@ -4,8 +4,8 @@ import Api from "../scripts/api";
 new Api({
   url: '/server/about',
   get: (request, response) => {
-    response.send(JSON.stringify({
+    response.status(200).json({
       version: version
-    }));
+    });
   }
 });

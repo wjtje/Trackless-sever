@@ -1,30 +1,6 @@
 import moment from "moment";
 
 /**
- * tests a value if it is a string
- * 
- * @deprecated
- * @since 0.2-beta.1
- * @param testValue 
- * @returns {boolean}
- */
-export const string = (testValue:any) : boolean => {
-  return (typeof testValue === "string")? true:false
-};
-
-/**
- * tests a value if it is a number
- * 
- * @deprecated
- * @since 0.2-beta.1
- * @param testValue 
- * @returns {boolean}
- */
-export const number = (testValue:any) : boolean => {
-  return !isNaN(Number(testValue));
-}
-
-/**
  * Tests a value if it is a mysql INT
  * 
  * @since 0.3-beta.4
@@ -77,9 +53,9 @@ export const mysqlDATE = (testValue:any) : boolean => {
  * @returns {boolean}
  */
 export const mysqlTEXT = (testValue:any) : boolean => {
-  testValue = String(testValue);  // Make sure it is a string
+  const testValueString = String(testValue);  // Make sure it is a string
 
-  if (Buffer.from([testValue]).length > 65535) {
+  if (Buffer.from([testValueString]).length > 65535 || typeof testValue !== "string") {
     return false; // The string is to large
   } else {
     return true;
@@ -94,9 +70,9 @@ export const mysqlTEXT = (testValue:any) : boolean => {
  * @returns {boolean}
  */
 export const mysqlLONGTEXT = (testValue:any) : boolean => {
-  testValue = String(testValue);  // Make sure it is a string
+  const testValueString = String(testValue);  // Make sure it is a string
 
-  if (Buffer.from([testValue]).length > 4294967296) {
+  if (Buffer.from([testValueString]).length > 4294967296 || typeof testValue !== "string") {
     return false; // The string is to large
   } else {
     return true;

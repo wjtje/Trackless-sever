@@ -47,8 +47,7 @@ UPDATE `TL_groups` SET `group_id` = 1 WHERE `TL_groups`.`groupName` = 'Admin';
 CREATE TABLE `trackless`.`TL_access` (
   `access_id` INT NOT NULL AUTO_INCREMENT ,
   `group_id` INT NOT NULL ,
-  `method` TEXT NOT NULL ,
-  `url` TEXT NOT NULL ,
+  `access` TEXT NOT NULL ,
   PRIMARY KEY (`access_id`)
 ) ENGINE = InnoDB;
 

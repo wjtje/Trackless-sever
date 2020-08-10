@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { NextFunction } from 'express';
 import { sqlError } from './error';
 import { databaseError } from '../global/language';
 
@@ -10,10 +10,10 @@ import { databaseError } from '../global/language';
  * @param errorMessage 
  * @param then 
  */
-export function handleQuery(response: Response, then: (result: any) => void) {
+export function handleQuery(next: NextFunction, then: (result: any) => void) {
   return (error, result) => {
     if (error) {
-      sqlError(response, error, databaseError);
+      sqlError(next, error, databaseError);
     } else {
       then(result);
     }

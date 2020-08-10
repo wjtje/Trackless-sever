@@ -1,30 +1,24 @@
-import { promisify } from 'util';
-import { DBcon } from '../../';
-import Api from '../../scripts/api';
-import { mysqlTEXT } from '../../scripts/types';
+import express from 'express';
+import authHandler from '../../scripts/RequestHandler/authHandler';
+import { DBcon } from '../..';
 import { handleQuery } from '../../scripts/handle';
-import { responseDone, responseCreated } from '../../scripts/response';
+import { TL_groups } from './interface';
+import { promisify } from 'util';
+import requireHandler from '../../scripts/RequestHandler/requireHandler';
+import { mysqlTEXT } from '../../scripts/types';
 
 const query = promisify(DBcon.query).bind(DBcon);
+const router = express.Router();
 
-export interface TL_groups {
-  group_id:  number;
-  groupName: string;
-}
-
-new Api({
-  url: '/group',
-  auth: true,
-  require: {
-    post: [
-      {name: 'groupName', check: mysqlTEXT},
-    ],
-  },
-  get: (request, response) => {
+// Return all the groups
+router.get(
+  '/',
+  authHandler('trackless.group.readAll'),
+  (request, response, next) => {
     // List all group
     DBcon.query(
       "SELECT * FROM `TL_groups` ORDER BY `groupname`",
-      handleQuery(response, (result: Array<TL_groups>) => {
+      handleQuery(next, (result: Array<TL_groups>) => {
         let rslt = []; // Result
 
         // Get all users for each group
@@ -34,7 +28,7 @@ new Api({
             groupName: string;
           }) => {
             // Connect to the database
-            const users = await query("SELECT `user_id`, `firstname`, `lastname`, `username` FROM `TL_users` WHERE `group_id`=?", [group.group_id]);
+            const users = await query("SELECT `user_id`, `firstname`, `lastname`, `username` FROM `TL_users` WHERE `group_id`=? ORDER BY `firstname`,`lastname`", [group.group_id]);
 
             // Append to the rslt list
             rslt.push({
@@ -44,26 +38,36 @@ new Api({
             });
           }));
 
-          responseDone(response, {
-            length: rslt.length,
-            result: rslt,
-          });
+          // Return to the user
+          response.status(200).json(rslt);
         }
 
         readUser(); // Start the async function
       })
     );
-  },
-  post: (request, response) => {
+  }
+);
+
+// Create a new group
+router.post(
+  '/',
+  authHandler('trackless.group.create'),
+  requireHandler([
+    { name: 'groupName', check: mysqlTEXT },
+  ]),
+  (request, response, next) => {
+    // Create a query
     DBcon.query(
       "INSERT INTO `TL_groups` (`groupName`) VALUES (?)",
       [request.body.groupName],
-      handleQuery(response, (result) => {
-        // Saved to database
-        responseCreated(response, {
+      handleQuery(next, (result) => {
+        // Saved into the database
+        response.status(201).json({
           group_id: result.insertId
-        });
+        })
       })
-    );
-  },
-});
+    )
+  }
+)
+
+export default router;

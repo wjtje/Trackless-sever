@@ -5,8 +5,8 @@ import { Base64 } from 'js-base64';
 import passport from 'passport';
 import { Strategy as BearerStrategy } from 'passport-http-bearer';
 import cors from 'cors';
-import { apiFunctionNotFound } from './global/language';
-import { serverError } from './scripts/error';
+import serverErrorHandler from './scripts/RequestHandler/serverErrorHandler';
+import ServerError from './scripts/RequestHandler/serverErrorInterface';
 import { apiLogin } from './scripts/apiLogin';
 
 // Settings
@@ -38,9 +38,6 @@ server.use(bodyParser.json());
 server.use(cors());
 server.use(passport.initialize());
 
-// Custom error
-server.use(serverError() as any);
-
 // Use passport
 passport.use(new BearerStrategy(
   function(token, done) {
@@ -52,43 +49,18 @@ passport.use(new BearerStrategy(
   }
 ));
 
-// Import user commands
-import './api/user/index';
-import './api/user/user_id';
+import './routes';
 
-// Import api commands
-import './api/api/api_id';
-import './api/api/index';
-
-// Import groups commands
-import './api/group/index';
-import './api/group/group_id';
-
-// Import location commands
-import './api/location/index';
-import './api/location/location_id';
-import './api/location/user';
-
-// Import work commands
-import './api/work/index';
-import './api/work/user';
-
-// Import access commands
-import './api/access/index';
-import './api/access/access_id';
-import './api/access/group';
-
-// Import server commands
-import './api/server/about';
-
-// Custom error pages
-server.use(function (req, res) {
-  res.status(404);
-  res.send(JSON.stringify({
-    message: apiFunctionNotFound,
-    url: req.originalUrl
-  }));
+// Add 404 response
+server.use((request, response, next) => {
+  const error:ServerError = new Error('Not found');
+  error.status = 404;
+  error.code = 'trackless.notFound'
+  next(error);
 });
+
+// Handle server errors
+server.use(serverErrorHandler());
 
 // Start the server
 server.listen(port, () => {

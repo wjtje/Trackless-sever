@@ -1,11 +1,18 @@
-import { version } from "../../global/about";
-import Api from "../../scripts/api";
+import { version } from '../../global/about';
+import express from 'express';
+import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType';
 
-new Api({
-  url: '/server/about',
-  get: (request, response) => {
+const router = express.Router();
+
+router.get(
+  '/',
+  (request, response, next) => {
     response.status(200).json({
       version: version
     });
   }
-});
+);
+
+router.use(unusedRequestTypes());
+
+export default router;

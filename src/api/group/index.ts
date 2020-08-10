@@ -6,6 +6,8 @@ import { TL_groups } from './interface';
 import { promisify } from 'util';
 import requireHandler from '../../scripts/RequestHandler/requireHandler';
 import { mysqlTEXT } from '../../scripts/types';
+import ServerError from '../../scripts/RequestHandler/serverErrorInterface';
+import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType';
 
 const query = promisify(DBcon.query).bind(DBcon);
 const router = express.Router();
@@ -68,6 +70,8 @@ router.post(
       })
     )
   }
-)
+);
+
+router.use(unusedRequestTypes());
 
 export default router;

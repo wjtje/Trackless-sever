@@ -56,6 +56,22 @@ paths:
           description: "Something is wrong with your input"
       security:
         - bearer_token: []
+  /server/about:
+    get:
+      tags:
+        - "server"
+      summary: "Get information about the server"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              version:
+                type: "string"
+                example: "0.4-beta.0"
 
 securityDefinitions:
   bearer_token:

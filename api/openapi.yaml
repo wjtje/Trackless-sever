@@ -56,6 +56,111 @@ paths:
           description: "Something is wrong with your input"
       security:
         - bearer_token: []
+  /group/{groupId}:
+    get:
+      tags:
+        - "group"
+      summary: "Get infomation about a single group"
+      produces:
+        - "application/json"
+      parameters:
+      - in: "path"
+        name: "groupId"
+        description: "ID of the group to return"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Group"
+        400:
+          description: "Invalid ID"
+        404:
+          description: "Group not found"
+      security:
+        - bearer_token: []
+    delete:
+      tags:
+        - "group"
+      summary: "Removes a single group from the server and moves all users to the default group"
+      produces:
+        - "application/json"
+      parameters:
+      - in: "path"
+        name: "groupId"
+        description: "ID of the group to remove"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid ID"
+        404:
+          description: "Group not found"
+      security:
+        - bearer_token: []
+    patch:
+      tags:
+        - "group"
+      summary: "Edits a group name"
+      produces:
+        - "application/json"
+      consumes:
+        - "application/json"
+      parameters:
+      - in: "path"
+        name: "groupId"
+        description: "ID of the group to edit"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            groupName:
+              type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid ID"
+        404:
+          description: "Group not found"
+      security:
+        - bearer_token: []
+  /group/{groupId}/add/{userId}:
+    post:
+      tags:
+        - "group"
+      summary: "Add a user to a group"
+      produces:
+        - "application/json"
+      parameters:
+      - in: "path"
+        name: "groupId"
+        description: "ID of the group "
+        required: true
+        type: "integer"
+      - in: "path"
+        name: "userId"
+        description: "ID of the user"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid ID"
+        404:
+          description: "Group or user not found"
+      security:
+        - bearer_token: []
   /server/about:
     get:
       tags:

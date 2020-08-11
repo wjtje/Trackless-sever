@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
-import { userInfo } from '../interfaces';
+import { userInfo } from './interface';
 import ServerError from './serverErrorInterface';
 import { DBcon } from '../..';
 import { handleQuery } from '../handle';
@@ -21,7 +21,7 @@ export default (access: string) => {
       } else if (!user) {
         // User not found
         const error:ServerError = new Error('Forbidden');
-        error.status = 403;
+        error.status = 401;
         error.code = 'trackless.auth.user.notFound';
         next(error);
       } else {

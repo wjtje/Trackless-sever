@@ -1,111 +1,117 @@
-import Api from "../../scripts/api";
-import { mysqlTEXT } from "../../scripts/types";
-import { DBcon } from "../..";
-import { handleQuery } from "../../scripts/handle";
-import { responseNotFound, responseDone } from "../../scripts/response";
-import { get as _get } from 'lodash';
-import { checkGroupId, checkUserId } from "../../scripts/idCheck";
+import express, { response } from 'express';
+import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType';
+import authHandler from '../../scripts/RequestHandler/authHandler';
+import { DBcon } from '../..';
+import { handleQuery } from '../../scripts/handle';
+import groupIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/groupIdCheckHandler';
+import requireHandler from '../../scripts/RequestHandler/requireHandler';
+import { mysqlTEXT } from '../../scripts/types';
+import userIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIdCheckHandler';
 
-new Api({
-  url: '/group/:group_id',
-  auth: true,
-  require: {
-    patch: [
-      {name: 'groupName', check: mysqlTEXT},
-    ],
-  },
-  get: (request, response) => {
-    checkGroupId(request, response, () => {
-      // Group_id is valid return the info
-      DBcon.query(
-        "SELECT * FROM `TL_groups` WHERE `group_id`=? ORDER BY `groupname`",
-        [request.params.group_id],
-        handleQuery(response, (resultGroup) => {
-          // Get all users
-          DBcon.query(
-            "SELECT `user_id`, `firstname`, `lastname`, `username` FROM `TL_users` WHERE `group_id`=?",
-            [request.params.group_id],
-            handleQuery(response, (result) => {
-              responseDone(response, {
-                length: resultGroup.length,
-                result: [
-                  {
-                    group_id: Number(request.params.group_id),
-                    groupName: _get(resultGroup, '[0].groupName', 'undefined'),
-                    users: result
-                  },
-                ],
-              })
-            })
-          );
-        })
-      );
-    });
-  },
-  delete: (request, response) => {
-    checkGroupId(request, response, () => {
-      // Group_id is valid remove it
-      DBcon.query(
-        "DELETE FROM `TL_groups` WHERE `group_id`=?",
-        [request.params.group_id],
-        handleQuery(response, () => {
-          // Remove all the users from that group
-          DBcon.query(
-            "UPDATE `TL_users` SET `group_id`=0 WHERE `group_id`=?",
-            [request.params.group_id]
-          );
-  
-          responseDone(response);
-        })
-      );
-    });
-  },
-  patch: (request, response) => {
-    checkGroupId(request, response, () => {
-      // Group_id is valid edit it
-      DBcon.query(
-        "SELECT * FROM `TL_groups` WHERE `group_id`=? ORDER BY `groupname`",
-        [request.params.group_id],
-        handleQuery(response, (result) => {
-          if (result.length === 0) {
-            // The group does not exsist
-            responseNotFound(response);
-          } else {
-            DBcon.query(
-              "UPDATE `TL_groups` SET `groupName`=? WHERE `group_id`=?",
-              [
-                request.body.groupName,
-                request.params.group_id
-              ],
-              handleQuery(response, () => {
-                responseDone(response);
-              })
-            );
-          }
-        })
-      );
-    });
-  }
-});
+const router = express.Router();
 
-new Api({
-  url: '/group/:group_id/add/:user_id',
-  auth: true,
-  post: (request, response) => {
-    checkGroupId(request, response, () => {
-      checkUserId(request, response, () => {
-        // Add the user to the group
+// Return a single group
+router.get(
+  '/:groupId',
+  authHandler('trackless.group.readAll'),
+  groupIdCheckHandler(),
+  (request, response, next) => {
+    // Group_id is valid return the info
+    DBcon.query(
+      "SELECT * FROM `TL_groups` WHERE `group_id`=?",
+      [request.params.groupId],
+      handleQuery(next, (resultGroup) => {
+        // Get all users
         DBcon.query(
-          "UPDATE `TL_users` SET `group_id`=? WHERE `user_id`=?",
-          [
-            request.params.group_id,
-            request.params.user_id
-          ],
-          handleQuery(response, () => {
-            responseDone(response);
+          "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id` FROM `TL_users` WHERE `group_id`=? ORDER BY `firstname`,`lastname`",
+          [request.params.groupId],
+          handleQuery(next, (resultUsers) => {
+            // Return the infomation
+            response.status(200).json([{
+              group_id: request.params.groupId, 
+              groupName: resultGroup[0].groupName,
+              users: resultUsers,
+            }])
           })
         );
-      });
-    });
+      })
+    )
   }
-})
+);
+
+// Remove a single group
+router.delete(
+  '/:groupId',
+  authHandler('trackless.group.remove'),
+  groupIdCheckHandler(),
+  (request, response, next) => {
+    // Group_id is valid remove it
+    DBcon.query(
+      "DELETE FROM `TL_groups` WHERE `group_id`=?",
+      [request.params.groupId],
+      handleQuery(next, () => {
+        // Remove all the users from that group
+        DBcon.query(
+          "UPDATE `TL_users` SET `group_id`=0 WHERE `group_id`=?",
+          [request.params.groupId]
+        );
+
+        response.status(200).json({
+          message: 'Removed'
+        });
+      })
+    );
+  }
+);
+
+// Edits a group name
+router.patch(
+  '/:groupId',
+  authHandler('trackless.group.edit'),
+  requireHandler([
+    {name: 'groupName', check: mysqlTEXT}
+  ]),
+  groupIdCheckHandler(),
+  (request, response, next) => {
+    // Group_id is valid edit it
+    DBcon.query(
+      "UPDATE `TL_groups` SET `groupName`=? WHERE `group_id`=?",
+      [
+        request.body.groupName,
+        request.params.groupId
+      ],
+      handleQuery(next, () => {
+        response.status(200).json({
+          message: 'Updated'
+        });
+      })
+    );
+  }
+);
+
+// Add a user to a group
+router.post(
+  '/:groupId/add/:userId',
+  authHandler('trackless.group.add'),
+  groupIdCheckHandler(),
+  userIdCheckHandler(),
+  (request, response, next) => {
+    // Change it in the database
+    DBcon.query(
+      "UPDATE `TL_users` SET `group_id`=? WHERE `user_id`=?",
+      [
+        request.params.groupId,
+        request.params.userId
+      ],
+      handleQuery(next, () => {
+        response.status(200).json({
+          message: 'Updated'
+        });
+      })
+    );
+  }
+)
+
+router.use(unusedRequestTypes());
+
+export default router;

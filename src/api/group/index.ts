@@ -30,7 +30,7 @@ router.get(
             groupName: string;
           }) => {
             // Connect to the database
-            const users = await query("SELECT `user_id`, `firstname`, `lastname`, `username` FROM `TL_users` WHERE `group_id`=? ORDER BY `firstname`,`lastname`", [group.group_id]);
+            const users = await query("SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id` FROM `TL_users` WHERE `group_id`=? ORDER BY `firstname`,`lastname`", [group.group_id]);
 
             // Append to the rslt list
             rslt.push({
@@ -71,6 +71,10 @@ router.post(
     )
   }
 );
+
+// Import group_id routes
+import groupIdRoute from './group_id';
+router.use('/', groupIdRoute);
 
 router.use(unusedRequestTypes());
 

@@ -1,4 +1,4 @@
-swagger: "2.0"
+openapi: 3.0.0
 
 info:
   version: "0.4.0"
@@ -16,42 +16,39 @@ paths:
       tags:
         - "group"
       summary: "Get all the groups on the server"
-      produces:
-        - "application/json"
       responses:
         "200":
           description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Group"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Group"
       security:
         - bearer_token: []
     post:
       tags:
         - "group"
       summary: "Create a new group on the server"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: "body"
-          name: "body"
-          required: true
-          schema:
-            type: "object"
-            properties:
-              groupName:
-                type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                groupName:
+                  type: "string"
       responses:
         "201":
           description: "Created the new group"
-          schema:
-            type: "object"
-            properties:
-              group_id:
-                type: "integer"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  groupId:
+                    type: "integer"
         "400":
           description: "Something is wrong with your input"
       security:
@@ -61,21 +58,22 @@ paths:
       tags:
         - "group"
       summary: "Get infomation about a single group"
-      produces:
-        - "application/json"
       parameters:
-      - in: "path"
-        name: "groupId"
-        description: "ID of the group to return"
-        required: true
-        type: "integer"
+        - in: "path"
+          name: "groupId"
+          description: "ID of the group to return"
+          required: true
+          schema:
+            type: "integer"
       responses:
         200:
           description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Group"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Group"
         400:
           description: "Invalid ID"
         404:
@@ -86,14 +84,13 @@ paths:
       tags:
         - "group"
       summary: "Removes a single group from the server and moves all users to the default group"
-      produces:
-        - "application/json"
       parameters:
-      - in: "path"
-        name: "groupId"
-        description: "ID of the group to remove"
-        required: true
-        type: "integer"
+        - in: "path"
+          name: "groupId"
+          description: "ID of the group to remove"
+          required: true
+          schema:
+            type: "integer"
       responses:
         200:
           description: "successful operation"
@@ -107,24 +104,21 @@ paths:
       tags:
         - "group"
       summary: "Edits a group name"
-      produces:
-        - "application/json"
-      consumes:
-        - "application/json"
       parameters:
-      - in: "path"
-        name: "groupId"
-        description: "ID of the group to edit"
-        required: true
-        type: "integer"
-      - in: "body"
-        name: "body"
-        required: true
-        schema:
-          type: "object"
-          properties:
-            groupName:
-              type: "string"
+        - in: "path"
+          name: "groupId"
+          description: "ID of the group to edit"
+          required: true
+          schema:
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                groupName:
+                  type: "string"
       responses:
         200:
           description: "successful operation"
@@ -139,19 +133,19 @@ paths:
       tags:
         - "group"
       summary: "Add a user to a group"
-      produces:
-        - "application/json"
       parameters:
-      - in: "path"
-        name: "groupId"
-        description: "ID of the group "
-        required: true
-        type: "integer"
-      - in: "path"
-        name: "userId"
-        description: "ID of the user"
-        required: true
-        type: "integer"
+        - in: "path"
+          name: "groupId"
+          description: "ID of the group "
+          required: true
+          schema:
+            type: "integer"
+        - in: "path"
+          name: "userId"
+          description: "ID of the user"
+          required: true
+          schema:
+            type: "integer"
       responses:
         200:
           description: "successful operation"
@@ -161,51 +155,193 @@ paths:
           description: "Group or user not found"
       security:
         - bearer_token: []
+  /user:
+    get:
+      tags:
+        - "user"
+      summary: "Get all the users from the system"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/User"
+      security:
+        - bearer_token: []
+    post:
+      tags:
+        - "user"
+      summary: "Create a new user on the server"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                firstname:
+                  type: "string"
+                lastname:
+                  type: "string"
+                username:
+                  type: "string"
+                password:
+                  type: "string"
+                groupId:
+                  type: "integer"
+      responses:
+        "201":
+          description: "Created the new user"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  userId:
+                    type: "integer"
+        "400":
+          description: "Something is wrong with your input"
+      security:
+        - bearer_token: []
+  /user/{userId}:
+    get:
+      tags:
+        - "user"
+      summary: "Get infomation about a single user"
+      parameters:
+        - in: "path"
+          name: "userId"
+          description: "ID of the user"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/User"
+        400:
+          description: "Something is wrong with your input"
+        404:
+          description: "The user is not found"
+      security:
+        - bearer_token: []
+      description: You can use an '~' as a userId to list your own account.
+    delete:
+      tags:
+        - "user"
+      summary: "Remove a single user"
+      parameters:
+        - in: "path"
+          name: "userId"
+          description: "ID of the user"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Something is wrong with your input"
+        404:
+          description: "The user is not found"
+      security:
+        - bearer_token: []
+      description: You can use an '~' as a userId to list your own account.
+    patch:
+      tags:
+        - "user"
+      summary: "Change a users info"
+      parameters:
+        - in: "path"
+          name: "userId"
+          description: "ID of the user"
+          required: true
+          schema:
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                firstname:
+                  type: "string"
+                lastname:
+                  type: "string"
+                username:
+                  type: "string"
+                password:
+                  type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Something is wrong with your input"
+        404:
+          description: "The user is not found"
+      security:
+        - bearer_token: []
+      description: |-
+        You can use an '~' as a userId to list your own account.
+        You don't need to edit every thing at once.         
   /server/about:
     get:
       tags:
         - "server"
       summary: "Get information about the server"
-      produces:
-        - "application/json"
       responses:
         "200":
           description: "successful operation"
-          schema:
-            type: "object"
-            properties:
-              version:
-                type: "string"
-                example: "0.4-beta.0"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  version:
+                    type: "string"
+                    example: "0.4-beta.0"
 
-securityDefinitions:
-  bearer_token:
-    type: "apiKey"
-    name: "api_key"
-    in: "header"
-
-definitions:
-  Group:
-    type: "object"
-    properties:
-      group_id:
-        type: "integer"
-      groupName:
-        type: "string"
-      users:
-        type: "array"
-        items:
-          $ref: "#/definitions/User"
-  User:
-    type: "object"
-    properties:
-      user_id:
-        type: "integer"
-      firstname:
-        type: "string"
-      lastname:
-        type: "string"
-      username:
-        type: "string"
-      group_id:
-        type: "integer"
+components:
+  schemas:
+    Group:
+      type: "object"
+      properties:
+        group_id:
+          type: "integer"
+        groupName:
+          type: "string"
+        users:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/User"
+    User:
+      type: "object"
+      properties:
+        user_id:
+          type: "integer"
+        firstname:
+          type: "string"
+        lastname:
+          type: "string"
+        username:
+          type: "string"
+        group_id:
+          type: "integer"
+        groupName:
+          type: "string"
+  securitySchemes:
+    bearer_token:
+      type: "apiKey"
+      name: "api_key"
+      in: "header"
+# Added by API Auto Mocking Plugin
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/wjtje/Trackless/0.4.0

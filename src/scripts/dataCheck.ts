@@ -1,3 +1,7 @@
+import { requireObject } from "./RequestHandler/interface";
+import _ from 'lodash';
+import { Request } from 'express';
+
 /**
  * Checks if there are no bad keys in the first array using the second array
  * 
@@ -5,12 +9,17 @@
  * @param array 
  * @param searchList 
  */
-export function arrayContainOnly(array: Array<string>, searchList: Array<string>) {
+export function bodyOnlyContains(body: Request["body"], searchList: requireObject[]) {
   return new Promise((resolve, reject) => {
     let isRejected = false;
 
-    array.forEach(item => {
-      if (!searchList.includes(item)) {
+    Object.keys(body).forEach(item => {
+      const index = _.findIndex(searchList, ['name', item]);
+
+      if (index === -1) {
+        isRejected = true;
+        reject();
+      } else if (!searchList[index].check(_.get(body, item))) {
         isRejected = true;
         reject();
       }

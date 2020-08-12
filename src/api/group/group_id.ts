@@ -7,6 +7,7 @@ import groupIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/gro
 import requireHandler from '../../scripts/RequestHandler/requireHandler';
 import { mysqlTEXT } from '../../scripts/types';
 import userIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIdCheckHandler';
+import { getUsers } from '../query';
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.get(
       handleQuery(next, (resultGroup) => {
         // Get all users
         DBcon.query(
-          "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id` FROM `TL_users` WHERE `group_id`=? ORDER BY `firstname`,`lastname`",
+          getUsers,
           [request.params.groupId],
           handleQuery(next, (resultUsers) => {
             // Return the infomation

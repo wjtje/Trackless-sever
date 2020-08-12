@@ -1,57 +1,57 @@
-import Api from "../../scripts/api";
-import { DBcon } from "../..";
-import { responseDone, responseBadRequest, responseCreated } from "../../scripts/response";
+import express from 'express';
+import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType';
+import authHandler from '../../scripts/RequestHandler/authHandler';
+import { DBcon } from '../..';
+import { handleQuery } from '../../scripts/handle';
+import { getAllUsers } from '../query';
+import ServerError from '../../scripts/RequestHandler/serverErrorInterface';
+import { storePassword } from '../../scripts/security';
+import requireHandler from '../../scripts/RequestHandler/requireHandler';
 import { mysqlTEXT, mysqlINT } from '../../scripts/types';
-import { storePassword } from "../../scripts/security";
-import { handleQuery } from "../../scripts/handle";
-import { usernameTaken } from "../../global/language";
 
-interface TL_user {
-  user_id:   number;
-  firstname: string;
-  lastname:  string;
-  username:  string;
-  group_id:  number;
-  groupName: string;
-}
+const router = express.Router();
 
-new Api({
-  url: "/user",
-  auth: true,
-  require: {
-    post: [
-      {name: "firstname", check: mysqlTEXT},
-      {name: "lastname", check: mysqlTEXT},
-      {name: "username", check: mysqlTEXT},
-      {name: "password", check: mysqlTEXT},
-      {name: "group_id", check: mysqlINT},
-    ]
-  },
-  get: (request, response) => {
+// Get all the users from the system
+router.get(
+  '/',
+  authHandler('trackless.user.readAll'),
+  (request, response, next) => {
+    // Send the request
     DBcon.query(
-      "SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`group_id`) ORDER BY `firstname`, `lastname`, `username`",
-      handleQuery(response, (result: Array<TL_user>) => {
-        responseDone(response, {
-          length: result.length,
-          result: result,
-        });
+      getAllUsers,
+      handleQuery(next, (result) => {
+        response.status(200).json(result);
       })
-    );
-  },
-  post: (request, response) => {
+    )
+  }
+);
+
+// Create a new user
+router.post(
+  '/',
+  authHandler('trackless.user.create'),
+  requireHandler([
+    {name: "firstname", check: mysqlTEXT},
+    {name: "lastname", check: mysqlTEXT},
+    {name: "username", check: mysqlTEXT},
+    {name: "password", check: mysqlTEXT},
+    {name: "groupId", check: mysqlINT}
+  ]),
+  (request, response, next) => {
     // Check if the user is taken
     DBcon.query(
       "SELECT `username` FROM `TL_users` WHERE `username`=?",
       [ request.body.username ],
-      handleQuery(response, (result) => {
-        if (result.length > 0) { // Username is taken
-          responseBadRequest(response, {
-            error: {
-              message: usernameTaken
-            }
-          });
-        } else {  // Every things good
+      handleQuery(next, (result) => {
+        if (result.length > 0) {
+          // Username is taken
+          const error: ServerError = new Error('Username has been taken');
+          error.status = 400;
+          error.code = 'trackless.user.usernameTaken';
+          next(error);
+        } else {
           // Create a new user
+          // Store the password
           const {salt, hash} = storePassword(request.body.password);
 
           // Commit to the database
@@ -61,14 +61,13 @@ new Api({
               request.body.firstname,
               request.body.lastname,
               request.body.username,
-              Number(request.body.group_id),
+              Number(request.body.groupId),
               salt,
               hash
             ],
-            handleQuery(response, (result) => {
-              // User has been created
-              responseCreated(response, {
-                user_id: result.insertId
+            handleQuery(next, (result) => {
+              response.status(201).json({
+                userId: result.insertId
               });
             })
           );
@@ -76,4 +75,11 @@ new Api({
       })
     );
   }
-});
+);
+
+import userIdRouter from './user_id';
+router.use(userIdRouter);
+
+router.use(unusedRequestTypes());
+
+export default router;

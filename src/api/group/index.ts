@@ -6,8 +6,8 @@ import { TL_groups } from './interface';
 import { promisify } from 'util';
 import requireHandler from '../../scripts/RequestHandler/requireHandler';
 import { mysqlTEXT } from '../../scripts/types';
-import ServerError from '../../scripts/RequestHandler/serverErrorInterface';
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType';
+import { getUsers } from '../query';
 
 const query = promisify(DBcon.query).bind(DBcon);
 const router = express.Router();
@@ -30,7 +30,7 @@ router.get(
             groupName: string;
           }) => {
             // Connect to the database
-            const users = await query("SELECT `user_id`, `firstname`, `lastname`, `username`, `group_id` FROM `TL_users` WHERE `group_id`=? ORDER BY `firstname`,`lastname`", [group.group_id]);
+            const users = await query(getUsers, [group.group_id]);
 
             // Append to the rslt list
             rslt.push({
@@ -65,7 +65,7 @@ router.post(
       handleQuery(next, (result) => {
         // Saved into the database
         response.status(201).json({
-          group_id: result.insertId
+          groupId: result.insertId
         })
       })
     )

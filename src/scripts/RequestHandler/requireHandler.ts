@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import _ from 'lodash';
-import { requireObject } from '../interfaces';
+import { requireObject } from './interface';
 import ServerError from './serverErrorInterface';
 
 /**

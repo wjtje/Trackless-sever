@@ -3,7 +3,7 @@ import { number } from "./types";
 import { DBcon } from "..";
 import { handleQuery } from "./handle";
 import { responseNotFound, responseBadRequest } from "./response";
-import { userInfo } from "../scripts/interfaces";
+import { userInfo } from "./interfaces";
 import { accessNoNumber, apiNoNumber, groupNoNumber, locationNoNumber, userNoNumber, workNoNumber } from "../global/language";
 
 /**

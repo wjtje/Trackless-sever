@@ -290,7 +290,70 @@ paths:
         - bearer_token: []
       description: |-
         You can use an '~' as a userId to list your own account.
-        You don't need to edit every thing at once.         
+        You don't need to edit every thing at once.
+  /api:
+    get:
+      tags: 
+        - "api"
+      summary: "Get all your active api keys"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Api"
+      security:
+        - bearer_token: []
+  /api/{apiId}:
+    get:
+      tags:
+        - "api"
+      summary: "Get infomation about a single api key"
+      parameters:
+        - in: "path"
+          name: "apiId"
+          description: "the id of the api key"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Api"
+        400:
+          description: "There is something wrong with your input"
+        404:
+          description: "The api key was not found"
+      security:
+        - bearer_token: []
+    delete:
+      tags:
+        - "api"
+      summary: "Remove a single api key"
+      parameters:
+        - in: "path"
+          name: "apiId"
+          description: "the id of the api key"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "There is something wrong with your input"
+        404:
+          description: "The api key was not found"
+      security:
+        - bearer_token: []
   /server/about:
     get:
       tags:
@@ -310,6 +373,17 @@ paths:
 
 components:
   schemas:
+    Api:
+      type: "object"
+      properties:
+        api_id:
+          type: "integer"
+        createDate:
+          type: "string"
+        lastUsed:
+          type: "string"
+        deviceName:
+          type: "string"
     Group:
       type: "object"
       properties:

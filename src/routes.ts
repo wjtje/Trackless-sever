@@ -1,5 +1,8 @@
 import { server } from '.';
 
+import apiRoute from './api/api';
+server.use('/api', apiRoute);
+
 import groupRoute from './api/group';
 server.use('/group', groupRoute);
 

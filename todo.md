@@ -9,3 +9,4 @@ Use todo+ to see inline todo's
  - A way to see changes made to the database (v0.5-beta.1)
  - Able to order responses (example: sort by firstname)
  - group_id -> groupId in database and code
+ - What to-do with the work when a user gets deleted?

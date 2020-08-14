@@ -985,6 +985,292 @@
         } ],
         "description" : "You can use an '~' as a userId to list your own account.\nYou don't need to edit every thing at once."
       }
+    },
+    "/work" : {
+      "post" : {
+        "tags" : [ "work" ],
+        "summary" : "Save your work on the server",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "locationId" : {
+                    "type" : "integer"
+                  },
+                  "date" : {
+                    "type" : "string"
+                  },
+                  "time" : {
+                    "type" : "integer"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "workId" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "your input values are wrong"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/work/user/{userId}" : {
+      "get" : {
+        "tags" : [ "work" ],
+        "summary" : "Get all the work from a user",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "userId",
+          "description" : "ID of the user",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Work"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Check your input"
+          },
+          "404" : {
+            "description" : "User not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/work/user/{userId}/date/{start}/{end}" : {
+      "get" : {
+        "tags" : [ "work" ],
+        "summary" : "Get all the work from a user",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "userId",
+          "description" : "ID of the user",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "in" : "path",
+          "name" : "start",
+          "description" : "The start date",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "end",
+          "description" : "The end date",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Work"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Check your input"
+          },
+          "404" : {
+            "description" : "User not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/work/user/{userId}/{workId}" : {
+      "get" : {
+        "tags" : [ "work" ],
+        "summary" : "Get a single work object",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "userId",
+          "description" : "ID of the user",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "in" : "path",
+          "name" : "workId",
+          "description" : "Id of the wokr",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Work"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Check your input"
+          },
+          "404" : {
+            "description" : "User or work not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "work" ],
+        "summary" : "Remove a single work object",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "userId",
+          "description" : "ID of the user",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "in" : "path",
+          "name" : "workId",
+          "description" : "Id of the wokr",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "400" : {
+            "description" : "Check your input"
+          },
+          "404" : {
+            "description" : "User or work not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "work" ],
+        "summary" : "Edit a single work object",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "userId",
+          "description" : "ID of the user",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "in" : "path",
+          "name" : "workId",
+          "description" : "Id of the wokr",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "locationId" : {
+                    "type" : "integer"
+                  },
+                  "date" : {
+                    "type" : "string"
+                  },
+                  "time" : {
+                    "type" : "integer"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "400" : {
+            "description" : "Check your input"
+          },
+          "404" : {
+            "description" : "User or work not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
     }
   },
   "components" : {
@@ -1071,6 +1357,29 @@
           },
           "groupName" : {
             "type" : "string"
+          }
+        }
+      },
+      "Work" : {
+        "type" : "object",
+        "properties" : {
+          "work_id" : {
+            "type" : "integer"
+          },
+          "time" : {
+            "type" : "integer"
+          },
+          "date" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "user" : {
+            "$ref" : "#/components/schemas/User"
+          },
+          "location" : {
+            "$ref" : "#/components/schemas/Location"
           }
         }
       }

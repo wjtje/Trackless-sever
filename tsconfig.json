@@ -4,7 +4,14 @@
     "module": "commonjs",
     "outDir": "dist",
     "sourceMap": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "removeComments": true,
+    "strict": true,
+    "lib": [
+      "ES6"
+    ]
   },
   "include": [
     "src/**/*.ts"
@@ -14,6 +21,6 @@
   ],
   "typeRoots": [
     "./node_modules/@types",
-    "./src/@types",
+    "./src/@types"
   ]
 }

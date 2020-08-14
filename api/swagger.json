@@ -31,7 +31,138 @@
               }
             }
           }
-        }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "access" ],
+        "summary" : "Give some group access to a command",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "group_id" : {
+                    "type" : "integer"
+                  },
+                  "access" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "successful operation"
+          },
+          "400" : {
+            "description" : "something wrong with your request"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/access/{accessId}" : {
+      "get" : {
+        "tags" : [ "access" ],
+        "summary" : "Display an access rule",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "accessId",
+          "description" : "ID of the access to return",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Access"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "access" ],
+        "summary" : "Remove an access rule",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "accessId",
+          "description" : "ID of the access to return",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "404" : {
+            "description" : "not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/access/group/{groupId}" : {
+      "get" : {
+        "tags" : [ "access" ],
+        "summary" : "See where a group has access to",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "groupId",
+          "description" : "ID of the group to return",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Access"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
       }
     },
     "/group" : {

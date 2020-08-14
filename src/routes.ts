@@ -18,5 +18,8 @@ server.use('/login', loginRoute);
 import userRoute from './api/user';
 server.use('/user', userRoute);
 
+import workRoute from './api/work';
+server.use('/work', workRoute);
+
 import severAboutRoute from './api/server/about';
 server.use('/server/about', severAboutRoute);

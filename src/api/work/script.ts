@@ -1,4 +1,3 @@
-import { responseDone } from "../../scripts/response";
 import { Response } from "express";
 import moment from 'moment';
 
@@ -29,10 +28,10 @@ export interface TLWork {
 export function responseWork(result: TLWork[], response:Response) {
   let tmp: {
     work_id: number;
-    user: { user_id: number; firstname: string; lastname: string; username: string; };
-    group: { group_id: number; groupName: string; };
+    user: { user_id: number; firstname: string; lastname: string; username: string; group_id: number; groupName: string };
     location: { location_id: number; place: string; name: string; id: string; };
-    time: string; date: string;
+    time: string;
+    date: string;
     description: string;
   }[] = [];
 
@@ -45,9 +44,6 @@ export function responseWork(result: TLWork[], response:Response) {
         firstname: workItem.firstname,
         lastname: workItem.lastname,
         username: workItem.username,
-      },
-      // Add the group info
-      group: {
         group_id: workItem.group_id,
         groupName: workItem.groupName,
       },
@@ -65,8 +61,5 @@ export function responseWork(result: TLWork[], response:Response) {
     });
   });
 
-  responseDone(response, {
-    length: tmp.length,
-    result: tmp,
-  });
+  response.status(200).json(tmp);
 }

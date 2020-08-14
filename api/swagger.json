@@ -13,6 +13,27 @@
     }
   },
   "paths" : {
+    "/access" : {
+      "get" : {
+        "tags" : [ "access" ],
+        "summary" : "See where you have access to",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Access"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/group" : {
       "get" : {
         "tags" : [ "group" ],
@@ -581,6 +602,17 @@
   },
   "components" : {
     "schemas" : {
+      "Access" : {
+        "type" : "object",
+        "properties" : {
+          "access_id" : {
+            "type" : "integer"
+          },
+          "access" : {
+            "type" : "string"
+          }
+        }
+      },
       "Api" : {
         "type" : "object",
         "properties" : {

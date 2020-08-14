@@ -58,7 +58,19 @@
         },
         "responses" : {
           "201" : {
-            "description" : "successful operation"
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "accessId" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400" : {
             "description" : "something wrong with your request"
@@ -158,6 +170,96 @@
           },
           "404" : {
             "description" : "not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/api" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "summary" : "Get all your active api keys",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Api"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/api/{apiId}" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "summary" : "Get infomation about a single api key",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "apiId",
+          "description" : "the id of the api key",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Api"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "There is something wrong with your input"
+          },
+          "404" : {
+            "description" : "The api key was not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "api" ],
+        "summary" : "Remove a single api key",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "apiId",
+          "description" : "the id of the api key",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "400" : {
+            "description" : "There is something wrong with your input"
+          },
+          "404" : {
+            "description" : "The api key was not found"
           }
         },
         "security" : [ {
@@ -374,6 +476,320 @@
         } ]
       }
     },
+    "/location" : {
+      "get" : {
+        "tags" : [ "location" ],
+        "summary" : "Get all the locations on the server",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "location" ],
+        "summary" : "Create a new location",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "name" : {
+                    "type" : "string"
+                  },
+                  "place" : {
+                    "type" : "string"
+                  },
+                  "id" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Create a new location",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "locationId" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/location/{locationId}" : {
+      "get" : {
+        "tags" : [ "location" ],
+        "summary" : "Get infomation about a single location",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "locationId",
+          "description" : "ID of the location",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "location" ],
+        "summary" : "Remove a single location",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "locationId",
+          "description" : "ID of the location",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "location" ],
+        "summary" : "Edit a location",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "locationId",
+          "description" : "ID of the location",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "name" : {
+                    "type" : "string"
+                  },
+                  "place" : {
+                    "type" : "string"
+                  },
+                  "id" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/location/user/{userId}/last" : {
+      "get" : {
+        "tags" : [ "location" ],
+        "summary" : "Get the last used location",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "userId",
+          "description" : "ID of the user",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/location/user/{userId}/most" : {
+      "get" : {
+        "tags" : [ "location" ],
+        "summary" : "Get the most used location",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "userId",
+          "description" : "ID of the user",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/login" : {
+      "post" : {
+        "tags" : [ "login" ],
+        "summary" : "Get a new apikey for the server",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "username" : {
+                    "type" : "string"
+                  },
+                  "password" : {
+                    "type" : "string"
+                  },
+                  "deviceName" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "sucessful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "bearer" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "wrong username or password"
+          }
+        }
+      }
+    },
+    "/server/about" : {
+      "get" : {
+        "tags" : [ "server" ],
+        "summary" : "Get information about the server",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "version" : {
+                      "type" : "string",
+                      "example" : "0.4-beta.0"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user" : {
       "get" : {
         "tags" : [ "user" ],
@@ -569,166 +985,6 @@
         } ],
         "description" : "You can use an '~' as a userId to list your own account.\nYou don't need to edit every thing at once."
       }
-    },
-    "/api" : {
-      "get" : {
-        "tags" : [ "api" ],
-        "summary" : "Get all your active api keys",
-        "responses" : {
-          "200" : {
-            "description" : "successful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Api"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security" : [ {
-          "bearer_token" : [ ]
-        } ]
-      }
-    },
-    "/api/{apiId}" : {
-      "get" : {
-        "tags" : [ "api" ],
-        "summary" : "Get infomation about a single api key",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "apiId",
-          "description" : "the id of the api key",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "successful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Api"
-                  }
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "There is something wrong with your input"
-          },
-          "404" : {
-            "description" : "The api key was not found"
-          }
-        },
-        "security" : [ {
-          "bearer_token" : [ ]
-        } ]
-      },
-      "delete" : {
-        "tags" : [ "api" ],
-        "summary" : "Remove a single api key",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "apiId",
-          "description" : "the id of the api key",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "successful operation"
-          },
-          "400" : {
-            "description" : "There is something wrong with your input"
-          },
-          "404" : {
-            "description" : "The api key was not found"
-          }
-        },
-        "security" : [ {
-          "bearer_token" : [ ]
-        } ]
-      }
-    },
-    "/login" : {
-      "post" : {
-        "tags" : [ "login" ],
-        "summary" : "Get a new apikey for the server",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "type" : "object",
-                "properties" : {
-                  "username" : {
-                    "type" : "string"
-                  },
-                  "password" : {
-                    "type" : "string"
-                  },
-                  "deviceName" : {
-                    "type" : "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses" : {
-          "200" : {
-            "description" : "sucessful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "object",
-                  "properties" : {
-                    "bearer" : {
-                      "type" : "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "wrong username or password"
-          }
-        }
-      }
-    },
-    "/server/about" : {
-      "get" : {
-        "tags" : [ "server" ],
-        "summary" : "Get information about the server",
-        "responses" : {
-          "200" : {
-            "description" : "successful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "object",
-                  "properties" : {
-                    "version" : {
-                      "type" : "string",
-                      "example" : "0.4-beta.0"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components" : {
@@ -775,6 +1031,23 @@
             "items" : {
               "$ref" : "#/components/schemas/User"
             }
+          }
+        }
+      },
+      "Location" : {
+        "type" : "object",
+        "properties" : {
+          "location_id" : {
+            "type" : "integer"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "place" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "string"
           }
         }
       },

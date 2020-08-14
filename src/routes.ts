@@ -9,6 +9,9 @@ server.use('/api', apiRoute);
 import groupRoute from './api/group';
 server.use('/group', groupRoute);
 
+import locationRoute from './api/location';
+server.use('/location', locationRoute);
+
 import loginRoute from './api/login';
 server.use('/login', loginRoute);
 

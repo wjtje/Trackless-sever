@@ -54,7 +54,7 @@ router.post(
             ],
             handleQuery(next, (result) => {
               response.status(201).json({
-                access_id: result.insertId
+                accessId: result.insertId
               });
             })
           )

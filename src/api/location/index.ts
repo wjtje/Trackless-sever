@@ -1,33 +1,36 @@
-import Api from "../../scripts/api";
-import { mysqlTEXT } from "../../scripts/types";
-import { DBcon } from "../../";
-import { handleQuery } from "../../scripts/handle";
-import { responseDone, responseCreated } from "../../scripts/response";
+import express from 'express';
+import unusedRequestTypes from "../../scripts/RequestHandler/unusedRequestType";
+import authHandler from '../../scripts/RequestHandler/authHandler';
+import { DBcon } from '../..';
+import { handleQuery } from '../../scripts/handle';
+import requireHandler from '../../scripts/RequestHandler/requireHandler';
+import { mysqlTEXT } from '../../scripts/types';
 
-new Api({
-  url: '/location',
-  auth: true,
-  require: {
-    post: [
-      {name: 'name', check: mysqlTEXT},
-      {name: 'place', check: mysqlTEXT},
-      {name: 'id', check: mysqlTEXT},
-    ],
-  },
-  get: (request, response) => {
-    // Get all the data
+const router = express.Router()
+
+router.get(
+  '/',
+  authHandler('trackless.location.read'),
+  (request, response, next) => {
     DBcon.query(
       "SELECT * FROM `TL_locations` ORDER BY `place`, `name`",
-      handleQuery(response, (result) => {
-        responseDone(response, {
-          length: result.length,
-          result: result
-        });
+      handleQuery(next, (result) => {
+        response.status(200).json(result);
       })
     )
-  },
-  post: (request, response) => {
-    // Push it to the server
+  }
+)
+
+router.post(
+  '/',
+  authHandler('trackless.location.create'),
+  requireHandler([
+    {name: 'name', check: mysqlTEXT},
+    {name: 'place', check: mysqlTEXT},
+    {name: 'id', check: mysqlTEXT},
+  ]),
+  (request, response, next) => {
+    // Push to the server
     DBcon.query(
       "INSERT INTO `TL_locations` (`name`, `place`, `id`) VALUES (?, ?, ?)",
       [
@@ -35,12 +38,22 @@ new Api({
         request.body.place,
         request.body.id,
       ],
-      handleQuery(response, (result) => {
+      handleQuery(next, (result) => {
         // Saved to the database
-        responseCreated(response, {
+        response.status(201).json({
           location_id: result.insertId
-        });
+        })
       })
-    );
+    )
   }
-})
+)
+
+import userRoute from './user';
+router.use('/user', userRoute);
+
+import locationIdRoute from './location_id';
+router.use('/', locationIdRoute);
+
+router.use(unusedRequestTypes());
+
+export default router;

@@ -1,6 +1,6 @@
 import { NextFunction } from 'express';
 import { sqlError } from './error';
-import { databaseError } from '../global/language';
+import { MysqlError } from 'mysql';
 
 /**
  * A function for handling a query
@@ -11,9 +11,9 @@ import { databaseError } from '../global/language';
  * @param then 
  */
 export function handleQuery(next: NextFunction, then: (result: any) => void) {
-  return (error, result) => {
+  return (error: MysqlError | null, result: any[]) => {
     if (error) {
-      sqlError(next, error, databaseError);
+      sqlError(next, error, 'Internal database error');
     } else {
       then(result);
     }

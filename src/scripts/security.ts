@@ -1,5 +1,4 @@
 import { sha512_256 } from "js-sha512";
-import { hashedPassword } from "./interfaces";
 
 /**
  * Generates a random string using Math.random()
@@ -25,14 +24,11 @@ export function generateRandomString(length:number) : string {
  * 
  * @since 0.2-beta.1
  * @param {string} password 
- * @returns {hashedPassword} An object with a salt and a hash
+ * @returns {array} An object with a salt and a hash
  */
-export function storePassword(password: string) : hashedPassword {
+export function storePassword(password: string) {
   const salt = generateRandomString(32);
   const hash = sha512_256(password + salt);
 
-  return {
-    salt: salt,
-    hash: hash
-  }
+  return [ salt, hash ]
 }

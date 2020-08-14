@@ -1,85 +1,59 @@
-import { promisify } from 'util';
-import { DBcon } from '../../';
-import Api from '../../scripts/api';
-import { responseDone, responseBadRequest, responseCreated } from '../../scripts/response';
+import express from 'express';
+import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType';
+import authHandler from '../../scripts/RequestHandler/authHandler';
+import { DBcon } from '../..';
 import { handleQuery } from '../../scripts/handle';
+import requireHandler from '../../scripts/RequestHandler/requireHandler';
+import ServerError from '../../scripts/RequestHandler/serverErrorInterface';
 import { mysqlINT, mysqlTEXT } from '../../scripts/types';
-import { groupNotFound, methodNotAllowd } from '../../global/language';
 
-const query = promisify(DBcon.query).bind(DBcon);
+const router = express.Router();
 
-export interface TL_groups {
-  group_id:  number;
-  groupName: string;
-}
-
-new Api({
-  url: '/access',
-  auth: true,
-  require: {
-    post: [
-      {name: 'group_id', check: mysqlINT},
-      {name: 'method', check: mysqlTEXT},
-      {name: 'url', check: mysqlTEXT},
-    ]
-  },
-  get: (request, response) => {
+// Get your access
+router.get(
+  '/',
+  authHandler('trackless.access.read'),
+  (request, response, next) => {
+    // Get all the data from the server
     DBcon.query(
-      "SELECT * FROM `TL_groups`",
-      handleQuery(response, (result: Array<TL_groups>) => {
-        let rslt = [];
-  
-        async function readAccess() {
-          await Promise.all(result.map(async (group: TL_groups) => {
-            // Connect to the database
-            const access = await query("SELECT `access_id`, `method`, `url` FROM `TL_access` WHERE `group_id`=?", [group.group_id]);
-  
-            // Append to list
-            rslt.push({
-              group_id: group.group_id,
-              groupName: group.groupName,
-              access: access
-            })
-          }));
-  
-          responseDone(response, {
-            length: rslt.length,
-            result: rslt
-          });
-        }
-  
-        readAccess(); // Start the async function
+      "SELECT `access_id`, `access` FROM `TL_access` WHERE `group_id`=?",
+      [request.user?.group_id],
+      handleQuery(next, (result) => {
+        response.status(200).json(result);
       })
     )
-  },
-  post: (request, response) => {
-    // Checks if the group exsist
+  }
+);
+
+// Give someone access
+router.post(
+  '/',
+  authHandler('trackless.access.create'),
+  requireHandler([
+    {name: 'group_id', check: mysqlINT},
+    {name: 'access', check: mysqlTEXT},
+  ]),
+  (request, response, next) => {
     DBcon.query(
       "SELECT `group_id` FROM `TL_groups` WHERE `group_id`=?",
       [request.body.group_id],
-      handleQuery(response, (result) => {
+      handleQuery(next, (result) => {
         if (result.length === 0) {
-          responseBadRequest(response, {
-            error: {
-              message: groupNotFound
-            }
-          })
-        } else if (!["get","post","delete","patch"].includes(request.body.method)) {
-          responseBadRequest(response, {
-            error: {
-              message: methodNotAllowd
-            }
-          });
+          // Group not found
+          const error: ServerError = new Error("The group is not found");
+          error.code = 'trackless.access.groupNotFound';
+          error.status = 400;
+          next(error);
         } else {
+          // Save it to the database
           DBcon.query(
-            "INSERT INTO `TL_access` (`group_id`, `method`, `url`) VALUES (?,?,?)",
+            "INSERT INTO `TL_access` (`group_id`, `access`) VALUES (?,?)",
             [
               request.body.group_id,
-              request.body.method,
-              request.body.url
+              request.body.access,
             ],
-            handleQuery(response, (result) => {
-              responseCreated(response, {
+            handleQuery(next, (result) => {
+              response.status(201).json({
                 access_id: result.insertId
               });
             })
@@ -88,4 +62,14 @@ new Api({
       })
     )
   }
-});
+)
+
+import groupRouter from './group';
+router.use('/group', groupRouter);
+
+import accessIdRoute from './access_id';
+router.use('/', accessIdRoute);
+
+router.use(unusedRequestTypes());
+
+export default router;

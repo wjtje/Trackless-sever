@@ -1,5 +1,8 @@
 import { server } from '.';
 
+import accessRoute from './api/access';
+server.use('/access', accessRoute);
+
 import apiRoute from './api/api';
 server.use('/api', apiRoute);
 

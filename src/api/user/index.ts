@@ -52,7 +52,7 @@ router.post(
         } else {
           // Create a new user
           // Store the password
-          const {salt, hash} = storePassword(request.body.password);
+          const [salt, hash] = storePassword(request.body.password);
 
           // Commit to the database
           DBcon.query(

@@ -3,6 +3,7 @@ import { bodyOnlyContains } from '../dataCheck';
 import ServerError from './serverErrorInterface';
 import { DBcon } from '../..';
 import { requireObject } from './interface';
+import { MysqlError } from 'mysql';
 
 export function patchHandler(editArray: requireObject[], commitFunction: (resolve: (value?:any) => void, reject: (value?:any) => void, key: string, request: Request) => void) {
   return (request: Request, response: Response, next: NextFunction) => {
@@ -37,7 +38,7 @@ export function patchHandler(editArray: requireObject[], commitFunction: (resolv
 }
 
 export function handlePatchQuery(reject: (value?: any) => void, resolve: (value?: any) => void) {
-  return (err) => {
+  return (err: MysqlError | null) => {
     if (err) {
       const error: ServerError = new Error("Something went wrong while trying to save");
       error.code = 'trackless.patch.saveError';

@@ -1,24 +1,27 @@
-import Api from "../../scripts/api";
-import { DBcon } from "../..";
-import { handleQuery } from "../../scripts/handle";
-import { responseDone } from "../../scripts/response";
-import { checkGroupId } from "../../scripts/idCheck";
+import express from 'express';
+import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType';
+import authHandler from '../../scripts/RequestHandler/authHandler';
+import groupIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/groupIdCheckHandler';
+import { handleQuery } from '../../scripts/handle';
+import { DBcon } from '../..';
 
-new Api({
-  url: '/access/group/:group_id',
-  auth: true,
-  get: (request, response, user) => {
-    checkGroupId(request, response, () => {
-      DBcon.query(
-        "SELECT `method`, `url` FROM `TL_access` WHERE `group_id`=?",
-        [[(request.params.group_id == '~')? user.group_id:request.params.group_id]],
-        handleQuery(response, (result) => {
-          responseDone(response, {
-            length: result.length,
-            result: result
-          });
-        })
-      );
-    });
+const router = express.Router();
+
+router.get(
+  '/:groupId',
+  authHandler('trackless.access.read'),
+  groupIdCheckHandler(),
+  (request, response, next) => {
+    DBcon.query(
+      "SELECT `access_id`, `access` FROM `TL_access` WHERE `group_id`=?",
+      [request.params.groupId],
+      handleQuery(next, (result) => {
+        response.status(200).json(result);
+      })
+    );
   }
-});
+);
+
+router.use(unusedRequestTypes());
+
+export default router;

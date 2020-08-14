@@ -1,6 +1,5 @@
 import { DBcon } from '../index';
 import { sha512_256 } from 'js-sha512';
-import { accountNotFound } from '../global/language';
 import { get as _get } from 'lodash';
 
 /**
@@ -35,7 +34,7 @@ export function apiLogin(apiKey:string):Promise<{
 
           // Reject the request
           reject(
-            (error)? error.code : accountNotFound
+            (error)? error.code : 'account not found'
           );
         } else {
           // Api key is correct

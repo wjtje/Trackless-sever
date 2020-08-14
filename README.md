@@ -17,7 +17,7 @@ Keep track of what your employees have done.
 
 A basic account with a username of `admin` and with a password `admin` has been created.
 You can use a program like postman to interface with the server.
-All the api are documented in the `api/openapi.yaml`
+All the api are documented in the `api/swagger.json`
 
 ## Npm commands
 

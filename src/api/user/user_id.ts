@@ -27,7 +27,7 @@ router.get(
     // Get the data from the server
     DBcon.query(
       getUser,
-      [(request.params.userId == '~')? request.user.user_id:request.params.userId],
+      [(request.params.userId == '~')? request.user?.user_id:request.params.userId],
       handleQuery(next, (result) => {
         // Send the result back
         response.status(200).json(result);
@@ -86,7 +86,7 @@ router.patch(
           "UPDATE `TL_users` SET `" + key + "`=? WHERE `user_id`=?",
           [
             request.body[key],
-            (request.params.userId == '~') ? request.user.user_id : request.params.userId,
+            (request.params.userId == '~') ? request.user?.user_id : request.params.userId,
           ],
           handlePatchQuery(reject, resolve)
         );
@@ -99,7 +99,7 @@ router.patch(
             "SELECT `user_id` FROM `TL_users` WHERE `username`=?",
             [request.body.username],
             (error, result) => {
-              const userId = (request.params.userId === '~')? request.user.user_id:request.params.userId;
+              const userId = (request.params.userId === '~')? request.user?.user_id:request.params.userId;
               if (result.length === 0 || Number(result[0].user_id) === Number(userId)) {
                 // User name is free
                 changeUser();
@@ -114,12 +114,12 @@ router.patch(
           break;
         case "password":
           // Update password
-          const {salt, hash} = storePassword(request.body[key]);
+          const [salt, hash] = storePassword(request.body[key]);
 
           DBcon.query("UPDATE `TL_users` SET `salt_hash`=?, `hash`=? where `user_id`=?", [
             salt,
             hash,
-            (request.params.userId == '~') ? request.user.user_id : request.params.userId,
+            (request.params.userId == '~') ? request.user?.user_id : request.params.userId,
           ], handlePatchQuery(reject, resolve));
           break;
         default:

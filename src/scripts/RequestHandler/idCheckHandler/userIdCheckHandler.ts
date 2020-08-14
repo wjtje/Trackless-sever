@@ -16,7 +16,7 @@ export default () => {
       // Get the infomation from the database
       DBcon.query(
         "SELECT * FROM `TL_users` WHERE `user_id`=?",
-        [(request.params.userId == '~')? request.user.user_id:request.params.userId],
+        [(request.params.userId == '~')? request.user?.user_id:request.params.userId],
         handleQuery(next, (result) => {
           if (result.length === 0) {
             // Group does not exsist

@@ -1,22 +1,46 @@
-import { DBcon } from "../../";
-import { handleQuery } from "../../scripts/handle";
-import { responseDone } from "../../scripts/response";
-import Api from "../../scripts/api";
-import { checkAccessId } from "../../scripts/idCheck";
+import express from 'express';
+import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType';
+import authHandler from '../../scripts/RequestHandler/authHandler';
+import accessIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/accessIdCheckHandler';
+import { DBcon } from '../..';
+import { handleQuery } from '../../scripts/handle';
 
-new Api({
-  url: '/access/:access_id',
-  auth: true,
-  delete: (request, response) => {
-    checkAccessId(request, response, () => {
-      // Remove the access
-      DBcon.query(
-        "DELETE FROM `TL_access` WHERE `access_id`=?",
-        [request.params.access_id],
-        handleQuery(response, () => {
-          responseDone(response);
+const router = express.Router();
+
+router.get(
+  '/:accessId',
+  authHandler('trackless.access.read'),
+  accessIdCheckHandler(),
+  (request, response, next) => {
+    // Get the data from the server
+    DBcon.query(
+      "SELECT `access_id`, `access` FROM `TL_access` WHERE `access_id`=?",
+      [request.params?.accessId],
+      handleQuery(next, (result) => {
+        response.status(200).json(result);
+      })
+    )
+  }
+)
+
+router.delete(
+  '/:accessId',
+  authHandler('trackless.access.remove'),
+  accessIdCheckHandler(),
+  (request, response, next) => {
+    // Remove from the server
+    DBcon.query(
+      "DELETE FROM `TL_access` WHERE `access_id`=?",
+      [request.params.accessId],
+      handleQuery(next, () => {
+        response.status(200).json({
+          message: 'done'
         })
-      )
-    });
-  },
-});
+      })
+    )
+  }
+)
+
+router.use(unusedRequestTypes());
+
+export default router;

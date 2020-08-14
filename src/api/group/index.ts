@@ -21,30 +21,34 @@ router.get(
     DBcon.query(
       "SELECT * FROM `TL_groups` ORDER BY `groupname`",
       handleQuery(next, (result: Array<TL_groups>) => {
-        let rslt = []; // Result
+        let rslt:{
+          group_id: number;
+          groupName: string;
+          users: object;
+        }[] = []; // Result
 
         // Get all users for each group
-        async function readUser() {
-          await Promise.all(result.map(async (group: {
-            group_id: number;
-            groupName: string;
-          }) => {
-            // Connect to the database
-            const users = await query(getUsers, [group.group_id]);
+        Promise.all(result.map((group) => {
+          return new Promise((resolve, reject) => {
+            DBcon.query(
+              getUsers,
+              [group.group_id],
+              handleQuery(next, (result) => {
+                // Push the result to the response array
+                rslt.push({
+                  group_id: group.group_id,
+                  groupName: group.groupName,
+                  users: result
+                });
 
-            // Append to the rslt list
-            rslt.push({
-              group_id: group.group_id,
-              groupName: group.groupName,
-              users: users
-            });
-          }));
-
-          // Return to the user
+                resolve()
+              })
+            )
+          })
+        })).then(() => {
+          // Done return to the user
           response.status(200).json(rslt);
-        }
-
-        readUser(); // Start the async function
+        });
       })
     );
   }

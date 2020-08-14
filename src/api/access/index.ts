@@ -16,8 +16,8 @@ router.get(
   (request, response, next) => {
     // Get all the data from the server
     DBcon.query(
-      "SELECT `access_id`, `access` FROM `TL_access` WHERE `group_id`=?",
-      [request.user?.group_id],
+      "SELECT `accessId`, `access` FROM `TL_access` WHERE `groupId`=?",
+      [request.user?.groupId],
       handleQuery(next, (result) => {
         response.status(200).json(result);
       })
@@ -30,13 +30,13 @@ router.post(
   '/',
   authHandler('trackless.access.create'),
   requireHandler([
-    {name: 'group_id', check: mysqlINT},
+    {name: 'groupId', check: mysqlINT},
     {name: 'access', check: mysqlTEXT},
   ]),
   (request, response, next) => {
     DBcon.query(
-      "SELECT `group_id` FROM `TL_groups` WHERE `group_id`=?",
-      [request.body.group_id],
+      "SELECT `groupId` FROM `TL_groups` WHERE `groupId`=?",
+      [request.body.groupId],
       handleQuery(next, (result) => {
         if (result.length === 0) {
           // Group not found
@@ -47,9 +47,9 @@ router.post(
         } else {
           // Save it to the database
           DBcon.query(
-            "INSERT INTO `TL_access` (`group_id`, `access`) VALUES (?,?)",
+            "INSERT INTO `TL_access` (`groupId`, `access`) VALUES (?,?)",
             [
-              request.body.group_id,
+              request.body.groupId,
               request.body.access,
             ],
             handleQuery(next, (result) => {
@@ -67,7 +67,7 @@ router.post(
 import groupRouter from './group';
 router.use('/group', groupRouter);
 
-import accessIdRoute from './access_id';
+import accessIdRoute from './accessId';
 router.use('/', accessIdRoute);
 
 router.use(unusedRequestTypes());

@@ -13,7 +13,7 @@ router.get(
   groupIdCheckHandler(),
   (request, response, next) => {
     DBcon.query(
-      "SELECT `access_id`, `access` FROM `TL_access` WHERE `group_id`=?",
+      "SELECT `accessId`, `access` FROM `TL_access` WHERE `groupId`=?",
       [request.params.groupId],
       handleQuery(next, (result) => {
         response.status(200).json(result);

@@ -14,7 +14,7 @@ export default () => {
       next(error);
     } else {
       // Get the infomation from the database
-      DBcon.query("SELECT * FROM `TL_groups` WHERE `group_id`=?", [request.params.groupId], handleQuery(next, (result) => {
+      DBcon.query("SELECT * FROM `TL_groups` WHERE `groupId`=?", [request.params.groupId], handleQuery(next, (result) => {
         if (result.length === 0) {
           // Group does not exsist
           const error: ServerError = new Error('The group does not exsist');

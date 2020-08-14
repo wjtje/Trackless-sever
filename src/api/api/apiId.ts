@@ -15,8 +15,8 @@ router.get(
   (request, response, next) => {
     // Get the data from the server
     DBcon.query(
-      "SELECT `api_id`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `user_id`=? AND `api_id`=?",
-      [request.user?.user_id, request.params.apiId],
+      "SELECT `apiId`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `userId`=? AND `apiId`=?",
+      [request.user?.userId, request.params.apiId],
       handleQuery(next, (result) => {
         // Send the data back to the user
         response.status(200).json(result);
@@ -33,8 +33,8 @@ router.delete(
   (request, response, next) => {
     // Send the command to the server
     DBcon.query(
-      "DELETE FROM `TL_apikeys` WHERE `api_id`=? and `user_id`=?",
-      [request.params.apiId, request.user?.user_id],
+      "DELETE FROM `TL_apikeys` WHERE `apiId`=? and `userId`=?",
+      [request.params.apiId, request.user?.userId],
       handleQuery(next, () => {
         response.status(200).json({
           message: 'done'

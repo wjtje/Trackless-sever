@@ -21,7 +21,7 @@ router.post(
   (request, response, next) => {
     // Check if the locationId is valid
     DBcon.query(
-      "SELECT `location_id` FROM `TL_locations` WHERE `location_id`=?",
+      "SELECT `locationId` FROM `TL_locations` WHERE `locationId`=?",
       [request.body.locationId],
       handleQuery(next, (result) => {
         if (result.length === 0) {
@@ -31,12 +31,12 @@ router.post(
           error.code = 'trackless.work.notValidLocationId';
           next(error)
         } else {
-          // Location_id is valid 
+          // locationId is valid 
           // Push the new work to the server
           DBcon.query(
-            "INSERT INTO `TL_work` (`user_id`, `location_id`, `time`, `date`, `description`) VALUES (?,?,?,?,?)",
+            "INSERT INTO `TL_work` (`userId`, `locationId`, `time`, `date`, `description`) VALUES (?,?,?,?,?)",
             [
-              request.user?.user_id,
+              request.user?.userId,
               request.body.locationId,
               request.body.time,
               request.body.date,

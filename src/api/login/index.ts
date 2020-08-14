@@ -18,9 +18,9 @@ router.post(
     {name: 'deviceName', check: mysqlTEXT},
   ]),
   (request, response, next) => {
-    // Get the hash, salt and user_id from the server
+    // Get the hash, salt and userId from the server
     DBcon.query(
-      "SELECT `salt_hash`, `hash`, `user_id` FROM `TL_users` WHERE `username`=?",
+      "SELECT `salt_hash`, `hash`, `userId` FROM `TL_users` WHERE `username`=?",
       [request.body.username],
       handleQuery(next, (result) => {
         // Check the password
@@ -31,11 +31,11 @@ router.post(
 
           // Save it to the database
           DBcon.query(
-            "INSERT INTO `TL_apikeys` (`apiKey`, `deviceName`, `user_id`) VALUES (?,?,?)",
+            "INSERT INTO `TL_apikeys` (`apiKey`, `deviceName`, `userId`) VALUES (?,?,?)",
             [
               sha512_256(apiKey),
               request.body.deviceName,
-              result[0].user_id
+              result[0].userId
             ],
             handleQuery(next, () => {
               response.status(200).json({

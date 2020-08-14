@@ -14,7 +14,7 @@ export default () => {
       next(error);
     } else {
       // Get the infomation from the database
-      DBcon.query("SELECT * FROM `TL_access` WHERE `access_id`=?", [request.params.accessId], handleQuery(next, (result) => {
+      DBcon.query("SELECT * FROM `TL_access` WHERE `accessId`=?", [request.params.accessId], handleQuery(next, (result) => {
         if (result.length === 0) {
           // The apikey does not exsist
           const error: ServerError = new Error('The accessId does not exsist');

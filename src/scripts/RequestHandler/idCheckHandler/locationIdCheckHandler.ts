@@ -14,7 +14,7 @@ export default () => {
       next(error);
     } else {
       // Get the infomation from the database
-      DBcon.query("SELECT * FROM `TL_locations` WHERE `location_id`=?", [request.params.locationId], handleQuery(next, (result) => {
+      DBcon.query("SELECT * FROM `TL_locations` WHERE `locationId`=?", [request.params.locationId], handleQuery(next, (result) => {
         if (result.length === 0) {
           // The apikey does not exsist
           const error: ServerError = new Error('The locationId does not exsist');

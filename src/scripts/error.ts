@@ -13,9 +13,9 @@ import ServerError from './RequestHandler/serverErrorInterface';
  */
 export function sqlError(next:NextFunction, err:MysqlError, errorMessage:string) {
   // Save it in the database
-  // TODO: Add the user_id to the error
+  // TODO: Add the userId to the error
   DBcon.query(
-    "INSERT INTO `TL_errors` (`user_id`, `error_code`, `error_message`) VALUES (?,?,?)",
+    "INSERT INTO `TL_errors` (`userId`, `error_code`, `error_message`) VALUES (?,?,?)",
     [
       0,
       err.code,

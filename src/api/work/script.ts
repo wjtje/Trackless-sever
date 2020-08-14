@@ -2,10 +2,10 @@ import { Response } from "express";
 import moment from 'moment';
 
 export interface TLWork {
-  work_id:     number;
-  user_id:     number;
-  location_id: number;
-  group_id:    number;
+  workId:     number;
+  userId:     number;
+  locationId: number;
+  groupId:    number;
   time:        string;
   date:        string;
   description: string;
@@ -27,9 +27,9 @@ export interface TLWork {
  */
 export function responseWork(result: TLWork[], response:Response) {
   let tmp: {
-    work_id: number;
-    user: { user_id: number; firstname: string; lastname: string; username: string; group_id: number; groupName: string };
-    location: { location_id: number; place: string; name: string; id: string; };
+    workId: number;
+    user: { userId: number; firstname: string; lastname: string; username: string; groupId: number; groupName: string };
+    location: { locationId: number; place: string; name: string; id: string; };
     time: string;
     date: string;
     description: string;
@@ -37,19 +37,19 @@ export function responseWork(result: TLWork[], response:Response) {
 
   result.forEach((workItem) => {
     tmp.push({
-      work_id: workItem.work_id,
+      workId: workItem.workId,
       // Add the user info
       user: {
-        user_id: workItem.user_id,
+        userId: workItem.userId,
         firstname: workItem.firstname,
         lastname: workItem.lastname,
         username: workItem.username,
-        group_id: workItem.group_id,
+        groupId: workItem.groupId,
         groupName: workItem.groupName,
       },
       // Add the location info
       location: {
-        location_id: workItem.location_id,
+        locationId: workItem.locationId,
         place: workItem.place,
         name: workItem.name,
         id: workItem.id,

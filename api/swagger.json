@@ -45,7 +45,7 @@
               "schema" : {
                 "type" : "object",
                 "properties" : {
-                  "group_id" : {
+                  "groupId" : {
                     "type" : "integer"
                   },
                   "access" : {
@@ -1278,7 +1278,7 @@
       "Access" : {
         "type" : "object",
         "properties" : {
-          "access_id" : {
+          "accessId" : {
             "type" : "integer"
           },
           "access" : {
@@ -1289,7 +1289,7 @@
       "Api" : {
         "type" : "object",
         "properties" : {
-          "api_id" : {
+          "apiId" : {
             "type" : "integer"
           },
           "createDate" : {
@@ -1306,7 +1306,7 @@
       "Group" : {
         "type" : "object",
         "properties" : {
-          "group_id" : {
+          "groupId" : {
             "type" : "integer"
           },
           "groupName" : {
@@ -1323,7 +1323,7 @@
       "Location" : {
         "type" : "object",
         "properties" : {
-          "location_id" : {
+          "locationId" : {
             "type" : "integer"
           },
           "name" : {
@@ -1340,7 +1340,7 @@
       "User" : {
         "type" : "object",
         "properties" : {
-          "user_id" : {
+          "userId" : {
             "type" : "integer"
           },
           "firstname" : {
@@ -1352,7 +1352,7 @@
           "username" : {
             "type" : "string"
           },
-          "group_id" : {
+          "groupId" : {
             "type" : "integer"
           },
           "groupName" : {
@@ -1363,7 +1363,7 @@
       "Work" : {
         "type" : "object",
         "properties" : {
-          "work_id" : {
+          "workId" : {
             "type" : "integer"
           },
           "time" : {

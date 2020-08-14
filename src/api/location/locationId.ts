@@ -16,7 +16,7 @@ router.get(
   (request, response, next) => {
     // Get the data from the server
     DBcon.query(
-      "SELECT * FROM `TL_locations` WHERE `location_id`=?",
+      "SELECT * FROM `TL_locations` WHERE `locationId`=?",
       [request.params.locationId],
       handleQuery(next, (result) => {
         response.status(200).json(result);
@@ -32,7 +32,7 @@ router.delete(
   (request, response, next) => {
     // Delete from database
     DBcon.query(
-      "DELETE FROM `TL_locations` WHERE `location_id`=?",
+      "DELETE FROM `TL_locations` WHERE `locationId`=?",
       [request.params.locationId],
       handleQuery(next, () => {
         response.status(200).json({
@@ -54,7 +54,7 @@ router.patch(
   ], (resolve, reject, key, request) => {
     // Update the key
     DBcon.query(
-      "UPDATE `TL_locations` SET `" + key + "`=? WHERE `location_id`=?",
+      "UPDATE `TL_locations` SET `" + key + "`=? WHERE `locationId`=?",
       [request.body[key], request.params.locationId],
       handlePatchQuery(reject, resolve)
     )

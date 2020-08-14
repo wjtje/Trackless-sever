@@ -14,7 +14,7 @@ router.get(
   (request, response, next) => {
     // Get the data from the server
     DBcon.query(
-      "SELECT `access_id`, `access` FROM `TL_access` WHERE `access_id`=?",
+      "SELECT `accessId`, `access` FROM `TL_access` WHERE `accessId`=?",
       [request.params?.accessId],
       handleQuery(next, (result) => {
         response.status(200).json(result);
@@ -30,7 +30,7 @@ router.delete(
   (request, response, next) => {
     // Remove from the server
     DBcon.query(
-      "DELETE FROM `TL_access` WHERE `access_id`=?",
+      "DELETE FROM `TL_access` WHERE `accessId`=?",
       [request.params.accessId],
       handleQuery(next, () => {
         response.status(200).json({

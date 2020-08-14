@@ -17,9 +17,9 @@ router.get(
   authHandler('trackless.group.readAll'),
   groupIdCheckHandler(),
   (request, response, next) => {
-    // Group_id is valid return the info
+    // groupId is valid return the info
     DBcon.query(
-      "SELECT * FROM `TL_groups` WHERE `group_id`=?",
+      "SELECT * FROM `TL_groups` WHERE `groupId`=?",
       [request.params.groupId],
       handleQuery(next, (resultGroup) => {
         // Get all users
@@ -29,7 +29,7 @@ router.get(
           handleQuery(next, (resultUsers) => {
             // Return the infomation
             response.status(200).json([{
-              group_id: request.params.groupId, 
+              groupId: request.params.groupId, 
               groupName: resultGroup[0].groupName,
               users: resultUsers,
             }])
@@ -46,14 +46,14 @@ router.delete(
   authHandler('trackless.group.remove'),
   groupIdCheckHandler(),
   (request, response, next) => {
-    // Group_id is valid remove it
+    // groupId is valid remove it
     DBcon.query(
-      "DELETE FROM `TL_groups` WHERE `group_id`=?",
+      "DELETE FROM `TL_groups` WHERE `groupId`=?",
       [request.params.groupId],
       handleQuery(next, () => {
         // Remove all the users from that group
         DBcon.query(
-          "UPDATE `TL_users` SET `group_id`=0 WHERE `group_id`=?",
+          "UPDATE `TL_users` SET `groupId`=0 WHERE `groupId`=?",
           [request.params.groupId]
         );
 
@@ -74,9 +74,9 @@ router.patch(
   ]),
   groupIdCheckHandler(),
   (request, response, next) => {
-    // Group_id is valid edit it
+    // groupId is valid edit it
     DBcon.query(
-      "UPDATE `TL_groups` SET `groupName`=? WHERE `group_id`=?",
+      "UPDATE `TL_groups` SET `groupName`=? WHERE `groupId`=?",
       [
         request.body.groupName,
         request.params.groupId
@@ -99,7 +99,7 @@ router.post(
   (request, response, next) => {
     // Change it in the database
     DBcon.query(
-      "UPDATE `TL_users` SET `group_id`=? WHERE `user_id`=?",
+      "UPDATE `TL_users` SET `groupId`=? WHERE `userId`=?",
       [
         request.params.groupId,
         request.params.userId

@@ -41,7 +41,7 @@ router.post(
       handleQuery(next, (result) => {
         // Saved to the database
         response.status(201).json({
-          location_id: result.insertId
+          locationId: result.insertId
         })
       })
     )
@@ -51,7 +51,7 @@ router.post(
 import userRoute from './user';
 router.use('/user', userRoute);
 
-import locationIdRoute from './location_id';
+import locationIdRoute from './locationId';
 router.use('/', locationIdRoute);
 
 router.use(unusedRequestTypes());

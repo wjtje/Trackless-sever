@@ -14,7 +14,7 @@ export default () => {
       next(error);
     } else {
       // Get the infomation from the database
-      DBcon.query("SELECT * FROM `TL_apikeys` WHERE `api_id`=?", [request.params.apiId], handleQuery(next, (result) => {
+      DBcon.query("SELECT * FROM `TL_apikeys` WHERE `apiId`=?", [request.params.apiId], handleQuery(next, (result) => {
         if (result.length === 0) {
           // The apikey does not exsist
           const error: ServerError = new Error('The apikey does not exsist');

@@ -56,7 +56,7 @@ router.post(
 
           // Commit to the database
           DBcon.query(
-            "INSERT INTO `TL_users` ( `firstname`, `lastname`, `username`, `group_id`, `salt_hash`, `hash` ) VALUES ( ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO `TL_users` ( `firstname`, `lastname`, `username`, `groupId`, `salt_hash`, `hash` ) VALUES ( ?, ?, ?, ?, ?, ?)",
             [
               request.body.firstname,
               request.body.lastname,
@@ -77,7 +77,7 @@ router.post(
   }
 );
 
-import userIdRouter from './user_id';
+import userIdRouter from './userId';
 router.use(userIdRouter);
 
 router.use(unusedRequestTypes());

@@ -29,12 +29,12 @@ export default (access: accessFunction | string) => {
       } else {
         // Check if the user has all the rights to access that command
         DBcon.query(
-          "SELECT `access_id` FROM `TL_access` WHERE `access`=? AND `group_id`=?",
+          "SELECT `accessId` FROM `TL_access` WHERE `access`=? AND `groupId`=?",
           [
             (typeof access === 'string')? access:access(request),
-            user.group_id
+            user.groupId
           ], handleQuery(next, (result) => {
-          if (result.length === 0 && user.group_id !== 1) {
+          if (result.length === 0 && user.groupId !== 1) {
             // User does not have access
             const error:ServerError = new Error('Forbidden');
             error.status = 403;

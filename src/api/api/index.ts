@@ -13,8 +13,8 @@ router.get(
   (request, response, next) => {
     // Get all the api keys from the server
     DBcon.query(
-      "SELECT `api_id`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `user_id`=?",
-      [request.user?.user_id],
+      "SELECT `apiId`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `userId`=?",
+      [request.user?.userId],
       handleQuery(next, (result) => {
         // Send the data back to the user
         response.status(200).json(result);
@@ -23,7 +23,7 @@ router.get(
   }
 );
 
-import apiIdRoute from './api_id';
+import apiIdRoute from './apiId';
 router.use('/', apiIdRoute);
 
 router.use(unusedRequestTypes());

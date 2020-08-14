@@ -27,7 +27,7 @@ router.get(
     // Get the data from the server
     DBcon.query(
       getUser,
-      [(request.params.userId == '~')? request.user?.user_id:request.params.userId],
+      [(request.params.userId == '~')? request.user?.userId:request.params.userId],
       handleQuery(next, (result) => {
         // Send the result back
         response.status(200).json(result);
@@ -44,13 +44,13 @@ router.delete(
   (request, response, next) => {
     // Remove the user
     DBcon.query(
-      "DELETE FROM `TL_users` WHERE `user_id`=?",
+      "DELETE FROM `TL_users` WHERE `userId`=?",
       [request.params.userId],
       handleQuery(next, () => {
         // Delete all apikeys
         DBcon.query(
-          "DELETE FROM `TL_apikeys` WHERE `user_id`=?",
-          [request.params.user_id],
+          "DELETE FROM `TL_apikeys` WHERE `userId`=?",
+          [request.params.userId],
           handleQuery(next, () => {
             response.status(200).json({
               message: 'success'
@@ -83,10 +83,10 @@ router.patch(
     (resolve, reject, key, request) => {
       function changeUser() {
         DBcon.query(
-          "UPDATE `TL_users` SET `" + key + "`=? WHERE `user_id`=?",
+          "UPDATE `TL_users` SET `" + key + "`=? WHERE `userId`=?",
           [
             request.body[key],
-            (request.params.userId == '~') ? request.user?.user_id : request.params.userId,
+            (request.params.userId == '~') ? request.user?.userId : request.params.userId,
           ],
           handlePatchQuery(reject, resolve)
         );
@@ -96,11 +96,11 @@ router.patch(
         case "username":
           // Check if the username has been used
           DBcon.query(
-            "SELECT `user_id` FROM `TL_users` WHERE `username`=?",
+            "SELECT `userId` FROM `TL_users` WHERE `username`=?",
             [request.body.username],
             (error, result) => {
-              const userId = (request.params.userId === '~')? request.user?.user_id:request.params.userId;
-              if (result.length === 0 || Number(result[0].user_id) === Number(userId)) {
+              const userId = (request.params.userId === '~')? request.user?.userId:request.params.userId;
+              if (result.length === 0 || Number(result[0].userId) === Number(userId)) {
                 // User name is free
                 changeUser();
               } else {
@@ -116,10 +116,10 @@ router.patch(
           // Update password
           const [salt, hash] = storePassword(request.body[key]);
 
-          DBcon.query("UPDATE `TL_users` SET `salt_hash`=?, `hash`=? where `user_id`=?", [
+          DBcon.query("UPDATE `TL_users` SET `salt_hash`=?, `hash`=? where `userId`=?", [
             salt,
             hash,
-            (request.params.userId == '~') ? request.user?.user_id : request.params.userId,
+            (request.params.userId == '~') ? request.user?.userId : request.params.userId,
           ], handlePatchQuery(reject, resolve));
           break;
         default:

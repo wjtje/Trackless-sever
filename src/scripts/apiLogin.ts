@@ -9,22 +9,22 @@ import { get as _get } from 'lodash';
  * @param apiKey 
  */
 export function apiLogin(apiKey:string):Promise<{
-  user_id: number;
+  userId: number;
   username: string;
   firstname: string;
   lastname: string;
-  group_id: number;
+  groupId: number;
 }> {
   return new Promise((resolve, reject) => {
     // Check the api key
     DBcon.query(
-      "SELECT `user_id`, `username`, `firstname`, `lastname`, `group_id` FROM `TL_apikeys` INNER JOIN `TL_users` USING (`user_id`) WHERE apiKey=?",
+      "SELECT `userId`, `username`, `firstname`, `lastname`, `groupId` FROM `TL_apikeys` INNER JOIN `TL_users` USING (`userId`) WHERE apiKey=?",
       [ sha512_256(apiKey) ],
       (error, result) => {
         if (error || result.length == 0) { // An sql error or invalid api key
           // Internal error
           DBcon.query(
-            "INSERT INTO `TL_errors` (`user_id`, `error_code`, `error_message`) VALUES (?,?,?)",
+            "INSERT INTO `TL_errors` (`userId`, `error_code`, `error_message`) VALUES (?,?,?)",
             [
               0,
               _get(error, 'code', 'Wrong api key'),
@@ -46,7 +46,7 @@ export function apiLogin(apiKey:string):Promise<{
               // Document the error
               if (error) {
                 DBcon.query(
-                  "INSERT INTO `TL_errors` (`user_id`, `error_code`, `error_message`) VALUES (?,?,?)",
+                  "INSERT INTO `TL_errors` (`userId`, `error_code`, `error_message`) VALUES (?,?,?)",
                   [
                     0,
                     error.code,

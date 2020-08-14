@@ -22,7 +22,7 @@ router.get(
       "SELECT * FROM `TL_groups` ORDER BY `groupname`",
       handleQuery(next, (result: Array<TL_groups>) => {
         let rslt:{
-          group_id: number;
+          groupId: number;
           groupName: string;
           users: object;
         }[] = []; // Result
@@ -32,11 +32,11 @@ router.get(
           return new Promise((resolve, reject) => {
             DBcon.query(
               getUsers,
-              [group.group_id],
+              [group.groupId],
               handleQuery(next, (result) => {
                 // Push the result to the response array
                 rslt.push({
-                  group_id: group.group_id,
+                  groupId: group.groupId,
                   groupName: group.groupName,
                   users: result
                 });
@@ -76,8 +76,8 @@ router.post(
   }
 );
 
-// Import group_id routes
-import groupIdRoute from './group_id';
+// Import groupId routes
+import groupIdRoute from './groupId';
 router.use('/', groupIdRoute);
 
 router.use(unusedRequestTypes());

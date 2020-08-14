@@ -8,8 +8,8 @@ declare global {
       firstname: string;
       lastname: string;
       username: string;
-      user_id: number;
-      group_id: number;
+      userId: number;
+      groupId: number;
     }
   }
 }

@@ -15,7 +15,7 @@ export default () => {
     } else {
       // Get the infomation from the database
       DBcon.query(
-        "SELECT * FROM `TL_work` WHERE `work_id`=?",
+        "SELECT * FROM `TL_work` WHERE `workId`=?",
         [request.params.workId],
         handleQuery(next, (result) => {
           if (result.length === 0) {

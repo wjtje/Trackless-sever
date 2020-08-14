@@ -6,11 +6,15 @@
  - groupIdCheckHandler: Checks if a groupId exsist
  - userIdCheckHandler: Checks if a userId exsist
  - apiIdCheckHandler: Checks if a apiId exsist
+ - accessIdCheckHandler: Checks if a accessId exsist
+ - locationIdCheckHandler: Checks if a locationId exsist
+ - workIdCheckHandler: Checks if a workId exsist
 
 # Changed in this version
 
  - request.user has now typescipt support
  - Cleaner openapi documentation
+ - Renamed all the id's (group_id to groupId etc.)
 
 # Things that are fixed
 

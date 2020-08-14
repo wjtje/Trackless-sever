@@ -26,8 +26,8 @@ router.get(
   (request, response, next) => {
     // Get all the work for that user
     DBcon.query(
-      "SELECT `work_id`, `user_id`, `location_id`, `group_id`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`user_id`) INNER JOIN `TL_locations` USING (`location_id`) INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=? ORDER BY `date`",
-      [(request.params.userId == '~')? request.user?.user_id:request.params.userId],
+      "SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=? ORDER BY `date`",
+      [(request.params.userId == '~')? request.user?.userId:request.params.userId],
       handleQuery(next, (result:Array<TLWork>) => {
         responseWork(result, response);
       })
@@ -49,9 +49,9 @@ router.get(
   (request, response, next) => {
     // Get all the work for that user
     DBcon.query(
-      "SELECT `work_id`, `user_id`, `location_id`, `group_id`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`user_id`) INNER JOIN `TL_locations` USING (`location_id`) INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=? AND `date` >= ? AND `date` <= ? ORDER BY `date`",
+      "SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=? AND `date` >= ? AND `date` <= ? ORDER BY `date`",
       [
-        (request.params.userId == '~')? request.user?.user_id:request.params.userId,
+        (request.params.userId == '~')? request.user?.userId:request.params.userId,
         request.params.start,
         request.params.end
       ],
@@ -77,9 +77,9 @@ router.get(
   (request, response, next) => {
     // Get the data from the server and return it
     DBcon.query(
-      "SELECT `work_id`, `user_id`, `location_id`, `group_id`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`user_id`) INNER JOIN `TL_locations` USING (`location_id`) INNER JOIN `TL_groups` USING (`group_id`) WHERE `user_id`=? AND `work_id`=?",
+      "SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=? AND `workId`=?",
       [
-        (request.params.userId == '~')? request.user?.user_id:request.params.userId,
+        (request.params.userId == '~')? request.user?.userId:request.params.userId,
         request.params.workId
       ],
       handleQuery(next, (result:Array<TLWork>) => {
@@ -104,9 +104,9 @@ router.delete(
   (request, response, next) => {
     // Get the data from the server and return it
     DBcon.query(
-      "DELETE FROM `TL_work` WHERE `user_id`=? AND `work_id`=?",
+      "DELETE FROM `TL_work` WHERE `userId`=? AND `workId`=?",
       [
-        (request.params.userId == '~')? request.user?.user_id:request.params.userId,
+        (request.params.userId == '~')? request.user?.userId:request.params.userId,
         request.params.workId
       ],
       handleQuery(next, () => {
@@ -131,28 +131,28 @@ router.patch(
   userIdCheckHandler(),
   workIdCheckHandler(),
   patchHandler([
-    {name: 'location_id', check: mysqlINT},
+    {name: 'locationId', check: mysqlINT},
     {name: 'date', check: mysqlDATE},
     {name: 'time', check: mysqlINT},
     {name: 'description', check: mysqlTEXT},
   ], (resolve, reject, key, request) => {
     function changeWork() {
       DBcon.query(
-        "UPDATE `TL_work` SET `" + key + "`=? WHERE `work_id`=? AND `user_id`=?",
+        "UPDATE `TL_work` SET `" + key + "`=? WHERE `workId`=? AND `userId`=?",
         [
           request.body[key],
           request.params.workId,
-          (request.params.userId == '~') ? request.user?.user_id : request.params.userId,
+          (request.params.userId == '~') ? request.user?.userId : request.params.userId,
         ],
         handlePatchQuery(reject, resolve)
       );
     }
 
-    if (key === "location_id") {
+    if (key === "locationId") {
       // Check if the location is valid
       DBcon.query(
-        "SELECT `location_id` FROM `TL_locations` WHERE `location_id`=?",
-        [request.body.location_id],
+        "SELECT `locationId` FROM `TL_locations` WHERE `locationId`=?",
+        [request.body.locationId],
         (error, result) => {
           if (error || result.length === 0) {
             // Something wrong in the array

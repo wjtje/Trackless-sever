@@ -39,7 +39,7 @@ router.get(
 // Remove a user
 router.delete(
   '/:userId',
-  authHandler('trackless.user.delete'),
+  authHandler('trackless.user.remove'),
   userIdCheckHandler(),
   (request, response, next) => {
     // Remove the user

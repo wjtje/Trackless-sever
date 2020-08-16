@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get(
   '/:groupId',
-  authHandler('trackless.access.read'),
+  authHandler('trackless.access.readAll'),
   groupIdCheckHandler(),
   (request, response, next) => {
     DBcon.query(

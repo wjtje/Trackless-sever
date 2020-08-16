@@ -9,6 +9,7 @@
  - accessIdCheckHandler: Checks if a accessId exsist
  - locationIdCheckHandler: Checks if a locationId exsist
  - workIdCheckHandler: Checks if a workId exsist
+ - Added typescript interfaces for client side
 
 # Changed in this version
 

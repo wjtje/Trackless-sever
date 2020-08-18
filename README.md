@@ -6,12 +6,11 @@ Keep track of what your employees have done.
 
 ## How to get started
 
- 1. Run the `sql/firstrun.sql` on your database. This will create all the tables.
- 2. Create a account on your database with access to the `trackless` database.
- 3. Edit the `index.ts` and enter your login details.
- 4. Run `npm install` to install all the packages.
- 5. Run `npm run build`. That will compile the code.
- 6. Go the the `build` folder and run `index.js` or run the `npm start` command.
+ 1. Create your own password in the `sql/firstrun.sql` and `src/index.ts`.
+ 2. Run the `sql/firstrun.sql` on your database. This will create all the tables and a user account.
+ 3. Run `npm install` to install all the packages.
+ 4. Run `npm run build`. That will compile the code.
+ 5. Go the the `build` folder and run `index.js` or run the `npm start` command.
 
 ## How to do anything
 

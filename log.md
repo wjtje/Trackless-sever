@@ -16,6 +16,7 @@
  - request.user has now typescipt support
  - Cleaner openapi documentation
  - Renamed all the id's (group_id to groupId etc.)
+ - Updated firstrun.sql
 
 # Things that are fixed
 

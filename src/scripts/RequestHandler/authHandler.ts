@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Wouter van der Wal
+
 import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import { userInfo } from './interface';

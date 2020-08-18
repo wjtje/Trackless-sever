@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Wouter van der Wal
+
 import { DBcon } from '../index';
 import { sha512_256 } from 'js-sha512';
 import { get as _get } from 'lodash';

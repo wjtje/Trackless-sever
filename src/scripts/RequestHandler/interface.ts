@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Wouter van der Wal
+
 /**
  * @since 0.2-beta.1
  * @param {string} name The name of the required data

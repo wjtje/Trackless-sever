@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Wouter van der Wal
+
 import { Response } from "express";
 import moment from 'moment';
 

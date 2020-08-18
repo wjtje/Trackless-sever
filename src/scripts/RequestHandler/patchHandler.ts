@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Wouter van der Wal
+
 import { Request, Response, NextFunction } from 'express';
 import { bodyOnlyContains } from '../dataCheck';
 import ServerError from './serverErrorInterface';

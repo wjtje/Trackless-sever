@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Wouter van der Wal
+
 import { version } from '../../global/about';
 import express from 'express';
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType';

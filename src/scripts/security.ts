@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Wouter van der Wal
+
 import { sha512_256 } from "js-sha512";
 
 /**

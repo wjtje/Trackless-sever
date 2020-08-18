@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Wouter van der Wal
+
 import express from 'express';
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType';
 import userIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIdCheckHandler';

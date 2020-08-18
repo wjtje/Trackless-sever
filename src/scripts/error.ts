@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Wouter van der Wal
+
 import { NextFunction } from 'express';
 import { MysqlError } from 'mysql';
 import { DBcon } from '..';

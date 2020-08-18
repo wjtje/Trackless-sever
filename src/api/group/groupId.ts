@@ -1,4 +1,6 @@
-import express, { response } from 'express';
+// Copyright (c) 2020 Wouter van der Wal
+
+import express from 'express';
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType';
 import authHandler from '../../scripts/RequestHandler/authHandler';
 import { DBcon } from '../..';

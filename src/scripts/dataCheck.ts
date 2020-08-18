@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Wouter van der Wal
+
 import { requireObject } from "./RequestHandler/interface";
 import _ from 'lodash';
 import { Request } from 'express';

@@ -1,7 +1,8 @@
+// Copyright (c) 2020 Wouter van der Wal
+
 import { createConnection as mysqlCreateConnection } from 'mysql';
 import express from 'express';
 import bodyParser from 'body-parser';
-import { Base64 } from 'js-base64';
 import passport from 'passport';
 import { Strategy as BearerStrategy } from 'passport-http-bearer';
 import cors from 'cors';
@@ -11,9 +12,6 @@ import { apiLogin } from './scripts/apiLogin';
 
 // Settings
 const port:number = 55565;
-
-// Import base64 string extension
-Base64.extendString();
 
 // Setup the connection with the database
 export const DBcon = mysqlCreateConnection({

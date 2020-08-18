@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Wouter van der Wal
+
 import express from 'express';
 import authHandler from '../../scripts/RequestHandler/authHandler';
 import { DBcon } from '../..';

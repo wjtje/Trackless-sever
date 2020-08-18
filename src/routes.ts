@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Wouter van der Wal
+
 import { server } from '.';
 
 import accessRoute from './api/access';

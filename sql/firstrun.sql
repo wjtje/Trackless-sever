@@ -1,4 +1,6 @@
-CREATE USER 'trackless'@'localhost' IDENTIFIED BY 'tracklessPassword';
+/* Copyright (c) 2020 Wouter van der Wal */
+
+CREATE USER 'trackless'@'localhost' IDENTIFIED BY 'tracklessPassword'; -- Change this password
 
 CREATE DATABASE `trackless`;
 
@@ -15,6 +17,7 @@ CREATE TABLE `trackless`.`TL_users` (
   PRIMARY KEY (`userId`)
 ) ENGINE = InnoDB;
 
+/* Creates a user called admin with the password admin. */
 INSERT INTO `trackless`.`TL_users` (`firstname`, `lastname`, `username`, `groupId`, `salt_hash`, `hash`) VALUES ('admin', 'admin', 'admin', 1, 'U736OMcfzID8YsBX', '499e653fc45c668794047f56c298ed213594863a1d18683ea07ae5efe972f9f8');
 
 CREATE TABLE `trackless`.`TL_errors` (
@@ -42,6 +45,7 @@ CREATE TABLE `trackless`.`TL_groups` (
   PRIMARY KEY (`groupId`)
 ) ENGINE = InnoDB;
 
+/* Creates the groups */
 INSERT INTO `trackless`.`TL_groups` (`groupId`, `groupName`) VALUES (1, 'Default');
 INSERT INTO `trackless`.`TL_groups` (`groupId`, `groupName`) VALUES (2, 'Admin');
 
@@ -55,6 +59,7 @@ CREATE TABLE `trackless`.`TL_access` (
   PRIMARY KEY (`accessId`)
 ) ENGINE = InnoDB;
 
+/* Gives the admin group access to give access */
 INSERT INTO `trackless`.`TL_access` (`groupId`, `access`) VALUES (1, 'trackless.access.create');
 
 CREATE TABLE `trackless`.`TL_locations` (

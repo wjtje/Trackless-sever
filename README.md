@@ -23,3 +23,8 @@ All the api are documented in the `api/swagger.json`
  - `dev` Compile the code and run it. Refresh if a file changes.
  - `build` Compile the code without sourcemap.
  - `start` Run the code in the build folder.
+
+## LICENSE
+
+The MIT License (MIT)
+Copyright (c) 2020 Wouter van der Wal

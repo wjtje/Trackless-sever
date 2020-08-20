@@ -9,3 +9,5 @@ Use todo+ to see inline todo's
  - A way to see changes made to the database (v0.5-beta.1)
  - Able to order responses (example: sort by firstname)
  - What to-do with the work when a user gets deleted?
+ - A new way to enter your login details
+ - A better way to create all the tabels

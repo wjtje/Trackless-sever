@@ -27,6 +27,7 @@ export interface User {
   userId: number;
   firstname: string;
   lastname: string;
+  username: string;
   groupId: number;
   groupName: string;
 }

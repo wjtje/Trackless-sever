@@ -23,10 +23,16 @@ export const DBcon = mysqlCreateConnection({
 });
 
 // Connect to the database
-DBcon.connect(function(err) {
-  if (err) throw err;
-  console.log("MYSQL: Connected!");
-});
+const connectInterval = setInterval(() => {
+  DBcon.connect(function(err) {
+    if (err) {
+      console.log("MYSQL: FAILED!");
+    } else {
+      clearInterval(connectInterval);
+      console.log("MYSQL: Connected!");
+    }
+  });
+}, 1000);
 
 // Create a basic app (server)
 export const server = express();

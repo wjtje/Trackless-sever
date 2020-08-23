@@ -5,9 +5,8 @@ Use todo+ to see inline todo's
 
 ## Longterm
 
- - New access system (v0.4-beta.1)
  - A way to see changes made to the database (v0.5-beta.1)
  - Able to order responses (example: sort by firstname)
  - What to-do with the work when a user gets deleted?
- - A new way to enter your login details
- - A better way to create all the tabels
+ - A better way to create all the tabels (On first launch)
+ - A way to only allow some device. (example: The admin says that you can only have 2 devices at once)

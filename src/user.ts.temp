@@ -1,0 +1,4 @@
+export const DBhost = "ip-adress";
+export const DBuser = "yourusername";
+export const DBpassword = "yourpassword";
+export const DBdatabase = "trackless";

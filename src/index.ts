@@ -9,16 +9,17 @@ import cors from 'cors';
 import serverErrorHandler from './scripts/RequestHandler/serverErrorHandler';
 import ServerError from './scripts/RequestHandler/serverErrorInterface';
 import { apiLogin } from './scripts/apiLogin';
+import { DBhost, DBuser, DBpassword, DBdatabase } from './user';
 
 // Settings
 const port:number = 55565;
 
 // Setup the connection with the database
 export const DBcon = mysqlCreateConnection({
-  host: "trackless",
-  user: "yourusername",
-  password: "yourpassword",
-  database: "trackless"
+  host: DBhost,
+  user: DBuser,
+  password: DBpassword,
+  database: DBdatabase
 });
 
 // Connect to the database

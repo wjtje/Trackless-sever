@@ -10,9 +10,10 @@ import serverErrorHandler from './scripts/RequestHandler/serverErrorHandler';
 import ServerError from './scripts/RequestHandler/serverErrorInterface';
 import { apiLogin } from './scripts/apiLogin';
 import { DBhost, DBuser, DBpassword, DBdatabase } from './user';
+import morgan from 'morgan';
 
 // Settings
-const port:number = 55565;
+const port:number = (process.env.PORT == undefined)? 55565:Number(process.env.PORT);
 
 // Setup the connection with the database
 export const DBcon = mysqlCreateConnection({
@@ -32,7 +33,7 @@ const connectInterval = setInterval(() => {
       console.log("MYSQL: Connected!");
     }
   });
-}, 1000);
+}, 2000);
 
 // Create a basic app (server)
 export const server = express();
@@ -42,6 +43,7 @@ server.use(bodyParser.urlencoded({
 server.use(bodyParser.json());
 server.use(cors());
 server.use(passport.initialize());
+server.use(morgan('tiny'));
 
 // Use passport
 passport.use(new BearerStrategy(
@@ -68,6 +70,10 @@ server.use((request, response, next) => {
 server.use(serverErrorHandler());
 
 // Start the server
-server.listen(port, () => {
-  console.log("SERVER: Started! on " + port);
-});
+try {
+  server.listen(port, () => {
+    console.log("SERVER: Started! on " + port);
+  });
+} catch {
+  console.log(`SERVER: ${port} is in use`);
+}

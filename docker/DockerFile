@@ -1,15 +1,6 @@
-FROM ubuntu:20.04
+FROM node:latest
 
 WORKDIR /usr/src
-
-# Install needed packages
-RUN apt update
-RUN apt install wget git -y
-
-# Install nodejs
-RUN wget -qO- https://deb.nodesource.com/setup_14.x | bash -
-
-RUN apt install nodejs -y
 
 # Clone trackless from github
 RUN git clone https://github.com/wjtje/Trackless-server.git

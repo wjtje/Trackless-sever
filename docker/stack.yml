@@ -1,0 +1,28 @@
+version: '3.6'
+
+services:
+
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: changeThisPassword
+      MYSQL_DATABASE: trackless
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 80:8080
+  
+  trackless:
+    image: trackless
+    restart: always
+    ports:
+      - 55565:55565
+    command: sh -c "/wait && node index.js"
+    environment:
+      DB_USER: root
+      DB_PASSWORD: changeThisPassword
+      WAIT_HOSTS: db:3306

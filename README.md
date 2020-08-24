@@ -6,6 +6,8 @@ Keep track of what your employees have done.
 
 ## How to get started
 
+(Or go the to the docker folder)
+
  1. Create your own password in the `sql/firstrun.sql`.
  2. Run the `sql/firstrun.sql` on your database. This will create all the tables and a user account.
  3. Add all the login details to the `user.ts.temp` and rename to `user.ts` 
@@ -17,7 +19,7 @@ Keep track of what your employees have done.
 
 A basic account with a username of `admin` and with a password `admin` has been created.
 You can use a program like postman to interface with the server.
-All the api are documented in the `api/swagger.json`
+All the api's are documented in the `api/swagger.json`
 
 ## Npm commands
 

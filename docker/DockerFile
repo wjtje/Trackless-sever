@@ -1,0 +1,42 @@
+FROM ubuntu:20.04
+
+WORKDIR /usr/src
+
+# Install needed packages
+RUN apt update
+RUN apt install wget git -y
+
+# Install nodejs
+RUN wget -qO- https://deb.nodesource.com/setup_14.x | bash -
+
+RUN apt install nodejs -y
+
+# Clone trackless from github
+RUN git clone https://github.com/wjtje/Trackless-server.git
+
+WORKDIR /usr/src/Trackless-server
+
+# Install all the packages
+RUN npm install
+
+# Create user.ts
+RUN echo "export const DBhost = 'db';" >> src/user.ts
+RUN echo "export const DBuser = process.env.DB_USER;" >> src/user.ts
+RUN echo "export const DBpassword = process.env.DB_PASSWORD;" >> src/user.ts
+RUN echo "export const DBdatabase = 'trackless';" >> src/user.ts
+RUN echo "" >> src/user.ts
+
+# Build the project
+RUN npm run build
+
+# Move to the correct folder
+WORKDIR /usr/src/Trackless-server/build
+
+# Add docker-compose-wait tool
+ENV WAIT_VERSION 2.7.2
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
+RUN chmod +x /wait
+
+EXPOSE 55565
+
+CMD [ "node", "index.js" ]

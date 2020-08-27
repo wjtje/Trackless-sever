@@ -1,12 +1,6 @@
 /* Copyright (c) 2020 Wouter van der Wal */
 
-CREATE USER 'trackless'@'localhost' IDENTIFIED BY 'tracklessPassword'; -- Change this password
-
-CREATE DATABASE `trackless`;
-
-GRANT SELECT, DELETE, UPDATE ON `trackless`.* TO 'trackless'@'localhost';
-
-CREATE TABLE `trackless`.`TL_users` (
+CREATE TABLE `TL_users` (
   `userId` INT NOT NULL AUTO_INCREMENT ,
   `firstname` TEXT NOT NULL ,
   `lastname` TEXT NOT NULL ,
@@ -18,9 +12,9 @@ CREATE TABLE `trackless`.`TL_users` (
 ) ENGINE = InnoDB;
 
 /* Creates a user called admin with the password admin. */
-INSERT INTO `trackless`.`TL_users` (`firstname`, `lastname`, `username`, `groupId`, `salt_hash`, `hash`) VALUES ('admin', 'admin', 'admin', 1, 'U736OMcfzID8YsBX', '499e653fc45c668794047f56c298ed213594863a1d18683ea07ae5efe972f9f8');
+INSERT INTO `TL_users` (`firstname`, `lastname`, `username`, `groupId`, `salt_hash`, `hash`) VALUES ('admin', 'admin', 'admin', 1, 'U736OMcfzID8YsBX', '499e653fc45c668794047f56c298ed213594863a1d18683ea07ae5efe972f9f8');
 
-CREATE TABLE `trackless`.`TL_errors` (
+CREATE TABLE `TL_errors` (
     `errorId` INT NOT NULL AUTO_INCREMENT ,
     `dateTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     `userId` INT NOT NULL,
@@ -29,7 +23,7 @@ CREATE TABLE `trackless`.`TL_errors` (
     PRIMARY KEY (`errorId`)
 ) ENGINE = InnoDB;
 
-CREATE TABLE `trackless`.`TL_apikeys` (
+CREATE TABLE `TL_apikeys` (
   `apiId` INT NOT NULL AUTO_INCREMENT ,
   `apiKey` TEXT NOT NULL ,
   `createDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
@@ -39,20 +33,20 @@ CREATE TABLE `trackless`.`TL_apikeys` (
   PRIMARY KEY (`apiId`)
 ) ENGINE = InnoDB;
 
-CREATE TABLE `trackless`.`TL_groups` (
+CREATE TABLE `TL_groups` (
   `groupId` INT NOT NULL AUTO_INCREMENT ,
   `groupName` TEXT NOT NULL ,
   PRIMARY KEY (`groupId`)
 ) ENGINE = InnoDB;
 
 /* Creates the groups */
-INSERT INTO `trackless`.`TL_groups` (`groupId`, `groupName`) VALUES (1, 'Default');
-INSERT INTO `trackless`.`TL_groups` (`groupId`, `groupName`) VALUES (2, 'Admin');
+INSERT INTO `TL_groups` (`groupId`, `groupName`) VALUES (1, 'Default');
+INSERT INTO `TL_groups` (`groupId`, `groupName`) VALUES (2, 'Admin');
 
-UPDATE `trackless`.`TL_groups` SET `groupId` = 0 WHERE `TL_groups`.`groupName` = 'Default';
-UPDATE `trackless`.`TL_groups` SET `groupId` = 1 WHERE `TL_groups`.`groupName` = 'Admin';
+UPDATE `TL_groups` SET `groupId` = 0 WHERE `TL_groups`.`groupName` = 'Default';
+UPDATE `TL_groups` SET `groupId` = 1 WHERE `TL_groups`.`groupName` = 'Admin';
 
-CREATE TABLE `trackless`.`TL_access` (
+CREATE TABLE `TL_access` (
   `accessId` INT NOT NULL AUTO_INCREMENT ,
   `groupId` INT NOT NULL ,
   `access` TEXT NOT NULL ,
@@ -60,9 +54,9 @@ CREATE TABLE `trackless`.`TL_access` (
 ) ENGINE = InnoDB;
 
 /* Gives the admin group access to give access */
-INSERT INTO `trackless`.`TL_access` (`groupId`, `access`) VALUES (1, 'trackless.access.create');
+INSERT INTO `TL_access` (`groupId`, `access`) VALUES (1, 'trackless.access.create');
 
-CREATE TABLE `trackless`.`TL_locations` (
+CREATE TABLE `TL_locations` (
   `locationId` INT NOT NULL AUTO_INCREMENT ,
   `name` TEXT NOT NULL ,
   `place` TEXT NOT NULL ,
@@ -70,7 +64,7 @@ CREATE TABLE `trackless`.`TL_locations` (
   PRIMARY KEY (`locationId`)
 ) ENGINE = InnoDB;
 
-CREATE TABLE `trackless`.`TL_work` (
+CREATE TABLE `TL_work` (
   `workId` INT NOT NULL AUTO_INCREMENT ,
   `userId` INT NOT NULL ,
   `locationId` INT NOT NULL ,

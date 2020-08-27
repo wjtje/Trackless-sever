@@ -1,6 +1,6 @@
 {
   "name": "trackless-server",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
@@ -26,6 +26,7 @@
     "js-sha512": "^0.8.0",
     "lodash": "^4.17.20",
     "moment": "^2.27.0",
+    "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "passport": "^0.4.1",
     "passport-http-bearer": "^1.0.1",
@@ -36,6 +37,7 @@
     "@types/express": "^4.17.7",
     "@types/js-sha512": "^0.7.0",
     "@types/lodash": "^4.14.159",
+    "@types/morgan": "^1.9.1",
     "@types/mysql": "^2.15.15",
     "@types/node": "^14.6.0",
     "@types/passport": "^1.0.4",

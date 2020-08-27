@@ -1,39 +1,39 @@
 // Copyright (c) 2020 Wouter van der Wal
 
-import express from 'express';
-import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType';
-import userIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIdCheckHandler';
-import authHandler from '../../scripts/RequestHandler/authHandler';
-import { handleQuery } from '../../scripts/handle';
-import { responseWork, TLWork } from './script';
-import { DBcon } from '../..';
-import workIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/workIdCheckHandler';
-import { patchHandler, handlePatchQuery } from '../../scripts/RequestHandler/patchHandler';
-import { mysqlINT, mysqlTEXT, mysqlDATE } from '../../scripts/types';
-import ServerError from '../../scripts/RequestHandler/serverErrorInterface';
+import express from 'express'
+import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
+import userIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIdCheckHandler'
+import authHandler from '../../scripts/RequestHandler/authHandler'
+import { handleQuery } from '../../scripts/handle'
+import { responseWork, TLWork } from './script'
+import { DBcon } from '../..'
+import workIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/workIdCheckHandler'
+import { patchHandler, handlePatchQuery } from '../../scripts/RequestHandler/patchHandler'
+import { mysqlINT, mysqlTEXT, mysqlDATE } from '../../scripts/types'
+import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 
-const router = express.Router();
+const router = express.Router()
 
 // Get all the work for a user
 router.get(
   '/:userId',
   authHandler((request) => {
     if (request.params.userId === '~') {
-      return 'trackless.work.readOwn';
+      return 'trackless.work.readOwn'
     } else {
-      return 'trackless.work.readAll';
+      return 'trackless.work.readAll'
     }
   }),
   userIdCheckHandler(),
   (request, response, next) => {
     // Get all the work for that user
     DBcon.query(
-      "SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=? ORDER BY `date`",
-      [(request.params.userId == '~')? request.user?.userId:request.params.userId],
+      'SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=? ORDER BY `date`',
+      [(request.params.userId === '~') ? request.user?.userId : request.params.userId],
       handleQuery(next, (result:Array<TLWork>) => {
-        responseWork(result, response);
+        responseWork(result, response)
       })
-    );
+    )
   }
 )
 
@@ -42,25 +42,25 @@ router.get(
   '/:userId/date/:start/:end',
   authHandler((request) => {
     if (request.params.userId === '~') {
-      return 'trackless.work.readOwn';
+      return 'trackless.work.readOwn'
     } else {
-      return 'trackless.work.readAll';
+      return 'trackless.work.readAll'
     }
   }),
   userIdCheckHandler(),
   (request, response, next) => {
     // Get all the work for that user
     DBcon.query(
-      "SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=? AND `date` >= ? AND `date` <= ? ORDER BY `date`",
+      'SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=? AND `date` >= ? AND `date` <= ? ORDER BY `date`',
       [
-        (request.params.userId == '~')? request.user?.userId:request.params.userId,
+        (request.params.userId === '~') ? request.user?.userId : request.params.userId,
         request.params.start,
         request.params.end
       ],
       handleQuery(next, (result:Array<TLWork>) => {
-        responseWork(result, response);
+        responseWork(result, response)
       })
-    );
+    )
   }
 )
 
@@ -69,9 +69,9 @@ router.get(
   '/:userId/:workId',
   authHandler((request) => {
     if (request.params.userId === '~') {
-      return 'trackless.work.readOwn';
+      return 'trackless.work.readOwn'
     } else {
-      return 'trackless.work.readAll';
+      return 'trackless.work.readAll'
     }
   }),
   userIdCheckHandler(),
@@ -79,15 +79,15 @@ router.get(
   (request, response, next) => {
     // Get the data from the server and return it
     DBcon.query(
-      "SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=? AND `workId`=?",
+      'SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=? AND `workId`=?',
       [
-        (request.params.userId == '~')? request.user?.userId:request.params.userId,
+        (request.params.userId === '~') ? request.user?.userId : request.params.userId,
         request.params.workId
       ],
       handleQuery(next, (result:Array<TLWork>) => {
-        responseWork(result, response);
+        responseWork(result, response)
       })
-    );
+    )
   }
 )
 
@@ -96,9 +96,9 @@ router.delete(
   '/:userId/:workId',
   authHandler((request) => {
     if (request.params.userId === '~') {
-      return 'trackless.work.removeOwn';
+      return 'trackless.work.removeOwn'
     } else {
-      return 'trackless.work.removeAll';
+      return 'trackless.work.removeAll'
     }
   }),
   userIdCheckHandler(),
@@ -106,9 +106,9 @@ router.delete(
   (request, response, next) => {
     // Get the data from the server and return it
     DBcon.query(
-      "DELETE FROM `TL_work` WHERE `userId`=? AND `workId`=?",
+      'DELETE FROM `TL_work` WHERE `userId`=? AND `workId`=?',
       [
-        (request.params.userId == '~')? request.user?.userId:request.params.userId,
+        (request.params.userId === '~') ? request.user?.userId : request.params.userId,
         request.params.workId
       ],
       handleQuery(next, () => {
@@ -116,7 +116,7 @@ router.delete(
           message: 'done'
         })
       })
-    );
+    )
   }
 )
 
@@ -125,45 +125,45 @@ router.patch(
   '/:userId/:workId',
   authHandler((request) => {
     if (request.params.userId === '~') {
-      return 'trackless.work.editOwn';
+      return 'trackless.work.editOwn'
     } else {
-      return 'trackless.work.editAll';
+      return 'trackless.work.editAll'
     }
   }),
   userIdCheckHandler(),
   workIdCheckHandler(),
   patchHandler([
-    {name: 'locationId', check: mysqlINT},
-    {name: 'date', check: mysqlDATE},
-    {name: 'time', check: mysqlINT},
-    {name: 'description', check: mysqlTEXT},
+    { name: 'locationId', check: mysqlINT },
+    { name: 'date', check: mysqlDATE },
+    { name: 'time', check: mysqlINT },
+    { name: 'description', check: mysqlTEXT }
   ], (resolve, reject, key, request) => {
-    function changeWork() {
+    function changeWork () {
       DBcon.query(
-        "UPDATE `TL_work` SET `" + key + "`=? WHERE `workId`=? AND `userId`=?",
+        'UPDATE `TL_work` SET `' + key + '`=? WHERE `workId`=? AND `userId`=?',
         [
           request.body[key],
           request.params.workId,
-          (request.params.userId == '~') ? request.user?.userId : request.params.userId,
+          (request.params.userId === '~') ? request.user?.userId : request.params.userId
         ],
         handlePatchQuery(reject, resolve)
-      );
+      )
     }
 
-    if (key === "locationId") {
+    if (key === 'locationId') {
       // Check if the location is valid
       DBcon.query(
-        "SELECT `locationId` FROM `TL_locations` WHERE `locationId`=?",
+        'SELECT `locationId` FROM `TL_locations` WHERE `locationId`=?',
         [request.body.locationId],
         (error, result) => {
           if (error || result.length === 0) {
             // Something wrong in the array
-            const error: ServerError = new Error('Your location id is not valid');
-            error.status = 400;
+            const error: ServerError = new Error('Your location id is not valid')
+            error.status = 400
             error.code = 'trackless.work.patch.locationNotValid'
-            reject(error);
+            reject(error)
           } else {
-            changeWork();
+            changeWork()
           }
         })
     } else {
@@ -173,6 +173,6 @@ router.patch(
   })
 )
 
-router.use(unusedRequestTypes);
+router.use(unusedRequestTypes)
 
-export default router;
+export default router

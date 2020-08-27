@@ -1,7 +1,7 @@
 // Copyright (c) 2020 Wouter van der Wal
 // TypeScript Version: 2.3
 
-import Express from 'express';
+import Express from 'express'
 
 declare global {
   namespace Express {

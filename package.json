@@ -7,7 +7,7 @@
     "dev": "nodemon --exec \"tsc && node --inspect dist/index.js\" -e ts",
     "build": "tsc --sourceMap false --outDir build",
     "start": "node .\\build\\index.js",
-    "test": "standardx **/*.ts"
+    "test": "standardx **/*.ts && tsc"
   },
   "repository": {
     "type": "git",
@@ -56,6 +56,8 @@
   },
   "standardx": {
     "parser": "@typescript-eslint/parser",
-    "plugins": [ "@typescript-eslint/eslint-plugin" ]
+    "plugins": [
+      "@typescript-eslint/eslint-plugin"
+    ]
   }
 }

@@ -1,20 +1,20 @@
 // Copyright (c) 2020 Wouter van der Wal
 
-import { version } from '../../global/about';
-import express from 'express';
-import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType';
+import { version } from '../../global/about'
+import express from 'express'
+import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 
-const router = express.Router();
+const router = express.Router()
 
 router.get(
   '/',
-  (request, response, next) => {
+  (request, response) => {
     response.status(200).json({
       version: version
-    });
+    })
   }
-);
+)
 
-router.use(unusedRequestTypes());
+router.use(unusedRequestTypes())
 
-export default router;
+export default router

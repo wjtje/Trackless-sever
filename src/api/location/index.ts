@@ -1,12 +1,14 @@
 // Copyright (c) 2020 Wouter van der Wal
 
-import express from 'express';
-import unusedRequestTypes from "../../scripts/RequestHandler/unusedRequestType";
-import authHandler from '../../scripts/RequestHandler/authHandler';
-import { DBcon } from '../..';
-import { handleQuery } from '../../scripts/handle';
-import requireHandler from '../../scripts/RequestHandler/requireHandler';
-import { mysqlTEXT } from '../../scripts/types';
+import express from 'express'
+import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
+import authHandler from '../../scripts/RequestHandler/authHandler'
+import { DBcon } from '../..'
+import { handleQuery } from '../../scripts/handle'
+import requireHandler from '../../scripts/RequestHandler/requireHandler'
+import { mysqlTEXT } from '../../scripts/types'
+import userRoute from './user'
+import locationIdRoute from './locationId'
 
 const router = express.Router()
 
@@ -15,9 +17,9 @@ router.get(
   authHandler('trackless.location.read'),
   (request, response, next) => {
     DBcon.query(
-      "SELECT * FROM `TL_locations` ORDER BY `place`, `name`",
+      'SELECT * FROM `TL_locations` ORDER BY `place`, `name`',
       handleQuery(next, (result) => {
-        response.status(200).json(result);
+        response.status(200).json(result)
       })
     )
   }
@@ -27,18 +29,18 @@ router.post(
   '/',
   authHandler('trackless.location.create'),
   requireHandler([
-    {name: 'name', check: mysqlTEXT},
-    {name: 'place', check: mysqlTEXT},
-    {name: 'id', check: mysqlTEXT},
+    { name: 'name', check: mysqlTEXT },
+    { name: 'place', check: mysqlTEXT },
+    { name: 'id', check: mysqlTEXT }
   ]),
   (request, response, next) => {
     // Push to the server
     DBcon.query(
-      "INSERT INTO `TL_locations` (`name`, `place`, `id`) VALUES (?, ?, ?)",
+      'INSERT INTO `TL_locations` (`name`, `place`, `id`) VALUES (?, ?, ?)',
       [
         request.body.name,
         request.body.place,
-        request.body.id,
+        request.body.id
       ],
       handleQuery(next, (result) => {
         // Saved to the database
@@ -50,12 +52,10 @@ router.post(
   }
 )
 
-import userRoute from './user';
-router.use('/user', userRoute);
+router.use('/user', userRoute)
 
-import locationIdRoute from './locationId';
-router.use('/', locationIdRoute);
+router.use('/', locationIdRoute)
 
-router.use(unusedRequestTypes());
+router.use(unusedRequestTypes())
 
-export default router;
+export default router

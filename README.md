@@ -13,7 +13,7 @@ Keep track of what your employees have done.
 ## Installation
 
 This server is written in typescript for nodejs.
-It work with nodejs version 12.x, 13.x and 14.x.
+It work with nodejs version 10.x, 12.x and 14.x.
 
 Create a new mysql database and user for that database.
 Import the `sql/firstrun.sql` into the newly create database.

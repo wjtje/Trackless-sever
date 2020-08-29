@@ -1227,7 +1227,7 @@
         }, {
           "in" : "path",
           "name" : "workId",
-          "description" : "Id of the wokr",
+          "description" : "Id of the work",
           "required" : true,
           "schema" : {
             "type" : "integer"
@@ -1391,9 +1391,5 @@
         "in" : "header"
       }
     }
-  },
-  "servers" : [ {
-    "description" : "SwaggerHub API Auto Mocking",
-    "url" : "https://virtserver.swaggerhub.com/wjtje/Trackless/0.4.0"
-  } ]
+  }
 }

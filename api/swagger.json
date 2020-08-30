@@ -1147,7 +1147,7 @@
         }, {
           "in" : "path",
           "name" : "workId",
-          "description" : "Id of the wokr",
+          "description" : "Id of the work",
           "required" : true,
           "schema" : {
             "type" : "integer"
@@ -1192,7 +1192,7 @@
         }, {
           "in" : "path",
           "name" : "workId",
-          "description" : "Id of the wokr",
+          "description" : "Id of the work",
           "required" : true,
           "schema" : {
             "type" : "integer"

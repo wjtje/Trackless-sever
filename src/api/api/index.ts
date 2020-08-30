@@ -6,6 +6,7 @@ import authHandler from '../../scripts/RequestHandler/authHandler'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 import apiIdRoute from './apiId'
+import sortHandler from '../../scripts/RequestHandler/sortHandler'
 
 const router = express.Router()
 
@@ -13,10 +14,16 @@ const router = express.Router()
 router.get(
   '/',
   authHandler('trackless.api.read'),
+  sortHandler([
+    'apiId',
+    'createDate',
+    'lastUsed',
+    'deviceName'
+  ]),
   (request, response, next) => {
     // Get all the api keys from the server
     DBcon.query(
-      'SELECT `apiId`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `userId`=?',
+      'SELECT `apiId`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `userId`=?' + String(request.query?.sort),
       [request.user?.userId],
       handleQuery(next, (result) => {
         // Send the data back to the user

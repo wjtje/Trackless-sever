@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "nodemon --exec \"tsc && node --inspect dist/index.js\" -e ts",
+    "dev": "nodemon --exec \"(tsc || exit 1) && node --inspect dist/index.js\" -e ts",
     "build": "tsc --sourceMap false --outDir build",
     "start": "node .\\build\\index.js",
     "test": "standardx **/*.ts && tsc"

@@ -64,6 +64,10 @@ CREATE TABLE `trackless`.`TL_locations` (
   PRIMARY KEY (`locationId`)
 ) ENGINE = InnoDB;
 
+/* Create a location for deleted locations */
+INSERT INTO `TL_locations` (`name`, `place`, `id`) VALUES ('Deleted', 'Deleted', 'Deleted');
+UPDATE `TL_locations` SET `locationId` = 0 WHERE `TL_locations`.`id` = 'Deleted';
+
 CREATE TABLE `trackless`.`TL_work` (
   `workId` INT NOT NULL AUTO_INCREMENT ,
   `userId` INT NOT NULL ,

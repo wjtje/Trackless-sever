@@ -8,8 +8,8 @@ import { TLgroups } from './interface'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT } from '../../scripts/types'
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
-import { getUsers } from '../query'
 import groupIdRoute from './groupId'
+import sortHandler from '../../scripts/RequestHandler/sortHandler'
 
 const router = express.Router()
 
@@ -17,10 +17,14 @@ const router = express.Router()
 router.get(
   '/',
   authHandler('trackless.group.readAll'),
+  sortHandler([
+    'groupId',
+    'groupName'
+  ]),
   (request, response, next) => {
     // List all group
     DBcon.query(
-      'SELECT * FROM `TL_groups` ORDER BY `groupname`',
+      'SELECT * FROM `TL_groups` ORDER BY `groupname`' + String(request.query?.sort),
       handleQuery(next, (result: Array<TLgroups>) => {
         const rslt:{
           groupId: number;
@@ -32,7 +36,7 @@ router.get(
         Promise.all(result.map((group) => {
           return new Promise((resolve) => {
             DBcon.query(
-              getUsers,
+              'SELECT `userId`, `firstname`, `lastname`, `username`, `groupId`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupId`) WHERE `groupId`=? ORDER BY `firstname`, `lastname`, `username`',
               [group.groupId],
               handleQuery(next, (result) => {
                 // Push the result to the response array

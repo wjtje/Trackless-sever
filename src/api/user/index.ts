@@ -5,12 +5,12 @@ import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 import authHandler from '../../scripts/RequestHandler/authHandler'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
-import { getAllUsers } from '../query'
 import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 import { storePassword } from '../../scripts/security'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT, mysqlINT } from '../../scripts/types'
 import userIdRouter from './userId'
+import sortHandler from '../../scripts/RequestHandler/sortHandler'
 
 const router = express.Router()
 
@@ -18,10 +18,18 @@ const router = express.Router()
 router.get(
   '/',
   authHandler('trackless.user.readAll'),
+  sortHandler([
+    'userId',
+    'firstname',
+    'lastname',
+    'username',
+    'groupId',
+    'groupName'
+  ]),
   (request, response, next) => {
     // Send the request
     DBcon.query(
-      getAllUsers,
+      'SELECT `userId`, `firstname`, `lastname`, `username`, `groupId`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupId`)' + String((request.query?.sort || ' ORDER BY `firstname`, `lastname`, `username`')),
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })

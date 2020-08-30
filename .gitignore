@@ -6,3 +6,4 @@ out
 test
 src/user.ts
 githubPush
+.vscode

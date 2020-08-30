@@ -10,6 +10,7 @@ import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 import { mysqlINT, mysqlTEXT } from '../../scripts/types'
 import groupRouter from './group'
 import accessIdRoute from './accessId'
+import sortHandler from '../../scripts/RequestHandler/sortHandler'
 
 const router = express.Router()
 
@@ -17,10 +18,14 @@ const router = express.Router()
 router.get(
   '/',
   authHandler('trackless.access.read'),
+  sortHandler([
+    'accessId',
+    'access'
+  ]),
   (request, response, next) => {
     // Get all the data from the server
     DBcon.query(
-      'SELECT `accessId`, `access` FROM `TL_access` WHERE `groupId`=?',
+      'SELECT `accessId`, `access` FROM `TL_access` WHERE `groupId`=?' + String(request.query?.sort),
       [request.user?.groupId],
       handleQuery(next, (result) => {
         response.status(200).json(result)

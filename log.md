@@ -1,6 +1,7 @@
 # New in this version
 
  - Added standardx for testing
+ - Able to sort your result by propertie
 
 # Changed in this version
 
@@ -11,6 +12,7 @@ INSERT INTO `TL_locations` (`name`, `place`, `id`) VALUES ('Deleted', 'Deleted',
 UPDATE `TL_locations` SET `locationId` = 0 WHERE `TL_locations`.`id` = 'Deleted';
 ```
  - When a user gets deleted all the work from that user will be lost
+ - When deleting a group all access rules for that group will be deleted
 
 # Things that are fixed
 

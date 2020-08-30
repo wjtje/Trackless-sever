@@ -59,6 +59,12 @@ router.delete(
             })
           })
         )
+
+        // Remove all the work
+        DBcon.query(
+          'DELETE FROM `TL_work` WHERE `userId`=?',
+          [request.params.userId]
+        )
       })
     )
   }

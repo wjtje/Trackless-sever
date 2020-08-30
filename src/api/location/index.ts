@@ -17,7 +17,7 @@ router.get(
   authHandler('trackless.location.read'),
   (request, response, next) => {
     DBcon.query(
-      'SELECT * FROM `TL_locations` ORDER BY `place`, `name`',
+      'SELECT * FROM `TL_locations` WHERE `locationId`!=0 ORDER BY `place`, `name`',
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })

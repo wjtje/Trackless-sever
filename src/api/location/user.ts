@@ -17,7 +17,7 @@ router.get(
   (request, response, next) => {
     // Get last locationId from the server
     DBcon.query(
-      'SELECT `locationId`, `name`, `place`, `id` FROM `TL_work` INNER JOIN `TL_locations` USING (`locationId`) WHERE `userId`=? ORDER BY `workId` DESC LIMIT 1',
+      'SELECT `locationId`, `name`, `place`, `id` FROM `TL_work` INNER JOIN `TL_locations` USING (`locationId`) WHERE `userId`=? AND `locationId`!=0 ORDER BY `workId` DESC LIMIT 1',
       [(request.params.userId === '~') ? request.user?.userId : request.params.userId],
       handleQuery(next, (result) => {
         response.status(200).json(result)
@@ -37,7 +37,7 @@ router.get(
       handleQuery(next, (randomLocations) => {
         // Get most used locationId from the server (limit 2)
         DBcon.query(
-          'SELECT `locationId`, `name`, `place`, `id`, COUNT(`locationId`) as `occurrence` FROM `TL_work` INNER JOIN `TL_locations` USING (`locationId`) WHERE `userId` = ? AND `date` >= ? AND `date` <= ? GROUP BY `locationId` ORDER BY `occurrence` DESC LIMIT 2',
+          'SELECT `locationId`, `name`, `place`, `id`, COUNT(`locationId`) as `occurrence` FROM `TL_work` INNER JOIN `TL_locations` USING (`locationId`) WHERE `userId` = ? AND `locationId`!=0 AND `date` >= ? AND `date` <= ? GROUP BY `locationId` ORDER BY `occurrence` DESC LIMIT 2',
           [
             request.user?.userId,
             moment().subtract(7, 'days').format('YYYY-MM-DD'), // Last week

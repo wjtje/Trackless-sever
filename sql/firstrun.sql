@@ -40,8 +40,8 @@ CREATE TABLE `TL_groups` (
 ) ENGINE = InnoDB;
 
 /* Creates the groups */
-INSERT INTO `TL_groups` (`groupId`, `groupName`) VALUES (1, 'Default');
-INSERT INTO `TL_groups` (`groupId`, `groupName`) VALUES (2, 'Admin');
+INSERT INTO `TL_groups` (`groupName`) VALUES ('Default');
+INSERT INTO `TL_groups` (`groupName`) VALUES ('Admin');
 
 UPDATE `TL_groups` SET `groupId` = 0 WHERE `TL_groups`.`groupName` = 'Default';
 UPDATE `TL_groups` SET `groupId` = 1 WHERE `TL_groups`.`groupName` = 'Admin';
@@ -63,6 +63,10 @@ CREATE TABLE `TL_locations` (
   `id` TEXT NOT NULL ,
   PRIMARY KEY (`locationId`)
 ) ENGINE = InnoDB;
+
+/* Create a location for deleted locations */
+INSERT INTO `TL_locations` (`name`, `place`, `id`) VALUES ('Deleted', 'Deleted', 'Deleted');
+UPDATE `TL_locations` SET `locationId` = 0 WHERE `TL_locations`.`id` = 'Deleted';
 
 CREATE TABLE `TL_work` (
   `workId` INT NOT NULL AUTO_INCREMENT ,

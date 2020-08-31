@@ -9,7 +9,6 @@ import groupIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/gro
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT } from '../../scripts/types'
 import userIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIdCheckHandler'
-import { getUsers } from '../query'
 
 const router = express.Router()
 
@@ -26,7 +25,7 @@ router.get(
       handleQuery(next, (resultGroup) => {
         // Get all users
         DBcon.query(
-          getUsers,
+          'SELECT `userId`, `firstname`, `lastname`, `username`, `groupId`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupId`) WHERE `groupId`=? ORDER BY `firstname`, `lastname`, `username`',
           [request.params.groupId],
           handleQuery(next, (resultUsers) => {
             // Return the infomation
@@ -56,6 +55,12 @@ router.delete(
         // Remove all the users from that group
         DBcon.query(
           'UPDATE `TL_users` SET `groupId`=0 WHERE `groupId`=?',
+          [request.params.groupId]
+        )
+
+        // Remove all access rules
+        DBcon.query(
+          'DELETE FROM `TL_access` WHERE `groupId`=?',
           [request.params.groupId]
         )
 

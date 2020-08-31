@@ -9,15 +9,22 @@ import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT } from '../../scripts/types'
 import userRoute from './user'
 import locationIdRoute from './locationId'
+import sortHandler from '../../scripts/RequestHandler/sortHandler'
 
 const router = express.Router()
 
 router.get(
   '/',
   authHandler('trackless.location.read'),
+  sortHandler([
+    'locationId',
+    'name',
+    'place',
+    'id'
+  ]),
   (request, response, next) => {
     DBcon.query(
-      'SELECT * FROM `TL_locations` ORDER BY `place`, `name`',
+      `SELECT * FROM \`TL_locations\` WHERE \`locationId\`!=0 ${request.query.sort || 'ORDER BY `place`, `name`'}`,
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })

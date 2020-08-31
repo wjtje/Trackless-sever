@@ -1,7 +1,7 @@
 {
   "openapi" : "3.0.0",
   "info" : {
-    "version" : "0.4.1",
+    "version" : "0.4.2",
     "title" : "Trackless API",
     "contact" : {
       "name" : "wjtje",
@@ -17,6 +17,14 @@
       "get" : {
         "tags" : [ "access" ],
         "summary" : "See where you have access to",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by propertie"
+        } ],
         "responses" : {
           "200" : {
             "description" : "successful operation",
@@ -181,6 +189,14 @@
       "get" : {
         "tags" : [ "api" ],
         "summary" : "Get all your active api keys",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by propertie"
+        } ],
         "responses" : {
           "200" : {
             "description" : "successful operation",
@@ -271,6 +287,14 @@
       "get" : {
         "tags" : [ "group" ],
         "summary" : "Get all the groups on the server",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by propertie"
+        } ],
         "responses" : {
           "200" : {
             "description" : "successful operation",
@@ -372,7 +396,8 @@
       },
       "delete" : {
         "tags" : [ "group" ],
-        "summary" : "Removes a single group from the server and moves all users to the default group",
+        "summary" : "Removes a single group from the server",
+        "description" : "All the user is that group will be moved to group 0 (default). And all access rules for that group will be lost.",
         "parameters" : [ {
           "in" : "path",
           "name" : "groupId",
@@ -480,6 +505,14 @@
       "get" : {
         "tags" : [ "location" ],
         "summary" : "Get all the locations on the server",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by propertie"
+        } ],
         "responses" : {
           "200" : {
             "description" : "successful operation",
@@ -582,6 +615,7 @@
       "delete" : {
         "tags" : [ "location" ],
         "summary" : "Remove a single location",
+        "description" : "All work that was using this location will be using locationId 0 (Deleted location).",
         "parameters" : [ {
           "in" : "path",
           "name" : "locationId",
@@ -780,7 +814,7 @@
                   "properties" : {
                     "version" : {
                       "type" : "string",
-                      "example" : "0.4-beta.1"
+                      "example" : "0.4-beta.2"
                     }
                   }
                 }
@@ -794,6 +828,14 @@
       "get" : {
         "tags" : [ "user" ],
         "summary" : "Get all the users from the system",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by propertie"
+        } ],
         "responses" : {
           "200" : {
             "description" : "successful operation",
@@ -932,7 +974,7 @@
         "security" : [ {
           "bearer_token" : [ ]
         } ],
-        "description" : "You can use an '~' as a userId to list your own account."
+        "description" : "You can use an '~' as a userId to list your own account. All the work from that user will be lost."
       },
       "patch" : {
         "tags" : [ "user" ],
@@ -1147,7 +1189,7 @@
         }, {
           "in" : "path",
           "name" : "workId",
-          "description" : "Id of the wokr",
+          "description" : "Id of the work",
           "required" : true,
           "schema" : {
             "type" : "integer"
@@ -1192,7 +1234,7 @@
         }, {
           "in" : "path",
           "name" : "workId",
-          "description" : "Id of the wokr",
+          "description" : "Id of the work",
           "required" : true,
           "schema" : {
             "type" : "integer"
@@ -1227,7 +1269,7 @@
         }, {
           "in" : "path",
           "name" : "workId",
-          "description" : "Id of the wokr",
+          "description" : "Id of the work",
           "required" : true,
           "schema" : {
             "type" : "integer"
@@ -1391,9 +1433,5 @@
         "in" : "header"
       }
     }
-  },
-  "servers" : [ {
-    "description" : "SwaggerHub API Auto Mocking",
-    "url" : "https://virtserver.swaggerhub.com/wjtje/Trackless/0.4.0"
-  } ]
+  }
 }

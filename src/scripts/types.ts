@@ -57,7 +57,7 @@ export const mysqlDATE = (testValue:any) : boolean => {
 export const mysqlTEXT = (testValue:any) : boolean => {
   const testValueString = String(testValue) // Make sure it is a string
 
-  if (Buffer.from([testValueString]).length > 65535 || typeof testValue !== 'string') {
+  if (Buffer.from([testValueString]).length > 65535 || typeof testValue !== 'string' || testValueString === '') {
     return false // The string is to large
   } else {
     return true
@@ -74,7 +74,7 @@ export const mysqlTEXT = (testValue:any) : boolean => {
 export const mysqlLONGTEXT = (testValue:any) : boolean => {
   const testValueString = String(testValue) // Make sure it is a string
 
-  if (Buffer.from([testValueString]).length > 4294967296 || typeof testValue !== 'string') {
+  if (Buffer.from([testValueString]).length > 4294967296 || typeof testValue !== 'string' || testValueString === '') {
     return false // The string is to large
   } else {
     return true

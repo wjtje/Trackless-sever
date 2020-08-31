@@ -5,7 +5,6 @@ import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 import authHandler from '../../scripts/RequestHandler/authHandler'
 import userIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIdCheckHandler'
 import { DBcon } from '../..'
-import { getUser } from '../query'
 import { handleQuery } from '../../scripts/handle'
 import { patchHandler, handlePatchQuery } from '../../scripts/RequestHandler/patchHandler'
 import { mysqlTEXT } from '../../scripts/types'
@@ -28,7 +27,7 @@ router.get(
   (request, response, next) => {
     // Get the data from the server
     DBcon.query(
-      getUser,
+      'SELECT `userId`, `firstname`, `lastname`, `username`, `groupId`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=?',
       [(request.params.userId === '~') ? request.user?.userId : request.params.userId],
       handleQuery(next, (result) => {
         // Send the result back
@@ -58,6 +57,12 @@ router.delete(
               message: 'success'
             })
           })
+        )
+
+        // Remove all the work
+        DBcon.query(
+          'DELETE FROM `TL_work` WHERE `userId`=?',
+          [request.params.userId]
         )
       })
     )

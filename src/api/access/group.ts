@@ -11,12 +11,18 @@ const router = express.Router()
 
 router.get(
   '/:groupId',
-  authHandler('trackless.access.readAll'),
+  authHandler((request) => {
+    if (request.params.groupId === '~') {
+      return 'trackless.access.readOwn'
+    } else {
+      return 'trackless.access.readAll'
+    }
+  }),
   groupIdCheckHandler(),
   (request, response, next) => {
     DBcon.query(
       'SELECT `accessId`, `access` FROM `TL_access` WHERE `groupId`=?',
-      [request.params.groupId],
+      [(request.params.groupId === '~') ? Number(request.user?.groupId) : Number(request.params.groupId)],
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })

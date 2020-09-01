@@ -2,6 +2,7 @@
 
  - Added standardx for testing
  - Able to sort your result by propertie
+ - Ablt to list your own access
 
 # Changed in this version
 

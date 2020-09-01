@@ -8,7 +8,10 @@ import ServerError from '../serverErrorInterface'
 export default () => {
   return (request: Request, response: Response, next: NextFunction) => {
     // Check if the groupId is a number
-    if (isNaN(Number(request.params.groupId))) {
+    if (request.params.groupId === '~') {
+      // You can allways list your own group
+      next()
+    } else if (isNaN(Number(request.params.groupId))) {
       // GroupId is not correct.
       const error: ServerError = new Error('The groupId is not a number')
       error.status = 400

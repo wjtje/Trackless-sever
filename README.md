@@ -5,7 +5,7 @@
 Keep track of what your employees have done.
 
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-![David](https://img.shields.io/david/dev/wjtje/Trackless-server)
+![David](https://img.shields.io/david/wjtje/Trackless-server)
 ![GitHub](https://img.shields.io/github/license/wjtje/Trackless-server)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/wjtje/Trackless-server)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/wjtje/Trackless-server/Node.js%20CI)

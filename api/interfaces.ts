@@ -10,6 +10,15 @@ export interface Api {
   deviceName: string;
 }
 
+export interface User {
+  userId: number;
+  firstname: string;
+  lastname: string;
+  username: string;
+  groupId: number;
+  groupName: string;
+}
+
 export interface Group {
   groupId: number;
   groupName: string;
@@ -21,15 +30,6 @@ export interface Location {
   name: string;
   place: string;
   id: string;
-}
-
-export interface User {
-  userId: number;
-  firstname: string;
-  lastname: string;
-  username: string;
-  groupId: number;
-  groupName: string;
 }
 
 export interface Work {

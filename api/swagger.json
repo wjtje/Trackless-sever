@@ -416,6 +416,9 @@
           },
           "404" : {
             "description" : "Group not found"
+          },
+          "409" : {
+            "description" : "Group is in use"
           }
         },
         "security" : [ {
@@ -631,6 +634,9 @@
           },
           "404" : {
             "description" : "Not found"
+          },
+          "409" : {
+            "description" : "Location is in use"
           }
         },
         "security" : [ {

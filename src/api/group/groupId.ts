@@ -52,20 +52,12 @@ router.delete(
       'DELETE FROM `TL_groups` WHERE `groupId`=?',
       [request.params.groupId],
       handleQuery(next, () => {
-        // Remove all the users from that group
-        DBcon.query(
-          'UPDATE `TL_users` SET `groupId`=0 WHERE `groupId`=?',
-          [request.params.groupId]
-        )
-
-        // Remove all access rules
-        DBcon.query(
-          'DELETE FROM `TL_access` WHERE `groupId`=?',
-          [request.params.groupId]
-        )
-
         response.status(200).json({
           message: 'Removed'
+        })
+      }, () => {
+        response.status(409).json({
+          message: 'Group is in use'
         })
       })
     )

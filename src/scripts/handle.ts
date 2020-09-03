@@ -11,11 +11,14 @@ import { MysqlError } from 'mysql'
  * @param response
  * @param errorMessage
  * @param then
+ * @param referencedErr
  */
-export function handleQuery (next: NextFunction, then: (result: any) => void) {
+export function handleQuery (next: NextFunction, then: (result: any) => void, referencedErr?: () => void) {
   return (error: MysqlError | null, result: any[]) => {
-    if (error) {
-      sqlError(next, error, 'Internal database error')
+    if (error && !(error?.errno === 1451 && referencedErr != null)) {
+      sqlError(next, error)
+    } else if (error?.errno === 1451 && referencedErr != null) {
+      referencedErr()
     } else {
       then(result)
     }

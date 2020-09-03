@@ -13,15 +13,13 @@ import ServerError from './RequestHandler/serverErrorInterface'
  * @param {MysqlError} error
  * @param {string} errorMessage
  */
-export function sqlError (next:NextFunction, err:MysqlError, errorMessage:string) {
+export function sqlError (next:NextFunction, err:MysqlError) {
   // Save it in the database
-  // TODO: Add the userId to the error
   DBcon.query(
-    'INSERT INTO `TL_errors` (`userId`, `error_code`, `error_message`) VALUES (?,?,?)',
+    'INSERT INTO `TL_errors` (`error_code`, `error_message`) VALUES (?,?)',
     [
-      0,
-      err.code,
-      errorMessage
+      err.errno,
+      err?.sqlMessage
     ]
   )
 

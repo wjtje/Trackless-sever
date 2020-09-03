@@ -26,9 +26,8 @@ export function apiLogin (apiKey:string):Promise<{
         if (error || result.length === 0) { // An sql error or invalid api key
           // Internal error
           DBcon.query(
-            'INSERT INTO `TL_errors` (`userId`, `error_code`, `error_message`) VALUES (?,?,?)',
+            'INSERT INTO `TL_errors` (`error_code`, `error_message`) VALUES (?,?)',
             [
-              0,
               _get(error, 'code', 'Wrong api key'),
               'Api key not found or internal error'
             ]
@@ -48,9 +47,8 @@ export function apiLogin (apiKey:string):Promise<{
               // Document the error
               if (error) {
                 DBcon.query(
-                  'INSERT INTO `TL_errors` (`userId`, `error_code`, `error_message`) VALUES (?,?,?)',
+                  'INSERT INTO `TL_errors` (`error_code`, `error_message`) VALUES (?,?)',
                   [
-                    0,
                     error.code,
                     'Something went wrong'
                   ]

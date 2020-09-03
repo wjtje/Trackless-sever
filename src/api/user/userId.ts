@@ -48,22 +48,9 @@ router.delete(
       'DELETE FROM `TL_users` WHERE `userId`=?',
       [request.params.userId],
       handleQuery(next, () => {
-        // Delete all apikeys
-        DBcon.query(
-          'DELETE FROM `TL_apikeys` WHERE `userId`=?',
-          [request.params.userId],
-          handleQuery(next, () => {
-            response.status(200).json({
-              message: 'success'
-            })
-          })
-        )
-
-        // Remove all the work
-        DBcon.query(
-          'DELETE FROM `TL_work` WHERE `userId`=?',
-          [request.params.userId]
-        )
+        response.status(200).json({
+          message: 'success'
+        })
       })
     )
   }

@@ -40,12 +40,10 @@ router.delete(
         response.status(200).json({
           message: 'done'
         })
-
-        // Remove this locationId from work
-        DBcon.query(
-          'UPDATE `TL_work` SET `locationId`=0 WHERE `locationId`=?',
-          [request.params.locationId]
-        )
+      }, () => {
+        response.status(409).json({
+          message: 'Location is in use'
+        })
       })
     )
   }

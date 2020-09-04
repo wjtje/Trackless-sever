@@ -7,7 +7,7 @@ import locationIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 import { patchHandler, handlePatchQuery } from '../../scripts/RequestHandler/patchHandler'
-import { mysqlTEXT } from '../../scripts/types'
+import { mysqlTEXT, mysqlBOOLEAN } from '../../scripts/types'
 import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 
 const router = express.Router()
@@ -58,7 +58,8 @@ router.patch(
   patchHandler([
     { name: 'name', check: mysqlTEXT },
     { name: 'place', check: mysqlTEXT },
-    { name: 'id', check: mysqlTEXT }
+    { name: 'id', check: mysqlTEXT },
+    { name: 'hidden', check: mysqlBOOLEAN }
   ], (resolve, reject, key, request) => {
     // Update the key
     DBcon.query(

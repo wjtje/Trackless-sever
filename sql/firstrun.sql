@@ -57,6 +57,7 @@ INSERT INTO `TL_access` (`groupId`, `access`) VALUES (1, 'trackless.access.creat
 
 CREATE TABLE `TL_locations` (
   `locationId` INT NOT NULL AUTO_INCREMENT ,
+  `hidden` BOOLEAN NOT NULL DEFAULT FALSE,
   `name` TEXT NOT NULL ,
   `place` TEXT NOT NULL ,
   `id` TEXT NOT NULL ,

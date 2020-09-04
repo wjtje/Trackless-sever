@@ -80,3 +80,17 @@ export const mysqlLONGTEXT = (testValue:any) : boolean => {
     return true
   }
 }
+/**
+ * Tests a value if it is a mysql BOOLEAN
+ *
+ * @since 0.4-beta.2
+ * @param testValue
+ * @returns {boolean}
+ */
+export const mysqlBOOLEAN = (testValue: any) : boolean => {
+  if (Number(testValue) === 0 || Number(testValue) === 1) {
+    return true
+  } else {
+    return false
+  }
+}

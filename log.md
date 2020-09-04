@@ -2,7 +2,8 @@
 
  - Added standardx for testing
  - Able to sort your result by propertie
- - Ablt to list your own access
+ - Able to list your own access
+ - Able to hide locations
 
 # Changed in this version
 
@@ -25,4 +26,5 @@ ALTER TABLE `TL_apikeys` ADD FOREIGN KEY (`userId`) REFERENCES `TL_users`(`userI
 ALTER TABLE `TL_users` ADD FOREIGN KEY (`groupId`) REFERENCES `TL_groups`(`groupId`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE `TL_work` ADD FOREIGN KEY (`locationId`) REFERENCES `TL_locations`(`locationId`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE `TL_work` ADD FOREIGN KEY (`userId`) REFERENCES `TL_users`(`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `TL_locations` ADD `hidden` BOOLEAN NOT NULL DEFAULT FALSE AFTER `locationId`;
 ```

@@ -27,6 +27,7 @@ export interface Group {
 
 export interface Location {
   locationId: number;
+  hidden: 0 | 1;
   name: string;
   place: string;
   id: string;

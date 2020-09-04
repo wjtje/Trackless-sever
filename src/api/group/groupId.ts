@@ -9,6 +9,7 @@ import groupIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/gro
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT } from '../../scripts/types'
 import userIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIdCheckHandler'
+import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 
 const router = express.Router()
 
@@ -56,9 +57,10 @@ router.delete(
           message: 'Removed'
         })
       }, () => {
-        response.status(409).json({
-          message: 'Group is in use'
-        })
+        const error: ServerError = new Error('Group can not be removed')
+        error.code = 'trackless.group.removeFailed'
+        error.status = 409
+        next(error)
       })
     )
   }

@@ -12,7 +12,7 @@ export default () => {
       // userId is not correct.
       const error: ServerError = new Error('The userId is not a number')
       error.status = 400
-      error.code = 'trackless.checkId.user.NaN'
+      error.code = 'trackless.checkId.NaN'
       next(error)
     } else {
       // Get the infomation from the database
@@ -24,7 +24,7 @@ export default () => {
             // Group does not exsist
             const error: ServerError = new Error('The user does not exsist')
             error.status = 404
-            error.code = 'trackless.checkId.user.notFound'
+            error.code = 'trackless.checkId.notFound'
             next(error)
           } else {
             next()

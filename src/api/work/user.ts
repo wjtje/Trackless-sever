@@ -160,7 +160,7 @@ router.patch(
             // Something wrong in the array
             const error: ServerError = new Error('Your location id is not valid')
             error.status = 400
-            error.code = 'trackless.work.patch.locationNotValid'
+            error.code = 'trackless.work.notValidLocationId'
             reject(error)
           } else {
             changeWork()

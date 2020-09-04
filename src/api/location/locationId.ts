@@ -8,6 +8,7 @@ import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 import { patchHandler, handlePatchQuery } from '../../scripts/RequestHandler/patchHandler'
 import { mysqlTEXT } from '../../scripts/types'
+import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 
 const router = express.Router()
 
@@ -41,9 +42,10 @@ router.delete(
           message: 'done'
         })
       }, () => {
-        response.status(409).json({
-          message: 'Location is in use'
-        })
+        const error: ServerError = new Error('Location can not be removed')
+        error.code = 'trackless.location.removeFailed'
+        error.status = 409
+        next(error)
       })
     )
   }

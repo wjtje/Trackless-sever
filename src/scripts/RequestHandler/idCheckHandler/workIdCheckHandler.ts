@@ -12,7 +12,7 @@ export default () => {
       // workId is not correct.
       const error: ServerError = new Error('The workId is not a number')
       error.status = 400
-      error.code = 'trackless.checkId.work.NaN'
+      error.code = 'trackless.checkId.NaN'
       next(error)
     } else {
       // Get the infomation from the database
@@ -24,7 +24,7 @@ export default () => {
             // Group does not exsist
             const error: ServerError = new Error('The workId does not exsist')
             error.status = 404
-            error.code = 'trackless.checkId.work.notFound'
+            error.code = 'trackless.checkId.notFound'
             next(error)
           } else {
             next()

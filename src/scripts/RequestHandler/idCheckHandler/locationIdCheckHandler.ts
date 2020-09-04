@@ -12,7 +12,7 @@ export default () => {
       // apiId is not correct.
       const error: ServerError = new Error('The locationId is not a number')
       error.status = 400
-      error.code = 'trackless.checkId.location.NaN'
+      error.code = 'trackless.checkId.NaN'
       next(error)
     } else {
       // Get the infomation from the database
@@ -21,7 +21,7 @@ export default () => {
           // The apikey does not exsist
           const error: ServerError = new Error('The locationId does not exsist')
           error.status = 404
-          error.code = 'trackless.checkId.location.notFound'
+          error.code = 'trackless.checkId.notFound'
           next(error)
         } else {
           next()

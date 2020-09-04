@@ -10,6 +10,7 @@
  - When deleting a group all access rules for that group will be deleted!
  - A group can not be delted when there are users in that group!
  - A location can not be removed if its in use!
+ - Better error codes
 
 # Things that are fixed
 

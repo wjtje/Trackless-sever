@@ -515,6 +515,13 @@
             "type" : "string"
           },
           "description" : "Option to sort result by propertie"
+        }, {
+          "in" : "query",
+          "name" : "hidden",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "If used the server will show the hidden locations"
         } ],
         "responses" : {
           "200" : {
@@ -1372,6 +1379,9 @@
         "type" : "object",
         "properties" : {
           "locationId" : {
+            "type" : "integer"
+          },
+          "hidden" : {
             "type" : "integer"
           },
           "name" : {

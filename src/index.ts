@@ -19,6 +19,7 @@ import loginRoute from './api/login'
 import userRoute from './api/user'
 import workRoute from './api/work'
 import severAboutRoute from './api/server/about'
+import nocache from 'nocache'
 
 // Settings
 const port:number = (process.env.PORT === undefined) ? 55565 : Number(process.env.PORT)
@@ -50,6 +51,7 @@ server.use(bodyParser.urlencoded({
 }))
 server.use(bodyParser.json())
 server.use(cors())
+server.use(nocache())
 server.use(passport.initialize())
 server.use(morgan('tiny'))
 

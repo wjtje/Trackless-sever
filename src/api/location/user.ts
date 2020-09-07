@@ -31,13 +31,13 @@ router.get(
   '/:userId/most',
   authHandler('trackless.location.read'),
   (request, response, next) => {
-    // Get two random locations
+    // Get the last two
     DBcon.query(
-      'SELECT r1.locationId, r1.name, r1.place, r1.id FROM `TL_locations` AS r1 JOIN (SELECT CEIL(RAND() * (SELECT MAX(locationId) FROM `TL_locations`)) AS locationId) AS r2 WHERE r1.locationId >= r2.locationId AND `hidden`=0 ORDER BY r1.locationId ASC LIMIT 2',
+      'SELECT * FROM `TL_locations` WHERE `hidden`=0 ORDER BY `locationId` DESC LIMIT 2',
       handleQuery(next, (randomLocations) => {
         // Get most used locationId from the server (limit 2)
         DBcon.query(
-          'SELECT `locationId`, `name`, `place`, `id`, COUNT(`locationId`) as `occurrence` FROM `TL_work` INNER JOIN `TL_locations` USING (`locationId`) WHERE `userId` = ? AND `hidden`=0 AND `date` >= ? AND `date` <= ? GROUP BY `locationId` ORDER BY `occurrence` DESC LIMIT 2',
+          'SELECT `locationId`, `name`, `place`, `id`, `hidden`, COUNT(`locationId`) as `occurrence` FROM `TL_work` INNER JOIN `TL_locations` USING (`locationId`) WHERE `userId` = ? AND `hidden`=0 AND `date` >= ? AND `date` <= ? GROUP BY `locationId` ORDER BY `occurrence` DESC LIMIT 2',
           [
             request.user?.userId,
             moment().subtract(7, 'days').format('YYYY-MM-DD'), // Last week

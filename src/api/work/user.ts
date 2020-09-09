@@ -136,7 +136,8 @@ router.patch(
     { name: 'locationId', check: mysqlINT },
     { name: 'date', check: mysqlDATE },
     { name: 'time', check: mysqlINT },
-    { name: 'description', check: mysqlTEXT }
+    { name: 'description', check: mysqlTEXT },
+    { name: 'worktypeId', check: mysqlINT }
   ], (resolve, reject, key, request) => {
     function changeWork () {
       DBcon.query(

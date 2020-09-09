@@ -25,7 +25,7 @@ router.get(
   (request, response, next) => {
     // Get all the data from the server
     DBcon.query(
-      'SELECT `accessId`, `access` FROM `TL_access` WHERE `groupId`=?' + String(request.query?.sort),
+      'SELECT `accessId`, `access` FROM `TL_access` WHERE `groupId`=?' + String(response.locals.sort || ''),
       [request.user?.groupId],
       handleQuery(next, (result) => {
         response.status(200).json(result)

@@ -5,12 +5,8 @@ import Express from 'express'
 
 declare global {
   namespace Express {
-    interface User {
-      firstname: string;
-      lastname: string;
-      username: string;
-      userId: number;
-      groupId: number;
+    interface Global {
+      sort: string;
     }
   }
 }

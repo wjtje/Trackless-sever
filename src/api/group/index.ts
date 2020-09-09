@@ -24,7 +24,7 @@ router.get(
   (request, response, next) => {
     // List all group
     DBcon.query(
-      'SELECT * FROM `TL_groups` ORDER BY `groupname`' + String(request.query?.sort),
+      'SELECT * FROM `TL_groups` ORDER BY `groupname`' + String(response.locals.sort || ''),
       handleQuery(next, (result: Array<TLgroups>) => {
         const rslt:{
           groupId: number;

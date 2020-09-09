@@ -12,13 +12,13 @@ export default (options: string[]) => {
   return (request: Request, response: Response, next: NextFunction) => {
     // Check if the sort options is active
     if (request.query?.sort === undefined) {
-      request.query.sort = ''
+      response.locals.sort = ''
       next()
     } else {
       // Check if the option is valid
       if (options.includes(String(request.query?.sort))) {
         // The options is valid
-        request.query.sort = ` ORDER BY \`${String(request.query?.sort)}\` `
+        response.locals.sort = ` ORDER BY \`${String(request.query?.sort)}\` `
         next()
       } else {
         // The option is wrong

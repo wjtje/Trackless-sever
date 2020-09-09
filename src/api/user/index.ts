@@ -29,7 +29,7 @@ router.get(
   (request, response, next) => {
     // Send the request
     DBcon.query(
-      'SELECT `userId`, `firstname`, `lastname`, `username`, `groupId`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupId`)' + String((request.query?.sort || ' ORDER BY `firstname`, `lastname`, `username`')),
+      'SELECT `userId`, `firstname`, `lastname`, `username`, `groupId`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupId`) ' + String((response.locals.sort || ' ORDER BY `firstname`, `lastname`, `username`')),
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })

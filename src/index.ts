@@ -20,6 +20,7 @@ import userRoute from './api/user'
 import workRoute from './api/work'
 import severAboutRoute from './api/server/about'
 import nocache from 'nocache'
+import rateLimit from 'express-rate-limit'
 
 // Settings
 const port:number = (process.env.PORT === undefined) ? 55565 : Number(process.env.PORT)
@@ -33,19 +34,21 @@ export const DBcon = mysqlCreateConnection({
 })
 
 // Connect to the database
-const connectInterval = setInterval(() => {
-  DBcon.connect(function (err) {
-    if (err) {
-      console.log('MYSQL: FAILED!')
-    } else {
-      clearInterval(connectInterval)
-      console.log('MYSQL: Connected!')
-    }
-  })
-}, 2000)
+DBcon.connect(function (err) {
+  if (err) {
+    console.log('MYSQL: FAILED!')
+  } else {
+    console.log('MYSQL: Connected!')
+  }
+})
 
 // Create a basic app (server)
 export const server = express()
+server.set('trust proxy', 1) // Disable this if you are not using a proxy
+server.use(rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 100 // Max 100 request per minute
+}))
 server.use(bodyParser.urlencoded({
   extended: true
 }))

@@ -12,9 +12,6 @@ Wrong username or password
  - trackless.user.usernameTaken  
 This username has been taken
 
- - trackless.work.notValidLocationId  
-The locationId is not valid
-
  - trackless.sql.unknownError  
 An unknown sql error
 
@@ -53,3 +50,6 @@ The location is in use. So it can not be removed
 
  - trackless.group.removeFailed  
 The group has user. So it can not be removed
+
+- trackless.worktype.removeFailed
+The worktype is in use. So it can not be removed

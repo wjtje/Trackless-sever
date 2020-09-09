@@ -28,7 +28,7 @@ router.get(
   (request, response, next) => {
     // Get all the work for that user
     DBcon.query(
-      'SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=? ORDER BY `date`',
+      'SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `TL_locations`.`name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName`, `worktypeId`, `TL_worktype`.`name` as `wname` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_worktype` USING (`worktypeId`) INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=? ORDER BY `date`',
       [(request.params.userId === '~') ? request.user?.userId : request.params.userId],
       handleQuery(next, (result:Array<TLWork>) => {
         responseWork(result, response)
@@ -51,7 +51,7 @@ router.get(
   (request, response, next) => {
     // Get all the work for that user
     DBcon.query(
-      'SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=? AND `date` >= ? AND `date` <= ? ORDER BY `date`',
+      'SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `TL_locations`.`name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName`, `worktypeId`, `TL_worktype`.`name` as `wname` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_groups` USING (`groupId`) INNER JOIN `TL_worktype` USING (`worktypeId`) WHERE `userId`=? AND `date` >= ? AND `date` <= ? ORDER BY `date`',
       [
         (request.params.userId === '~') ? request.user?.userId : request.params.userId,
         request.params.start,
@@ -79,7 +79,7 @@ router.get(
   (request, response, next) => {
     // Get the data from the server and return it
     DBcon.query(
-      'SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=? AND `workId`=?',
+      'SELECT `workId`, `userId`, `locationId`, `groupId`, `time`, `date`, `description`, `TL_locations`.`name`, `place`, `id`, `firstname`, `lastname`, `username`, `groupName`, `worktypeId`, `TL_worktype`.`name` as `wname` FROM `TL_work` INNER JOIN `TL_users` USING (`userId`) INNER JOIN `TL_locations` USING (`locationId`) INNER JOIN `TL_groups` USING (`groupId`) INNER JOIN `TL_worktype` USING (`worktypeId`) WHERE `userId`=? AND `workId`=?',
       [
         (request.params.userId === '~') ? request.user?.userId : request.params.userId,
         request.params.workId

@@ -78,6 +78,13 @@ CREATE TABLE `TL_work` (
   PRIMARY KEY (`workId`)
 ) ENGINE = InnoDB;
 
+/* Create the workType table */
+CREATE TABLE `TL_worktype` (
+  `worktypeId` INT NOT NULL AUTO_INCREMENT ,
+  `name` TEXT NOT NULL ,
+  PRIMARY KEY (`worktypeId`)
+) ENGINE = InnoDB;
+
 /* Add FOREIGN KEYS */
 ALTER TABLE `TL_access` ADD FOREIGN KEY (`groupId`) REFERENCES `TL_groups`(`groupId`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `TL_apikeys` ADD FOREIGN KEY (`userId`) REFERENCES `TL_users`(`userId`) ON DELETE CASCADE ON UPDATE CASCADE;

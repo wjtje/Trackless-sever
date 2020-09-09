@@ -21,6 +21,7 @@ import workRoute from './api/work'
 import severAboutRoute from './api/server/about'
 import nocache from 'nocache'
 import rateLimit from 'express-rate-limit'
+import worktypeRoute from './api/worktype/'
 
 // Settings
 const port:number = (process.env.PORT === undefined) ? 55565 : Number(process.env.PORT)
@@ -77,6 +78,7 @@ server.use('/location', locationRoute)
 server.use('/login', loginRoute)
 server.use('/user', userRoute)
 server.use('/work', workRoute)
+server.use('/worktype', worktypeRoute)
 server.use('/server/about', severAboutRoute)
 
 // Add 404 response

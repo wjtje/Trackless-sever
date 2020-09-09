@@ -18,6 +18,8 @@ export interface TLWork {
   lastname: string;
   username: string;
   groupName: string;
+  worktypeId: number;
+  wname: string;
 }
 
 /**
@@ -32,6 +34,7 @@ export function responseWork (result: TLWork[], response:Response) {
     workId: number;
     user: { userId: number; firstname: string; lastname: string; username: string; groupId: number; groupName: string };
     location: { locationId: number; place: string; name: string; id: string; };
+    worktype: { worktypeId: number; name: string; }
     time: string;
     date: string;
     description: string;
@@ -55,6 +58,11 @@ export function responseWork (result: TLWork[], response:Response) {
         place: workItem.place,
         name: workItem.name,
         id: workItem.id
+      },
+      // Add the worktype info
+      worktype: {
+        worktypeId: workItem.worktypeId,
+        name: workItem.wname
       },
       // Add the work info
       time: workItem.time,

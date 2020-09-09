@@ -35,6 +35,11 @@ export interface Location {
   id: string;
 }
 
+export interface Worktype {
+  worktypeId: number;
+  name: string;
+}
+
 export interface Work {
   workId: number;
   time: number;
@@ -42,4 +47,5 @@ export interface Work {
   description: string;
   user: User;
   location: Location;
+  worktype: Worktype;
 }

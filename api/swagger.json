@@ -1,7 +1,7 @@
 {
   "openapi" : "3.0.0",
   "info" : {
-    "version" : "0.4.2",
+    "version" : "0.4.3",
     "title" : "Trackless API",
     "contact" : {
       "name" : "wjtje",
@@ -827,7 +827,7 @@
                   "properties" : {
                     "version" : {
                       "type" : "string",
-                      "example" : "0.4-beta.2"
+                      "example" : "0.4-beta.3"
                     }
                   }
                 }
@@ -1326,6 +1326,186 @@
           "bearer_token" : [ ]
         } ]
       }
+    },
+    "/worktype" : {
+      "get" : {
+        "tags" : [ "worktype" ],
+        "summary" : "Get all the worktypes from the system",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by propertie"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Worktype"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "worktype" ],
+        "summary" : "Create a new worktype on the server",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "name" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created the new worktype",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "worktypeId" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Something is wrong with your input"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/worktype/{worktypeId}" : {
+      "get" : {
+        "tags" : [ "worktype" ],
+        "summary" : "Get infomation about a single worktype",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "worktypeId",
+          "description" : "ID of the worktype",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Worktype"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Something is wrong with your input"
+          },
+          "404" : {
+            "description" : "The worktype is not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "worktype" ],
+        "summary" : "Remove a single worktype",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "worktypeId",
+          "description" : "ID of the worktype",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "400" : {
+            "description" : "Something is wrong with your input"
+          },
+          "404" : {
+            "description" : "The worktype is not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "worktype" ],
+        "summary" : "Change the info of a worktype",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "worktypeId",
+          "description" : "ID of the user",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "name" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "400" : {
+            "description" : "Something is wrong with your input"
+          },
+          "404" : {
+            "description" : "The worktype is not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
     }
   },
   "components" : {
@@ -1438,6 +1618,20 @@
           },
           "location" : {
             "$ref" : "#/components/schemas/Location"
+          },
+          "worktype" : {
+            "$ref" : "#/components/schemas/Worktype"
+          }
+        }
+      },
+      "Worktype" : {
+        "type" : "object",
+        "properties" : {
+          "worktypeId" : {
+            "type" : "integer"
+          },
+          "name" : {
+            "type" : "string"
           }
         }
       }

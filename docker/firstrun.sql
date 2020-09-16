@@ -42,9 +42,6 @@ CREATE TABLE `trackless`.`TL_groups` (
 INSERT INTO `trackless`.`TL_groups` (`groupId`, `groupName`) VALUES (1, 'Default');
 INSERT INTO `trackless`.`TL_groups` (`groupId`, `groupName`) VALUES (2, 'Admin');
 
-UPDATE `trackless`.`TL_groups` SET `groupId` = 0 WHERE `TL_groups`.`groupName` = 'Default';
-UPDATE `trackless`.`TL_groups` SET `groupId` = 1 WHERE `TL_groups`.`groupName` = 'Admin';
-
 CREATE TABLE `trackless`.`TL_access` (
   `accessId` INT NOT NULL AUTO_INCREMENT ,
   `groupId` INT NOT NULL ,

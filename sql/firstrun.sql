@@ -42,9 +42,6 @@ CREATE TABLE `TL_groups` (
 INSERT INTO `TL_groups` (`groupName`) VALUES ('Default');
 INSERT INTO `TL_groups` (`groupName`) VALUES ('Admin');
 
-UPDATE `TL_groups` SET `groupId` = 0 WHERE `TL_groups`.`groupName` = 'Default';
-UPDATE `TL_groups` SET `groupId` = 1 WHERE `TL_groups`.`groupName` = 'Admin';
-
 CREATE TABLE `TL_access` (
   `accessId` INT NOT NULL AUTO_INCREMENT ,
   `groupId` INT NOT NULL ,

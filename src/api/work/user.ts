@@ -92,6 +92,7 @@ router.get(
 )
 
 // Remove a single work object from a user
+// TODO don't allow edit of old work
 router.delete(
   '/:userId/:workId',
   authHandler((request) => {
@@ -121,6 +122,7 @@ router.delete(
 )
 
 // Edit a single work object from a user
+// TODO don't allow edit of old work
 router.patch(
   '/:userId/:workId',
   authHandler((request) => {

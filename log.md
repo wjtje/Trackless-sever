@@ -1,6 +1,8 @@
 # New in this version
 
  - Create a new table for settings
+ - Created a new settingsHandler for importing the settings for the user
+ - New setting `workLateDays`: how any days late you can enter or edit work
 
 # Changed in this version
 

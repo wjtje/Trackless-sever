@@ -51,5 +51,8 @@ The location is in use. So it can not be removed
  - trackless.group.removeFailed  
 The group has user. So it can not be removed
 
-- trackless.worktype.removeFailed
+- trackless.worktype.removeFailed  
 The worktype is in use. So it can not be removed
+
+ - trackless.work.toLate  
+You are not allowed to add, edit or delete the work becuse your are to late.

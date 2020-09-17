@@ -21,6 +21,11 @@ export function handleQuery (next: NextFunction, then: (result: any) => void, re
       err.status = 400
       err.code = 'trackless.reference.notFound'
       next(err)
+    } else if (error?.errno === 1216) { // Can not insert Reference error
+      const err: ServerError = new Error('Please make sure your values are valid')
+      err.status = 400
+      err.code = 'trackless.reference.notFound'
+      next(err)
     } else if (error && !(error?.errno === 1451 && referencedErr != null)) {
       sqlError(next, error)
     } else if (error?.errno === 1451 && referencedErr != null) { // Can not remove

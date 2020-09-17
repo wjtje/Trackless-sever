@@ -11,6 +11,8 @@ import workIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/work
 import { patchHandler, handlePatchQuery } from '../../scripts/RequestHandler/patchHandler'
 import { mysqlINT, mysqlTEXT, mysqlDATE } from '../../scripts/types'
 import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
+import settingsHandler from '../../scripts/RequestHandler/settingsHandler'
+import checkLateWork from './checkLateWork'
 
 const router = express.Router()
 
@@ -92,7 +94,6 @@ router.get(
 )
 
 // Remove a single work object from a user
-// TODO don't allow edit of old work
 router.delete(
   '/:userId/:workId',
   authHandler((request) => {
@@ -104,6 +105,8 @@ router.delete(
   }),
   userIdCheckHandler(),
   workIdCheckHandler(),
+  settingsHandler(),
+  checkLateWork(),
   (request, response, next) => {
     // Get the data from the server and return it
     DBcon.query(
@@ -122,7 +125,6 @@ router.delete(
 )
 
 // Edit a single work object from a user
-// TODO don't allow edit of old work
 router.patch(
   '/:userId/:workId',
   authHandler((request) => {
@@ -134,6 +136,8 @@ router.patch(
   }),
   userIdCheckHandler(),
   workIdCheckHandler(),
+  settingsHandler(),
+  checkLateWork(),
   patchHandler([
     { name: 'locationId', check: mysqlINT },
     { name: 'date', check: mysqlDATE },

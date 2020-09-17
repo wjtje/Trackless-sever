@@ -82,9 +82,19 @@ CREATE TABLE `TL_worktype` (
   PRIMARY KEY (`worktypeId`)
 ) ENGINE = InnoDB;
 
+/* Create the settings table */
+CREATE TABLE `trackless`.`TL_settings` (
+  `settingId` INT NOT NULL AUTO_INCREMENT ,
+  `groupId` INT NOT NULL ,
+  `setting` TEXT NOT NULL ,
+  `value` TEXT NOT NULL ,
+  PRIMARY KEY (`settingId`)
+) ENGINE = InnoDB;
+
 /* Add FOREIGN KEYS */
 ALTER TABLE `TL_access` ADD FOREIGN KEY (`groupId`) REFERENCES `TL_groups`(`groupId`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `TL_apikeys` ADD FOREIGN KEY (`userId`) REFERENCES `TL_users`(`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `TL_users` ADD FOREIGN KEY (`groupId`) REFERENCES `TL_groups`(`groupId`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE `TL_work` ADD FOREIGN KEY (`locationId`) REFERENCES `TL_locations`(`locationId`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE `TL_work` ADD FOREIGN KEY (`userId`) REFERENCES `TL_users`(`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `TL_settings` ADD FOREIGN KEY (`groupId`) REFERENCES `TL_groups`(`groupId`) ON DELETE CASCADE ON UPDATE CASCADE;

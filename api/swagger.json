@@ -27,7 +27,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -66,7 +66,7 @@
         },
         "responses" : {
           "201" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -104,7 +104,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -117,7 +117,7 @@
             }
           },
           "404" : {
-            "description" : "not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -138,10 +138,10 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation"
+            "description" : "Successful operation"
           },
           "404" : {
-            "description" : "not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -165,7 +165,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -178,7 +178,7 @@
             }
           },
           "404" : {
-            "description" : "not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -200,7 +200,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -233,7 +233,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -245,11 +245,8 @@
               }
             }
           },
-          "400" : {
-            "description" : "There is something wrong with your input"
-          },
           "404" : {
-            "description" : "The api key was not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -270,13 +267,10 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation"
-          },
-          "400" : {
-            "description" : "There is something wrong with your input"
+            "description" : "Successful operation"
           },
           "404" : {
-            "description" : "The api key was not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -298,7 +292,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -372,7 +366,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -384,11 +378,8 @@
               }
             }
           },
-          "400" : {
-            "description" : "Invalid ID"
-          },
           "404" : {
-            "description" : "Group not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -410,16 +401,13 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation"
-          },
-          "400" : {
-            "description" : "Invalid ID"
+            "description" : "Successful operation"
           },
           "404" : {
-            "description" : "Group not found"
+            "description" : "Not found"
           },
           "409" : {
-            "description" : "Group is in use"
+            "description" : "In use"
           }
         },
         "security" : [ {
@@ -454,13 +442,10 @@
         },
         "responses" : {
           "200" : {
-            "description" : "successful operation"
-          },
-          "400" : {
-            "description" : "Invalid ID"
+            "description" : "Successful operation"
           },
           "404" : {
-            "description" : "Group not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -483,7 +468,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -496,7 +481,7 @@
             }
           },
           "404" : {
-            "description" : "Group not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -531,13 +516,10 @@
         },
         "responses" : {
           "200" : {
-            "description" : "successful operation"
-          },
-          "400" : {
-            "description" : "Invalid ID"
+            "description" : "Successful operation"
           },
           "404" : {
-            "description" : "Group or user not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -560,7 +542,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -573,7 +555,7 @@
             }
           },
           "404" : {
-            "description" : "Group not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -608,13 +590,10 @@
         },
         "responses" : {
           "200" : {
-            "description" : "successful operation"
-          },
-          "400" : {
-            "description" : "Invalid ID"
+            "description" : "Successful operation"
           },
           "404" : {
-            "description" : "Group or user not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -646,13 +625,10 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation"
-          },
-          "400" : {
-            "description" : "Invalid ID"
+            "description" : "Successful operation"
           },
           "404" : {
-            "description" : "Group or user not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -681,7 +657,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -758,7 +734,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -793,13 +769,13 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation"
+            "description" : "Successful operation"
           },
           "404" : {
             "description" : "Not found"
           },
           "409" : {
-            "description" : "Location is in use"
+            "description" : "In use"
           }
         },
         "security" : [ {
@@ -840,7 +816,7 @@
         },
         "responses" : {
           "200" : {
-            "description" : "successful operation"
+            "description" : "Successful operation"
           },
           "404" : {
             "description" : "Not found"
@@ -867,7 +843,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -904,7 +880,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -951,7 +927,7 @@
         },
         "responses" : {
           "200" : {
-            "description" : "sucessful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -977,7 +953,7 @@
         "summary" : "Get information about the server",
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -1009,7 +985,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -1095,7 +1071,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -1107,11 +1083,8 @@
               }
             }
           },
-          "400" : {
-            "description" : "Something is wrong with your input"
-          },
           "404" : {
-            "description" : "The user is not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -1133,13 +1106,10 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation"
-          },
-          "400" : {
-            "description" : "Something is wrong with your input"
+            "description" : "Successful operation"
           },
           "404" : {
-            "description" : "The user is not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -1184,13 +1154,10 @@
         },
         "responses" : {
           "200" : {
-            "description" : "successful operation"
-          },
-          "400" : {
-            "description" : "Something is wrong with your input"
+            "description" : "Successful operation"
           },
           "404" : {
-            "description" : "The user is not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -1214,7 +1181,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -1226,17 +1193,47 @@
               }
             }
           },
-          "400" : {
-            "description" : "Something is wrong with your input"
-          },
           "404" : {
-            "description" : "The user is not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
           "bearer_token" : [ ]
         } ],
         "description" : "You can use an '~' as a userId to list your own account."
+      }
+    },
+    "/user/{userId}/work" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "Get all the work from an user",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "userId",
+          "description" : "The id of the user",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Work"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
       }
     },
     "/work" : {
@@ -1268,7 +1265,7 @@
         },
         "responses" : {
           "201" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -1307,7 +1304,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -1319,11 +1316,8 @@
               }
             }
           },
-          "400" : {
-            "description" : "Check your input"
-          },
           "404" : {
-            "description" : "User not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -1363,7 +1357,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -1375,11 +1369,8 @@
               }
             }
           },
-          "400" : {
-            "description" : "Check your input"
-          },
           "404" : {
-            "description" : "User not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -1411,7 +1402,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -1423,11 +1414,8 @@
               }
             }
           },
-          "400" : {
-            "description" : "Check your input"
-          },
           "404" : {
-            "description" : "User or work not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -1457,13 +1445,10 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation"
-          },
-          "400" : {
-            "description" : "Check your input"
+            "description" : "Successful operation"
           },
           "404" : {
-            "description" : "User or work not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -1516,13 +1501,10 @@
         },
         "responses" : {
           "200" : {
-            "description" : "successful operation"
-          },
-          "400" : {
-            "description" : "Check your input"
+            "description" : "Successful operation"
           },
           "404" : {
-            "description" : "User or work not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -1544,7 +1526,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -1618,7 +1600,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -1630,11 +1612,8 @@
               }
             }
           },
-          "400" : {
-            "description" : "Something is wrong with your input"
-          },
           "404" : {
-            "description" : "The worktype is not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -1655,13 +1634,10 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation"
-          },
-          "400" : {
-            "description" : "Something is wrong with your input"
+            "description" : "Successful operation"
           },
           "404" : {
-            "description" : "The worktype is not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {
@@ -1696,13 +1672,10 @@
         },
         "responses" : {
           "200" : {
-            "description" : "successful operation"
-          },
-          "400" : {
-            "description" : "Something is wrong with your input"
+            "description" : "Successful operation"
           },
           "404" : {
-            "description" : "The worktype is not found"
+            "description" : "Not found"
           }
         },
         "security" : [ {

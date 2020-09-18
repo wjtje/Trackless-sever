@@ -53,7 +53,7 @@
               "schema" : {
                 "type" : "object",
                 "properties" : {
-                  "groupId" : {
+                  "groupID" : {
                     "type" : "integer"
                   },
                   "access" : {
@@ -72,7 +72,7 @@
                 "schema" : {
                   "type" : "object",
                   "properties" : {
-                    "accessId" : {
+                    "accessID" : {
                       "type" : "integer"
                     }
                   }
@@ -89,13 +89,13 @@
         } ]
       }
     },
-    "/access/{accessId}" : {
+    "/access/{accessID}" : {
       "get" : {
         "tags" : [ "access" ],
         "summary" : "Display an access rule",
         "parameters" : [ {
           "in" : "path",
-          "name" : "accessId",
+          "name" : "accessID",
           "description" : "ID of the access to return",
           "required" : true,
           "schema" : {
@@ -129,7 +129,7 @@
         "summary" : "Remove an access rule",
         "parameters" : [ {
           "in" : "path",
-          "name" : "accessId",
+          "name" : "accessID",
           "description" : "ID of the access to return",
           "required" : true,
           "schema" : {
@@ -149,14 +149,14 @@
         } ]
       }
     },
-    "/access/group/{groupId}" : {
+    "/access/group/{groupID}" : {
       "get" : {
         "tags" : [ "access" ],
         "summary" : "See where a group has access to",
         "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
-          "name" : "groupId",
+          "name" : "groupID",
           "description" : "ID of the group to return",
           "required" : true,
           "schema" : {
@@ -218,13 +218,13 @@
         } ]
       }
     },
-    "/api/{apiId}" : {
+    "/api/{apiID}" : {
       "get" : {
         "tags" : [ "api" ],
         "summary" : "Get infomation about a single api key",
         "parameters" : [ {
           "in" : "path",
-          "name" : "apiId",
+          "name" : "apiID",
           "description" : "the id of the api key",
           "required" : true,
           "schema" : {
@@ -258,7 +258,7 @@
         "summary" : "Remove a single api key",
         "parameters" : [ {
           "in" : "path",
-          "name" : "apiId",
+          "name" : "apiID",
           "description" : "the id of the api key",
           "required" : true,
           "schema" : {
@@ -334,7 +334,7 @@
                 "schema" : {
                   "type" : "object",
                   "properties" : {
-                    "groupId" : {
+                    "groupID" : {
                       "type" : "integer"
                     }
                   }
@@ -351,13 +351,13 @@
         } ]
       }
     },
-    "/group/{groupId}" : {
+    "/group/{groupID}" : {
       "get" : {
         "tags" : [ "group" ],
         "summary" : "Get infomation about a single group",
         "parameters" : [ {
           "in" : "path",
-          "name" : "groupId",
+          "name" : "groupID",
           "description" : "ID of the group to return",
           "required" : true,
           "schema" : {
@@ -392,7 +392,7 @@
         "description" : "All the user is that group will be moved to group 0 (default). And all access rules for that group will be lost.",
         "parameters" : [ {
           "in" : "path",
-          "name" : "groupId",
+          "name" : "groupID",
           "description" : "ID of the group to remove",
           "required" : true,
           "schema" : {
@@ -419,7 +419,7 @@
         "summary" : "Edits a group name",
         "parameters" : [ {
           "in" : "path",
-          "name" : "groupId",
+          "name" : "groupID",
           "description" : "ID of the group to edit",
           "required" : true,
           "schema" : {
@@ -453,13 +453,13 @@
         } ]
       }
     },
-    "/group/{groupId}/user" : {
+    "/group/{groupID}/user" : {
       "get" : {
-        "tags" : [ "group" ],
+        "tags" : [ "group", "user" ],
         "summary" : "List all the users in a group",
         "parameters" : [ {
           "in" : "path",
-          "name" : "groupId",
+          "name" : "groupID",
           "description" : "The ID of a group",
           "required" : true,
           "schema" : {
@@ -489,11 +489,11 @@
         } ]
       },
       "post" : {
-        "tags" : [ "group" ],
+        "tags" : [ "group", "user" ],
         "summary" : "Add a user to a group",
         "parameters" : [ {
           "in" : "path",
-          "name" : "groupId",
+          "name" : "groupID",
           "description" : "The ID of a group",
           "required" : true,
           "schema" : {
@@ -506,7 +506,7 @@
               "schema" : {
                 "type" : "object",
                 "properties" : {
-                  "userId" : {
+                  "userID" : {
                     "type" : "integer"
                   }
                 }
@@ -527,13 +527,13 @@
         } ]
       }
     },
-    "/group/{groupId}/access" : {
+    "/group/{groupID}/access" : {
       "get" : {
-        "tags" : [ "group" ],
+        "tags" : [ "group", "access" ],
         "summary" : "List all access of a group",
         "parameters" : [ {
           "in" : "path",
-          "name" : "groupId",
+          "name" : "groupID",
           "description" : "The ID of a group",
           "required" : true,
           "schema" : {
@@ -563,11 +563,11 @@
         } ]
       },
       "post" : {
-        "tags" : [ "group" ],
+        "tags" : [ "group", "access" ],
         "summary" : "Gives a group acces to a command",
         "parameters" : [ {
           "in" : "path",
-          "name" : "groupId",
+          "name" : "groupID",
           "description" : "The ID of a group",
           "required" : true,
           "schema" : {
@@ -601,14 +601,14 @@
         } ]
       }
     },
-    "/group/{groupId}/add/{userId}" : {
+    "/group/{groupID}/add/{userID}" : {
       "post" : {
         "tags" : [ "group" ],
         "summary" : "Add a user to a group",
         "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
-          "name" : "groupId",
+          "name" : "groupID",
           "description" : "ID of the group ",
           "required" : true,
           "schema" : {
@@ -616,7 +616,7 @@
           }
         }, {
           "in" : "path",
-          "name" : "userId",
+          "name" : "userID",
           "description" : "ID of the user",
           "required" : true,
           "schema" : {
@@ -705,7 +705,7 @@
                 "schema" : {
                   "type" : "object",
                   "properties" : {
-                    "locationId" : {
+                    "locationID" : {
                       "type" : "integer"
                     }
                   }
@@ -719,13 +719,13 @@
         } ]
       }
     },
-    "/location/{locationId}" : {
+    "/location/{locationID}" : {
       "get" : {
         "tags" : [ "location" ],
         "summary" : "Get infomation about a single location",
         "parameters" : [ {
           "in" : "path",
-          "name" : "locationId",
+          "name" : "locationID",
           "description" : "ID of the location",
           "required" : true,
           "schema" : {
@@ -757,10 +757,10 @@
       "delete" : {
         "tags" : [ "location" ],
         "summary" : "Remove a single location",
-        "description" : "All work that was using this location will be using locationId 0 (Deleted location).",
+        "description" : "All work that was using this location will be using locationID 0 (Deleted location).",
         "parameters" : [ {
           "in" : "path",
-          "name" : "locationId",
+          "name" : "locationID",
           "description" : "ID of the location",
           "required" : true,
           "schema" : {
@@ -787,7 +787,7 @@
         "summary" : "Edit a location",
         "parameters" : [ {
           "in" : "path",
-          "name" : "locationId",
+          "name" : "locationID",
           "description" : "ID of the location",
           "required" : true,
           "schema" : {
@@ -827,14 +827,14 @@
         } ]
       }
     },
-    "/location/user/{userId}/last" : {
+    "/location/user/{userID}/last" : {
       "get" : {
         "tags" : [ "location" ],
         "summary" : "Get the last used location",
         "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
-          "name" : "userId",
+          "name" : "userID",
           "description" : "ID of the user",
           "required" : true,
           "schema" : {
@@ -864,14 +864,14 @@
         } ]
       }
     },
-    "/location/user/{userId}/most" : {
+    "/location/user/{userID}/most" : {
       "get" : {
         "tags" : [ "location" ],
         "summary" : "Get the most used location",
         "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
-          "name" : "userId",
+          "name" : "userID",
           "description" : "ID of the user",
           "required" : true,
           "schema" : {
@@ -1023,7 +1023,7 @@
                   "password" : {
                     "type" : "string"
                   },
-                  "groupId" : {
+                  "groupID" : {
                     "type" : "integer"
                   }
                 }
@@ -1039,7 +1039,7 @@
                 "schema" : {
                   "type" : "object",
                   "properties" : {
-                    "userId" : {
+                    "userID" : {
                       "type" : "integer"
                     }
                   }
@@ -1056,13 +1056,13 @@
         } ]
       }
     },
-    "/user/{userId}" : {
+    "/user/{userID}" : {
       "get" : {
         "tags" : [ "user" ],
         "summary" : "Get infomation about a single user",
         "parameters" : [ {
           "in" : "path",
-          "name" : "userId",
+          "name" : "userID",
           "description" : "ID of the user",
           "required" : true,
           "schema" : {
@@ -1090,14 +1090,14 @@
         "security" : [ {
           "bearer_token" : [ ]
         } ],
-        "description" : "You can use an '~' as a userId to list your own account."
+        "description" : "You can use an '~' as a userID to list your own account."
       },
       "delete" : {
         "tags" : [ "user" ],
         "summary" : "Remove a single user",
         "parameters" : [ {
           "in" : "path",
-          "name" : "userId",
+          "name" : "userID",
           "description" : "ID of the user",
           "required" : true,
           "schema" : {
@@ -1115,14 +1115,14 @@
         "security" : [ {
           "bearer_token" : [ ]
         } ],
-        "description" : "You can use an '~' as a userId to list your own account. All the work from that user will be lost."
+        "description" : "You can use an '~' as a userID to list your own account. All the work from that user will be lost."
       },
       "patch" : {
         "tags" : [ "user" ],
         "summary" : "Change a users info",
         "parameters" : [ {
           "in" : "path",
-          "name" : "userId",
+          "name" : "userID",
           "description" : "ID of the user",
           "required" : true,
           "schema" : {
@@ -1163,16 +1163,16 @@
         "security" : [ {
           "bearer_token" : [ ]
         } ],
-        "description" : "You can use an '~' as a userId to list your own account.\nYou don't need to edit every thing at once."
+        "description" : "You can use an '~' as a userID to list your own account.\nYou don't need to edit every thing at once."
       }
     },
-    "/user/{userId}/access" : {
+    "/user/{userID}/access" : {
       "get" : {
-        "tags" : [ "user" ],
+        "tags" : [ "access", "user" ],
         "summary" : "Get all the access infomation for a user",
         "parameters" : [ {
           "in" : "path",
-          "name" : "userId",
+          "name" : "userID",
           "description" : "ID of the user",
           "required" : true,
           "schema" : {
@@ -1200,16 +1200,16 @@
         "security" : [ {
           "bearer_token" : [ ]
         } ],
-        "description" : "You can use an '~' as a userId to list your own account."
+        "description" : "You can use an '~' as a userID to list your own account."
       }
     },
-    "/user/{userId}/work" : {
+    "/user/{userID}/work" : {
       "get" : {
-        "tags" : [ "user" ],
+        "tags" : [ "user", "work" ],
         "summary" : "Get all the work from an user",
         "parameters" : [ {
           "in" : "path",
-          "name" : "userId",
+          "name" : "userID",
           "description" : "The id of the user",
           "required" : true,
           "schema" : {
@@ -1233,20 +1233,33 @@
           "404" : {
             "description" : "Not found"
           }
-        }
-      }
-    },
-    "/work" : {
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
       "post" : {
-        "tags" : [ "work" ],
-        "summary" : "Save your work on the server",
+        "tags" : [ "user", "work" ],
+        "summary" : "Save your work as a user on the server",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "userID",
+          "description" : "The id of the user",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
         "requestBody" : {
           "content" : {
             "application/json" : {
               "schema" : {
                 "type" : "object",
                 "properties" : {
-                  "locationId" : {
+                  "worktypeId" : {
+                    "type" : "integer"
+                  },
+                  "locationID" : {
                     "type" : "integer"
                   },
                   "date" : {
@@ -1271,7 +1284,7 @@
                 "schema" : {
                   "type" : "object",
                   "properties" : {
-                    "workId" : {
+                    "workID" : {
                       "type" : "integer"
                     }
                   }
@@ -1288,14 +1301,72 @@
         } ]
       }
     },
-    "/work/user/{userId}" : {
+    "/work" : {
+      "post" : {
+        "tags" : [ "work" ],
+        "summary" : "Save your work on the server",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "worktypeId" : {
+                    "type" : "integer"
+                  },
+                  "userId" : {
+                    "type" : "integer"
+                  },
+                  "locationID" : {
+                    "type" : "integer"
+                  },
+                  "date" : {
+                    "type" : "string"
+                  },
+                  "time" : {
+                    "type" : "integer"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "workID" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "your input values are wrong"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/work/user/{userID}" : {
       "get" : {
         "tags" : [ "work" ],
         "summary" : "Get all the work from a user",
         "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
-          "name" : "userId",
+          "name" : "userID",
           "description" : "ID of the user",
           "required" : true,
           "schema" : {
@@ -1325,14 +1396,14 @@
         } ]
       }
     },
-    "/work/user/{userId}/date/{start}/{end}" : {
+    "/work/user/{userID}/date/{start}/{end}" : {
       "get" : {
         "tags" : [ "work" ],
         "summary" : "Get all the work from a user",
         "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
-          "name" : "userId",
+          "name" : "userID",
           "description" : "ID of the user",
           "required" : true,
           "schema" : {
@@ -1378,14 +1449,14 @@
         } ]
       }
     },
-    "/work/user/{userId}/{workId}" : {
+    "/work/user/{userID}/{workID}" : {
       "get" : {
         "tags" : [ "work" ],
         "summary" : "Get a single work object",
         "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
-          "name" : "userId",
+          "name" : "userID",
           "description" : "ID of the user",
           "required" : true,
           "schema" : {
@@ -1393,7 +1464,7 @@
           }
         }, {
           "in" : "path",
-          "name" : "workId",
+          "name" : "workID",
           "description" : "Id of the work",
           "required" : true,
           "schema" : {
@@ -1428,7 +1499,7 @@
         "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
-          "name" : "userId",
+          "name" : "userID",
           "description" : "ID of the user",
           "required" : true,
           "schema" : {
@@ -1436,7 +1507,7 @@
           }
         }, {
           "in" : "path",
-          "name" : "workId",
+          "name" : "workID",
           "description" : "Id of the work",
           "required" : true,
           "schema" : {
@@ -1461,7 +1532,7 @@
         "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
-          "name" : "userId",
+          "name" : "userID",
           "description" : "ID of the user",
           "required" : true,
           "schema" : {
@@ -1469,7 +1540,7 @@
           }
         }, {
           "in" : "path",
-          "name" : "workId",
+          "name" : "workID",
           "description" : "Id of the work",
           "required" : true,
           "schema" : {
@@ -1482,7 +1553,7 @@
               "schema" : {
                 "type" : "object",
                 "properties" : {
-                  "locationId" : {
+                  "locationID" : {
                     "type" : "integer"
                   },
                   "date" : {
@@ -1568,7 +1639,7 @@
                 "schema" : {
                   "type" : "object",
                   "properties" : {
-                    "worktypeId" : {
+                    "worktypeID" : {
                       "type" : "integer"
                     }
                   }
@@ -1585,13 +1656,13 @@
         } ]
       }
     },
-    "/worktype/{worktypeId}" : {
+    "/worktype/{worktypeID}" : {
       "get" : {
         "tags" : [ "worktype" ],
         "summary" : "Get infomation about a single worktype",
         "parameters" : [ {
           "in" : "path",
-          "name" : "worktypeId",
+          "name" : "worktypeID",
           "description" : "ID of the worktype",
           "required" : true,
           "schema" : {
@@ -1625,7 +1696,7 @@
         "summary" : "Remove a single worktype",
         "parameters" : [ {
           "in" : "path",
-          "name" : "worktypeId",
+          "name" : "worktypeID",
           "description" : "ID of the worktype",
           "required" : true,
           "schema" : {
@@ -1649,7 +1720,7 @@
         "summary" : "Change the info of a worktype",
         "parameters" : [ {
           "in" : "path",
-          "name" : "worktypeId",
+          "name" : "worktypeID",
           "description" : "ID of the user",
           "required" : true,
           "schema" : {
@@ -1689,7 +1760,7 @@
       "Access" : {
         "type" : "object",
         "properties" : {
-          "accessId" : {
+          "accessID" : {
             "type" : "integer"
           },
           "access" : {
@@ -1700,7 +1771,7 @@
       "Api" : {
         "type" : "object",
         "properties" : {
-          "apiId" : {
+          "apiID" : {
             "type" : "integer"
           },
           "createDate" : {
@@ -1717,7 +1788,7 @@
       "Group" : {
         "type" : "object",
         "properties" : {
-          "groupId" : {
+          "groupID" : {
             "type" : "integer"
           },
           "groupName" : {
@@ -1734,7 +1805,7 @@
       "Location" : {
         "type" : "object",
         "properties" : {
-          "locationId" : {
+          "locationID" : {
             "type" : "integer"
           },
           "hidden" : {
@@ -1754,10 +1825,10 @@
       "Setting" : {
         "type" : "object",
         "properties" : {
-          "settingsId" : {
+          "settingID" : {
             "type" : "integer"
           },
-          "groupId" : {
+          "groupID" : {
             "type" : "integer"
           },
           "setting" : {
@@ -1771,7 +1842,7 @@
       "User" : {
         "type" : "object",
         "properties" : {
-          "userId" : {
+          "userID" : {
             "type" : "integer"
           },
           "firstname" : {
@@ -1783,7 +1854,7 @@
           "username" : {
             "type" : "string"
           },
-          "groupId" : {
+          "groupID" : {
             "type" : "integer"
           },
           "groupName" : {
@@ -1794,7 +1865,7 @@
       "Work" : {
         "type" : "object",
         "properties" : {
-          "workId" : {
+          "workID" : {
             "type" : "integer"
           },
           "time" : {
@@ -1820,7 +1891,7 @@
       "Worktype" : {
         "type" : "object",
         "properties" : {
-          "worktypeId" : {
+          "worktypeID" : {
             "type" : "integer"
           },
           "name" : {

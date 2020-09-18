@@ -4,10 +4,10 @@ import { Response } from 'express'
 import moment from 'moment'
 
 export interface TLWork {
-  workId: number;
-  userId: number;
-  locationId: number;
-  groupId: number;
+  workID: number;
+  userID: number;
+  locationID: number;
+  groupID: number;
   time: string;
   date: string;
   description: string;
@@ -18,7 +18,7 @@ export interface TLWork {
   lastname: string;
   username: string;
   groupName: string;
-  worktypeId: number;
+  worktypeID: number;
   wname: string;
 }
 
@@ -31,10 +31,10 @@ export interface TLWork {
  */
 export function responseWork (result: TLWork[], response:Response) {
   const tmp: {
-    workId: number;
-    user: { userId: number; firstname: string; lastname: string; username: string; groupId: number; groupName: string };
-    location: { locationId: number; place: string; name: string; id: string; };
-    worktype: { worktypeId: number; name: string; }
+    workID: number;
+    user: { userID: number; firstname: string; lastname: string; username: string; groupID: number; groupName: string };
+    location: { locationID: number; place: string; name: string; id: string; };
+    worktype: { worktypeID: number; name: string; }
     time: string;
     date: string;
     description: string;
@@ -42,26 +42,26 @@ export function responseWork (result: TLWork[], response:Response) {
 
   result.forEach((workItem) => {
     tmp.push({
-      workId: workItem.workId,
+      workID: workItem.workID,
       // Add the user info
       user: {
-        userId: workItem.userId,
+        userID: workItem.userID,
         firstname: workItem.firstname,
         lastname: workItem.lastname,
         username: workItem.username,
-        groupId: workItem.groupId,
+        groupID: workItem.groupID,
         groupName: workItem.groupName
       },
       // Add the location info
       location: {
-        locationId: workItem.locationId,
+        locationID: workItem.locationID,
         place: workItem.place,
         name: workItem.name,
         id: workItem.id
       },
       // Add the worktype info
       worktype: {
-        worktypeId: workItem.worktypeId,
+        worktypeID: workItem.worktypeID,
         name: workItem.wname
       },
       // Add the work info

@@ -7,19 +7,19 @@ import ServerError from '../serverErrorInterface'
 
 export default () => {
   return (request: Request, response: Response, next: NextFunction) => {
-    // Check if the apiId is a number
-    if (isNaN(Number(request.params.locationId))) {
-      // apiId is not correct.
-      const error: ServerError = new Error('The locationId is not a number')
+    // Check if the apiID is a number
+    if (isNaN(Number(request.params.locationID))) {
+      // apiID is not correct.
+      const error: ServerError = new Error('The locationID is not a number')
       error.status = 400
       error.code = 'trackless.checkId.NaN'
       next(error)
     } else {
       // Get the infomation from the database
-      DBcon.query('SELECT * FROM `TL_locations` WHERE `locationId`=?', [request.params.locationId], handleQuery(next, (result) => {
+      DBcon.query('SELECT * FROM `TL_locations` WHERE `locationID`=?', [request.params.locationID], handleQuery(next, (result) => {
         if (result.length === 0) {
           // The apikey does not exsist
-          const error: ServerError = new Error('The locationId does not exsist')
+          const error: ServerError = new Error('The locationID does not exsist')
           error.status = 404
           error.code = 'trackless.checkId.notFound'
           next(error)

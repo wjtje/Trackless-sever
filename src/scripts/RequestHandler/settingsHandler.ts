@@ -12,14 +12,14 @@ export default () => {
     // Init the var
     response.locals.setting = {}
 
-    // Check if a groupId is defined
-    if (request.user?.groupId == null) {
+    // Check if a groupID is defined
+    if (request.user?.groupID == null) {
       next()
     } else {
       // Get all the settings from the database
       DBcon.query(
-        'SELECT `setting`, `value` FROM `TL_settings` WHERE `groupId` = ?',
-        [request.user.groupId],
+        'SELECT `setting`, `value` FROM `TL_settings` WHERE `groupID` = ?',
+        [request.user.groupID],
         handleQuery(next, (result: {
           setting: string
           value: string

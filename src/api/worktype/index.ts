@@ -8,7 +8,7 @@ import { handleQuery } from '../../scripts/handle'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT } from '../../scripts/types'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
-import worktypeIdRouter from './worktypeId'
+import worktypeIDRouter from './worktypeID'
 
 const router = express.Router()
 
@@ -17,13 +17,13 @@ router.get(
   '/',
   authHandler('trackless.worktype.read'),
   sortHandler([
-    'worktypeId',
+    'worktypeID',
     'name'
   ]),
   (request, response, next) => {
     // Send the request
     DBcon.query(
-      'SELECT `worktypeId`, `name` FROM `TL_worktype` ' + String((response.locals.sort || ' ORDER BY `name`')),
+      'SELECT `worktypeID`, `name` FROM `TL_worktype` ' + String((response.locals.sort || ' ORDER BY `name`')),
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })
@@ -46,14 +46,14 @@ router.post(
       ],
       handleQuery(next, (result) => {
         response.status(201).json({
-          worktypeId: result.insertId
+          worktypeID: result.insertId
         })
       })
     )
   }
 )
 
-router.use('/', worktypeIdRouter)
+router.use('/', worktypeIDRouter)
 
 router.use(unusedRequestTypes())
 

@@ -12,16 +12,16 @@ export interface requireObject {
 
 /**
  * @since 0.2-beta.1
- * @param {number} userId
+ * @param {number} userID
  * @param {string} username
  * @param {string} firstname
  * @param {string} lastname
- * @param {number} groupId
+ * @param {number} groupID
  */
 export interface userInfo {
-  userId: number;
+  userID: number;
   username: string;
   firstname: string;
   lastname: string;
-  groupId: number;
+  groupID: number;
 }

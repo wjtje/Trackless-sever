@@ -3,7 +3,7 @@
 import express from 'express'
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 import authHandler from '../../scripts/RequestHandler/authHandler'
-import apiIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/apiIdCheckHandler'
+import apiIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/apiIDCheckHandler'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 
@@ -11,14 +11,14 @@ const router = express.Router()
 
 // Get infomation about a single api key
 router.get(
-  '/:apiId',
+  '/:apiID',
   authHandler('trackless.api.read'),
-  apiIdCheckHandler(),
+  apiIDCheckHandler(),
   (request, response, next) => {
     // Get the data from the server
     DBcon.query(
-      'SELECT `apiId`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `userId`=? AND `apiId`=?',
-      [request.user?.userId, request.params.apiId],
+      'SELECT `apiID`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `userID`=? AND `apiID`=?',
+      [request.user?.userID, request.params.apiID],
       handleQuery(next, (result) => {
         // Send the data back to the user
         response.status(200).json(result)
@@ -29,14 +29,14 @@ router.get(
 
 // Remove a single api key
 router.delete(
-  '/:apiId',
+  '/:apiID',
   authHandler('trackless.api.remove'),
-  apiIdCheckHandler(),
+  apiIDCheckHandler(),
   (request, response, next) => {
     // Send the command to the server
     DBcon.query(
-      'DELETE FROM `TL_apikeys` WHERE `apiId`=? and `userId`=?',
-      [request.params.apiId, request.user?.userId],
+      'DELETE FROM `TL_apikeys` WHERE `apiID`=? and `userID`=?',
+      [request.params.apiID, request.user?.userID],
       handleQuery(next, () => {
         response.status(200).json({
           message: 'done'

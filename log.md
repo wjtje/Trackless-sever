@@ -7,6 +7,7 @@
 # Changed in this version
 
  - groupId 0 doesnt exist any longer exsist
+ - Id -> ID (It has been done)
 
 # Things that are fixed
 
@@ -27,4 +28,14 @@ CREATE TABLE `trackless`.`TL_settings` (
 ) ENGINE = InnoDB;
 
 ALTER TABLE `TL_settings` ADD FOREIGN KEY (`groupId`) REFERENCES `TL_groups`(`groupId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `TL_access` CHANGE `accessId` `accessID` INT NOT NULL AUTO_INCREMENT, CHANGE `groupId` `groupID` INT NOT NULL;
+ALTER TABLE `TL_apikeys` CHANGE `apiId` `apiID` INT NOT NULL AUTO_INCREMENT, CHANGE `userId` `userID` INT NOT NULL;
+ALTER TABLE `TL_errors` CHANGE `errorId` `errorID` INT NOT NULL AUTO_INCREMENT;
+ALTER TABLE `TL_groups` CHANGE `groupId` `groupID` INT NOT NULL AUTO_INCREMENT;
+ALTER TABLE `TL_locations` CHANGE `locationId` `locationID` INT NOT NULL AUTO_INCREMENT;
+ALTER TABLE `TL_settings` CHANGE `settingId` `settingID` INT NOT NULL AUTO_INCREMENT, CHANGE `groupId` `groupID` INT NOT NULL;
+ALTER TABLE `TL_users` CHANGE `userId` `userID` INT NOT NULL AUTO_INCREMENT, CHANGE `groupId` `groupID` INT NOT NULL DEFAULT 1;
+ALTER TABLE `TL_work` CHANGE `workId` `workID` INT NOT NULL AUTO_INCREMENT, CHANGE `userId` `userID` INT NOT NULL, CHANGE `locationId` `locationID` INT NOT NULL, CHANGE `worktypeId` `worktypeID` INT NOT NULL;
+ALTER TABLE `TL_worktype` CHANGE `worktypeId` `worktypeID` INT NOT NULL AUTO_INCREMENT;
 ```

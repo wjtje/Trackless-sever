@@ -8,20 +8,20 @@ import { handleQuery } from '../../scripts/handle'
 import { patchHandler, handlePatchQuery } from '../../scripts/RequestHandler/patchHandler'
 import { mysqlTEXT } from '../../scripts/types'
 import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
-import worktypeIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/worktypeIdCheckHandler'
+import worktypeIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/worktypeIDCheckHandler'
 
 const router = express.Router()
 
-// Get by worktypeId
+// Get by worktypeID
 router.get(
-  '/:worktypeId',
+  '/:worktypeID',
   authHandler('trackless.worktype.read'),
-  worktypeIdCheckHandler(),
+  worktypeIDCheckHandler(),
   (request, response, next) => {
     // Get the data from the server
     DBcon.query(
-      'SELECT `worktypeId`, `name` FROM `TL_worktype` WHERE `worktypeId`=?',
-      [request.params.worktypeId],
+      'SELECT `worktypeID`, `name` FROM `TL_worktype` WHERE `worktypeID`=?',
+      [request.params.worktypeID],
       handleQuery(next, (result) => {
         // Send the result back
         response.status(200).json(result)
@@ -32,14 +32,14 @@ router.get(
 
 // Remove a worktype
 router.delete(
-  '/:worktypeId',
+  '/:worktypeID',
   authHandler('trackless.worktype.remove'),
-  worktypeIdCheckHandler(),
+  worktypeIDCheckHandler(),
   (request, response, next) => {
     // Remove the user
     DBcon.query(
-      'DELETE FROM `TL_worktype` WHERE `worktypeId`=?',
-      [request.params.worktypeId],
+      'DELETE FROM `TL_worktype` WHERE `worktypeID`=?',
+      [request.params.worktypeID],
       handleQuery(next, () => {
         response.status(200).json({
           message: 'done'
@@ -56,19 +56,19 @@ router.delete(
 
 // Edit a worktype
 router.patch(
-  '/:worktypeId',
+  '/:worktypeID',
   authHandler('trackless.worktype.edit'),
-  worktypeIdCheckHandler(),
+  worktypeIDCheckHandler(),
   patchHandler(
     [
       { name: 'name', check: mysqlTEXT }
     ],
     (resolve, reject, key, request) => {
       DBcon.query(
-        'UPDATE `TL_worktype` SET `' + key + '`=? WHERE `worktypeId`=?',
+        'UPDATE `TL_worktype` SET `' + key + '`=? WHERE `worktypeID`=?',
         [
           request.body[key],
-          request.params.worktypeId
+          request.params.worktypeID
         ],
         handlePatchQuery(reject, resolve)
       )

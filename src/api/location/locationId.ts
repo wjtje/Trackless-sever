@@ -3,7 +3,7 @@
 import express from 'express'
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 import authHandler from '../../scripts/RequestHandler/authHandler'
-import locationIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/locationIdCheckHandler'
+import locationIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/locationIDCheckHandler'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 import { patchHandler, handlePatchQuery } from '../../scripts/RequestHandler/patchHandler'
@@ -13,14 +13,14 @@ import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 const router = express.Router()
 
 router.get(
-  '/:locationId',
+  '/:locationID',
   authHandler('trackless.location.read'),
-  locationIdCheckHandler(),
+  locationIDCheckHandler(),
   (request, response, next) => {
     // Get the data from the server
     DBcon.query(
-      'SELECT * FROM `TL_locations` WHERE `locationId`=?',
-      [request.params.locationId],
+      'SELECT * FROM `TL_locations` WHERE `locationID`=?',
+      [request.params.locationID],
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })
@@ -29,14 +29,14 @@ router.get(
 )
 
 router.delete(
-  '/:locationId',
+  '/:locationID',
   authHandler('trackless.location.remove'),
-  locationIdCheckHandler(),
+  locationIDCheckHandler(),
   (request, response, next) => {
     // Delete from database
     DBcon.query(
-      'DELETE FROM `TL_locations` WHERE `locationId`=?',
-      [request.params.locationId],
+      'DELETE FROM `TL_locations` WHERE `locationID`=?',
+      [request.params.locationID],
       handleQuery(next, () => {
         response.status(200).json({
           message: 'done'
@@ -52,9 +52,9 @@ router.delete(
 )
 
 router.patch(
-  '/:locationId',
+  '/:locationID',
   authHandler('trackless.location.edit'),
-  locationIdCheckHandler(),
+  locationIDCheckHandler(),
   patchHandler([
     { name: 'name', check: mysqlTEXT },
     { name: 'place', check: mysqlTEXT },
@@ -63,8 +63,8 @@ router.patch(
   ], (resolve, reject, key, request) => {
     // Update the key
     DBcon.query(
-      'UPDATE `TL_locations` SET `' + key + '`=? WHERE `locationId`=?',
-      [request.body[key], request.params.locationId],
+      'UPDATE `TL_locations` SET `' + key + '`=? WHERE `locationID`=?',
+      [request.body[key], request.params.locationID],
       handlePatchQuery(reject, resolve)
     )
   })

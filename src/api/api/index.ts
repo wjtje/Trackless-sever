@@ -5,7 +5,7 @@ import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 import authHandler from '../../scripts/RequestHandler/authHandler'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
-import apiIdRoute from './apiId'
+import apiIDRoute from './apiID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 
 const router = express.Router()
@@ -15,7 +15,7 @@ router.get(
   '/',
   authHandler('trackless.api.read'),
   sortHandler([
-    'apiId',
+    'apiID',
     'createDate',
     'lastUsed',
     'deviceName'
@@ -23,8 +23,8 @@ router.get(
   (request, response, next) => {
     // Get all the api keys from the server
     DBcon.query(
-      'SELECT `apiId`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `userId`=?' + String(response.locals.sort || ''),
-      [request.user?.userId],
+      'SELECT `apiID`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `userID`=?' + String(response.locals.sort || ''),
+      [request.user?.userID],
       handleQuery(next, (result) => {
         // Send the data back to the user
         response.status(200).json(result)
@@ -33,7 +33,7 @@ router.get(
   }
 )
 
-router.use('/', apiIdRoute)
+router.use('/', apiIDRoute)
 
 router.use(unusedRequestTypes())
 

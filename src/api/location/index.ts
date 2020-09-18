@@ -8,7 +8,7 @@ import { handleQuery } from '../../scripts/handle'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT } from '../../scripts/types'
 import userRoute from './user'
-import locationIdRoute from './locationId'
+import locationIDRoute from './locationID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 
 const router = express.Router()
@@ -17,7 +17,7 @@ router.get(
   '/',
   authHandler('trackless.location.read'),
   sortHandler([
-    'locationId',
+    'locationID',
     'name',
     'place',
     'id',
@@ -25,7 +25,7 @@ router.get(
   ]),
   (request, response, next) => {
     DBcon.query(
-      `SELECT * FROM \`TL_locations\` WHERE \`locationId\`!=0 ${(request.query.hidden == null) ? 'AND `hidden`=0' : ''} ${String(response.locals.sort || 'ORDER BY `place`, `name`')}`,
+      `SELECT * FROM \`TL_locations\` WHERE \`locationID\`!=0 ${(request.query.hidden == null) ? 'AND `hidden`=0' : ''} ${String(response.locals.sort || 'ORDER BY `place`, `name`')}`,
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })
@@ -53,7 +53,7 @@ router.post(
       handleQuery(next, (result) => {
         // Saved to the database
         response.status(201).json({
-          locationId: result.insertId
+          locationID: result.insertId
         })
       })
     )
@@ -62,7 +62,7 @@ router.post(
 
 router.use('/user', userRoute)
 
-router.use('/', locationIdRoute)
+router.use('/', locationIDRoute)
 
 router.use(unusedRequestTypes())
 

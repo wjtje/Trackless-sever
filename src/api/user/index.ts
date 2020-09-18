@@ -9,7 +9,7 @@ import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 import { storePassword } from '../../scripts/security'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT, mysqlINT } from '../../scripts/types'
-import userIdRouter from './userId'
+import userIDRouter from './userID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 
 const router = express.Router()
@@ -19,17 +19,17 @@ router.get(
   '/',
   authHandler('trackless.user.readAll'),
   sortHandler([
-    'userId',
+    'userID',
     'firstname',
     'lastname',
     'username',
-    'groupId',
+    'groupID',
     'groupName'
   ]),
   (request, response, next) => {
     // Send the request
     DBcon.query(
-      'SELECT `userId`, `firstname`, `lastname`, `username`, `groupId`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupId`) ' + String((response.locals.sort || ' ORDER BY `firstname`, `lastname`, `username`')),
+      'SELECT `userID`, `firstname`, `lastname`, `username`, `groupID`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupID`) ' + String((response.locals.sort || ' ORDER BY `firstname`, `lastname`, `username`')),
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })
@@ -46,7 +46,7 @@ router.post(
     { name: 'lastname', check: mysqlTEXT },
     { name: 'username', check: mysqlTEXT },
     { name: 'password', check: mysqlTEXT },
-    { name: 'groupId', check: mysqlINT }
+    { name: 'groupID', check: mysqlINT }
   ]),
   (request, response, next) => {
     // Check if the user is taken
@@ -67,18 +67,18 @@ router.post(
 
           // Commit to the database
           DBcon.query(
-            'INSERT INTO `TL_users` ( `firstname`, `lastname`, `username`, `groupId`, `salt_hash`, `hash` ) VALUES ( ?, ?, ?, ?, ?, ?)',
+            'INSERT INTO `TL_users` ( `firstname`, `lastname`, `username`, `groupID`, `salt_hash`, `hash` ) VALUES ( ?, ?, ?, ?, ?, ?)',
             [
               request.body.firstname,
               request.body.lastname,
               request.body.username,
-              Number(request.body.groupId),
+              Number(request.body.groupID),
               salt,
               hash
             ],
             handleQuery(next, (result) => {
               response.status(201).json({
-                userId: result.insertId
+                userID: result.insertId
               })
             })
           )
@@ -88,7 +88,7 @@ router.post(
   }
 )
 
-router.use(userIdRouter)
+router.use(userIDRouter)
 
 router.use(unusedRequestTypes())
 

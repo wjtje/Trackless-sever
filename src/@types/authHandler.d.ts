@@ -9,8 +9,8 @@ declare global {
       firstname: string;
       lastname: string;
       username: string;
-      userId: number;
-      groupId: number;
+      userID: number;
+      groupID: number;
     }
   }
 }

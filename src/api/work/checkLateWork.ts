@@ -10,8 +10,8 @@ export default () => {
   return (request: Request, response: Response, next: NextFunction) => {
     // Custom function for checking if you are allowed to edit this
     DBcon.query(
-      'SELECT `date` FROM `TL_work` where `workId`=?',
-      [request.params.workId],
+      'SELECT `date` FROM `TL_work` where `workID`=?',
+      [request.params.workID],
       handleQuery(next, (result) => {
         // Check if the user is allowed to add work
         if (response.locals.setting?.workLateDays == null) {

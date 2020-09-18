@@ -3,21 +3,21 @@
 import express from 'express'
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 import authHandler from '../../scripts/RequestHandler/authHandler'
-import accessIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/accessIdCheckHandler'
+import accessIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/accessIDCheckHandler'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 
 const router = express.Router()
 
 router.get(
-  '/:accessId',
+  '/:accessID',
   authHandler('trackless.access.read'),
-  accessIdCheckHandler(),
+  accessIDCheckHandler(),
   (request, response, next) => {
     // Get the data from the server
     DBcon.query(
-      'SELECT `accessId`, `access` FROM `TL_access` WHERE `accessId`=?',
-      [request.params?.accessId],
+      'SELECT `accessID`, `access` FROM `TL_access` WHERE `accessID`=?',
+      [request.params?.accessID],
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })
@@ -26,14 +26,14 @@ router.get(
 )
 
 router.delete(
-  '/:accessId',
+  '/:accessID',
   authHandler('trackless.access.remove'),
-  accessIdCheckHandler(),
+  accessIDCheckHandler(),
   (request, response, next) => {
     // Remove from the server
     DBcon.query(
-      'DELETE FROM `TL_access` WHERE `accessId`=?',
-      [request.params.accessId],
+      'DELETE FROM `TL_access` WHERE `accessID`=?',
+      [request.params.accessID],
       handleQuery(next, () => {
         response.status(200).json({
           message: 'done'

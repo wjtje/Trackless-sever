@@ -7,19 +7,19 @@ import ServerError from '../serverErrorInterface'
 
 export default () => {
   return (request: Request, response: Response, next: NextFunction) => {
-    // Check if the groupId is a number
-    if (request.params.groupId === '~') {
+    // Check if the groupID is a number
+    if (request.params.groupID === '~') {
       // You can allways list your own group
       next()
-    } else if (isNaN(Number(request.params.groupId))) {
-      // GroupId is not correct.
-      const error: ServerError = new Error('The groupId is not a number')
+    } else if (isNaN(Number(request.params.groupID))) {
+      // groupID is not correct.
+      const error: ServerError = new Error('The groupID is not a number')
       error.status = 400
       error.code = 'trackless.checkId.NaN'
       next(error)
     } else {
       // Get the infomation from the database
-      DBcon.query('SELECT * FROM `TL_groups` WHERE `groupId`=?', [request.params.groupId], handleQuery(next, (result) => {
+      DBcon.query('SELECT * FROM `TL_groups` WHERE `groupID`=?', [request.params.groupID], handleQuery(next, (result) => {
         if (result.length === 0) {
           // Group does not exsist
           const error: ServerError = new Error('The group does not exsist')

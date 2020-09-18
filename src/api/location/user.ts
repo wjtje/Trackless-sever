@@ -12,13 +12,13 @@ const router = express.Router()
 
 // Get last used
 router.get(
-  '/:userId/last',
+  '/:userID/last',
   authHandler('trackless.location.read'),
   (request, response, next) => {
-    // Get last locationId from the server
+    // Get last locationID from the server
     DBcon.query(
-      'SELECT `locationId`, `name`, `place`, `id` FROM `TL_work` INNER JOIN `TL_locations` USING (`locationId`) WHERE `userId`=? AND `hidden`=0 ORDER BY `workId` DESC LIMIT 1',
-      [(request.params.userId === '~') ? request.user?.userId : request.params.userId],
+      'SELECT `locationID`, `name`, `place`, `id` FROM `TL_work` INNER JOIN `TL_locations` USING (`locationID`) WHERE `userID`=? AND `hidden`=0 ORDER BY `workID` DESC LIMIT 1',
+      [(request.params.userID === '~') ? request.user?.userID : request.params.userID],
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })
@@ -28,18 +28,18 @@ router.get(
 
 // Get most used
 router.get(
-  '/:userId/most',
+  '/:userID/most',
   authHandler('trackless.location.read'),
   (request, response, next) => {
     // Get the last two
     DBcon.query(
-      'SELECT * FROM `TL_locations` WHERE `hidden`=0 ORDER BY `locationId` DESC LIMIT 2',
+      'SELECT * FROM `TL_locations` WHERE `hidden`=0 ORDER BY `locationID` DESC LIMIT 2',
       handleQuery(next, (randomLocations) => {
-        // Get most used locationId from the server (limit 2)
+        // Get most used locationID from the server (limit 2)
         DBcon.query(
-          'SELECT `locationId`, `name`, `place`, `id`, `hidden`, COUNT(`locationId`) as `occurrence` FROM `TL_work` INNER JOIN `TL_locations` USING (`locationId`) WHERE `userId` = ? AND `hidden`=0 AND `date` >= ? AND `date` <= ? GROUP BY `locationId` ORDER BY `occurrence` DESC LIMIT 2',
+          'SELECT `locationID`, `name`, `place`, `id`, `hidden`, COUNT(`locationID`) as `occurrence` FROM `TL_work` INNER JOIN `TL_locations` USING (`locationID`) WHERE `userID` = ? AND `hidden`=0 AND `date` >= ? AND `date` <= ? GROUP BY `locationID` ORDER BY `occurrence` DESC LIMIT 2',
           [
-            request.user?.userId,
+            request.user?.userID,
             moment().subtract(7, 'days').format('YYYY-MM-DD'), // Last week
             moment().format('YYYY-MM-DD') // Now
           ],

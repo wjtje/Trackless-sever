@@ -11,6 +11,8 @@ Use todo+ to see inline todo's
  - /work/user/:userId (DELETE) will not respond anything
  - A way to sort on multiple properties
  - Give the api better description including the required access
+ - Add more tags
+ - Replace Id with ID
 
 ## Now
 

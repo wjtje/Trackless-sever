@@ -9,7 +9,7 @@ import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 import { mysqlINT, mysqlTEXT } from '../../scripts/types'
 import groupRouter from './group'
-import accessIdRoute from './accessId'
+import accessIDRoute from './accessID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 
 const router = express.Router()
@@ -19,14 +19,14 @@ router.get(
   '/',
   authHandler('trackless.access.read'),
   sortHandler([
-    'accessId',
+    'accessID',
     'access'
   ]),
   (request, response, next) => {
     // Get all the data from the server
     DBcon.query(
-      'SELECT `accessId`, `access` FROM `TL_access` WHERE `groupId`=?' + String(response.locals.sort || ''),
-      [request.user?.groupId],
+      'SELECT `accessID`, `access` FROM `TL_access` WHERE `groupID`=?' + String(response.locals.sort || ''),
+      [request.user?.groupID],
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })
@@ -39,13 +39,13 @@ router.post(
   '/',
   authHandler('trackless.access.create'),
   requireHandler([
-    { name: 'groupId', check: mysqlINT },
+    { name: 'groupID', check: mysqlINT },
     { name: 'access', check: mysqlTEXT }
   ]),
   (request, response, next) => {
     DBcon.query(
-      'SELECT `groupId` FROM `TL_groups` WHERE `groupId`=?',
-      [request.body.groupId],
+      'SELECT `groupID` FROM `TL_groups` WHERE `groupID`=?',
+      [request.body.groupID],
       handleQuery(next, (result) => {
         if (result.length === 0) {
           // Group not found
@@ -56,14 +56,14 @@ router.post(
         } else {
           // Save it to the database
           DBcon.query(
-            'INSERT INTO `TL_access` (`groupId`, `access`) VALUES (?,?)',
+            'INSERT INTO `TL_access` (`groupID`, `access`) VALUES (?,?)',
             [
-              request.body.groupId,
+              request.body.groupID,
               request.body.access
             ],
             handleQuery(next, (result) => {
               response.status(201).json({
-                accessId: result.insertId
+                accessID: result.insertId
               })
             })
           )
@@ -75,7 +75,7 @@ router.post(
 
 router.use('/group', groupRouter)
 
-router.use('/', accessIdRoute)
+router.use('/', accessIDRoute)
 
 router.use(unusedRequestTypes())
 

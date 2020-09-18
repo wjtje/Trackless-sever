@@ -3,26 +3,26 @@
 import express from 'express'
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 import authHandler from '../../scripts/RequestHandler/authHandler'
-import groupIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/groupIdCheckHandler'
+import groupIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/groupIDCheckHandler'
 import { handleQuery } from '../../scripts/handle'
 import { DBcon } from '../..'
 
 const router = express.Router()
 
 router.get(
-  '/:groupId',
+  '/:groupID',
   authHandler((request) => {
-    if (request.params.groupId === '~') {
+    if (request.params.groupID === '~') {
       return 'trackless.access.readOwn'
     } else {
       return 'trackless.access.readAll'
     }
   }),
-  groupIdCheckHandler(),
+  groupIDCheckHandler(),
   (request, response, next) => {
     DBcon.query(
-      'SELECT `accessId`, `access` FROM `TL_access` WHERE `groupId`=?',
-      [(request.params.groupId === '~') ? Number(request.user?.groupId) : Number(request.params.groupId)],
+      'SELECT `accessID`, `access` FROM `TL_access` WHERE `groupID`=?',
+      [(request.params.groupID === '~') ? Number(request.user?.groupID) : Number(request.params.groupID)],
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })

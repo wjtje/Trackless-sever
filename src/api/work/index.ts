@@ -18,8 +18,8 @@ router.post(
   '/',
   authHandler('trackless.work.create'),
   requireHandler([
-    { name: 'locationId', check: mysqlINT },
-    { name: 'worktypeId', check: mysqlINT },
+    { name: 'locationID', check: mysqlINT },
+    { name: 'worktypeID', check: mysqlINT },
     { name: 'time', check: mysqlINT },
     { name: 'date', check: mysqlDATE },
     { name: 'description', check: mysqlTEXT }
@@ -29,11 +29,11 @@ router.post(
     const saveWork = () => {
       // Push the new work to the server
       DBcon.query(
-        'INSERT INTO `TL_work` (`userId`, `locationId`, `worktypeId`, `time`, `date`, `description`) VALUES (?,?,?,?,?,?)',
+        'INSERT INTO `TL_work` (`userID`, `locationID`, `worktypeID`, `time`, `date`, `description`) VALUES (?,?,?,?,?,?)',
         [
-          request.user?.userId,
-          request.body.locationId,
-          request.body.worktypeId,
+          request.user?.userID,
+          request.body.locationID,
+          request.body.worktypeID,
           request.body.time,
           request.body.date,
           request.body.description
@@ -41,7 +41,7 @@ router.post(
         handleQuery(next, (result) => {
           // Response with the new id
           response.status(201).json({
-            workId: result.insertId
+            workID: result.insertId
           })
         })
       )

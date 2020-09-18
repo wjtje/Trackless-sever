@@ -3,7 +3,7 @@
 import express from 'express'
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 import authHandler from '../../scripts/RequestHandler/authHandler'
-import userIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIdCheckHandler'
+import userIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIDCheckHandler'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 import { patchHandler, handlePatchQuery } from '../../scripts/RequestHandler/patchHandler'
@@ -13,22 +13,22 @@ import { storePassword } from '../../scripts/security'
 
 const router = express.Router()
 
-// Get by userId
+// Get by userID
 router.get(
-  '/:userId',
+  '/:userID',
   authHandler((request) => {
-    if (request.params.userId === '~') {
+    if (request.params.userID === '~') {
       return 'trackless.user.readOwn'
     } else {
       return 'trackless.user.readAll'
     }
   }),
-  userIdCheckHandler(),
+  userIDCheckHandler(),
   (request, response, next) => {
     // Get the data from the server
     DBcon.query(
-      'SELECT `userId`, `firstname`, `lastname`, `username`, `groupId`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupId`) WHERE `userId`=?',
-      [(request.params.userId === '~') ? request.user?.userId : request.params.userId],
+      'SELECT `userID`, `firstname`, `lastname`, `username`, `groupID`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupID`) WHERE `userID`=?',
+      [(request.params.userID === '~') ? request.user?.userID : request.params.userID],
       handleQuery(next, (result) => {
         // Send the result back
         response.status(200).json(result)
@@ -39,14 +39,14 @@ router.get(
 
 // Remove a user
 router.delete(
-  '/:userId',
+  '/:userID',
   authHandler('trackless.user.remove'),
-  userIdCheckHandler(),
+  userIDCheckHandler(),
   (request, response, next) => {
     // Remove the user
     DBcon.query(
-      'DELETE FROM `TL_users` WHERE `userId`=?',
-      [request.params.userId],
+      'DELETE FROM `TL_users` WHERE `userID`=?',
+      [request.params.userID],
       handleQuery(next, () => {
         response.status(200).json({
           message: 'success'
@@ -58,15 +58,15 @@ router.delete(
 
 // Edit a user
 router.patch(
-  '/:userId',
+  '/:userID',
   authHandler((request) => {
-    if (request.params.userId === '~') {
+    if (request.params.userID === '~') {
       return 'trackless.user.editOwn'
     } else {
       return 'trackless.user.editAll'
     }
   }),
-  userIdCheckHandler(),
+  userIDCheckHandler(),
   patchHandler(
     [
       { name: 'firstname', check: mysqlTEXT },
@@ -77,10 +77,10 @@ router.patch(
     (resolve, reject, key, request) => {
       function changeUser () {
         DBcon.query(
-          'UPDATE `TL_users` SET `' + key + '`=? WHERE `userId`=?',
+          'UPDATE `TL_users` SET `' + key + '`=? WHERE `userID`=?',
           [
             request.body[key],
-            (request.params.userId === '~') ? request.user?.userId : request.params.userId
+            (request.params.userID === '~') ? request.user?.userID : request.params.userID
           ],
           handlePatchQuery(reject, resolve)
         )
@@ -90,11 +90,11 @@ router.patch(
         case 'username':
           // Check if the username has been used
           DBcon.query(
-            'SELECT `userId` FROM `TL_users` WHERE `username`=?',
+            'SELECT `userID` FROM `TL_users` WHERE `username`=?',
             [request.body.username],
             (error, result) => {
-              const userId = (request.params.userId === '~') ? request.user?.userId : request.params.userId
-              if (result.length === 0 || Number(result[0].userId) === Number(userId)) {
+              const userID = (request.params.userID === '~') ? request.user?.userID : request.params.userID
+              if (result.length === 0 || Number(result[0].userID) === Number(userID)) {
                 // User name is free
                 changeUser()
               } else {
@@ -114,10 +114,10 @@ router.patch(
           // Update password
           const [salt, hash] = storePassword(request.body[key])
 
-          DBcon.query('UPDATE `TL_users` SET `salt_hash`=?, `hash`=? where `userId`=?', [
+          DBcon.query('UPDATE `TL_users` SET `salt_hash`=?, `hash`=? where `userID`=?', [
             salt,
             hash,
-            (request.params.userId === '~') ? request.user?.userId : request.params.userId
+            (request.params.userID === '~') ? request.user?.userID : request.params.userID
           ], handlePatchQuery(reject, resolve))
           break
         }

@@ -5,33 +5,33 @@ import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 import authHandler from '../../scripts/RequestHandler/authHandler'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
-import groupIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/groupIdCheckHandler'
+import groupIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/groupIDCheckHandler'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT } from '../../scripts/types'
-import userIdCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIdCheckHandler'
+import userIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIDCheckHandler'
 import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 
 const router = express.Router()
 
 // Return a single group
 router.get(
-  '/:groupId',
+  '/:groupID',
   authHandler('trackless.group.readAll'),
-  groupIdCheckHandler(),
+  groupIDCheckHandler(),
   (request, response, next) => {
-    // groupId is valid return the info
+    // groupID is valid return the info
     DBcon.query(
-      'SELECT * FROM `TL_groups` WHERE `groupId`=?',
-      [request.params.groupId],
+      'SELECT * FROM `TL_groups` WHERE `groupID`=?',
+      [request.params.groupID],
       handleQuery(next, (resultGroup) => {
         // Get all users
         DBcon.query(
-          'SELECT `userId`, `firstname`, `lastname`, `username`, `groupId`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupId`) WHERE `groupId`=? ORDER BY `firstname`, `lastname`, `username`',
-          [request.params.groupId],
+          'SELECT `userID`, `firstname`, `lastname`, `username`, `groupID`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupID`) WHERE `groupID`=? ORDER BY `firstname`, `lastname`, `username`',
+          [request.params.groupID],
           handleQuery(next, (resultUsers) => {
             // Return the infomation
             response.status(200).json([{
-              groupId: request.params.groupId,
+              groupID: request.params.groupID,
               groupName: resultGroup[0].groupName,
               users: resultUsers
             }])
@@ -44,14 +44,14 @@ router.get(
 
 // Remove a single group
 router.delete(
-  '/:groupId',
+  '/:groupID',
   authHandler('trackless.group.remove'),
-  groupIdCheckHandler(),
+  groupIDCheckHandler(),
   (request, response, next) => {
-    // groupId is valid remove it
+    // groupID is valid remove it
     DBcon.query(
-      'DELETE FROM `TL_groups` WHERE `groupId`=?',
-      [request.params.groupId],
+      'DELETE FROM `TL_groups` WHERE `groupID`=?',
+      [request.params.groupID],
       handleQuery(next, () => {
         response.status(200).json({
           message: 'Removed'
@@ -68,19 +68,19 @@ router.delete(
 
 // Edits a group name
 router.patch(
-  '/:groupId',
+  '/:groupID',
   authHandler('trackless.group.edit'),
   requireHandler([
     { name: 'groupName', check: mysqlTEXT }
   ]),
-  groupIdCheckHandler(),
+  groupIDCheckHandler(),
   (request, response, next) => {
-    // groupId is valid edit it
+    // groupID is valid edit it
     DBcon.query(
-      'UPDATE `TL_groups` SET `groupName`=? WHERE `groupId`=?',
+      'UPDATE `TL_groups` SET `groupName`=? WHERE `groupID`=?',
       [
         request.body.groupName,
-        request.params.groupId
+        request.params.groupID
       ],
       handleQuery(next, () => {
         response.status(200).json({
@@ -93,17 +93,17 @@ router.patch(
 
 // Add a user to a group
 router.post(
-  '/:groupId/add/:userId',
+  '/:groupID/add/:userID',
   authHandler('trackless.group.add'),
-  groupIdCheckHandler(),
-  userIdCheckHandler(),
+  groupIDCheckHandler(),
+  userIDCheckHandler(),
   (request, response, next) => {
     // Change it in the database
     DBcon.query(
-      'UPDATE `TL_users` SET `groupId`=? WHERE `userId`=?',
+      'UPDATE `TL_users` SET `groupID`=? WHERE `userID`=?',
       [
-        request.params.groupId,
-        request.params.userId
+        request.params.groupID,
+        request.params.userID
       ],
       handleQuery(next, () => {
         response.status(200).json({

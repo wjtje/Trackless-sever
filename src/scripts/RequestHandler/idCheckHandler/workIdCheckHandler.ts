@@ -7,22 +7,22 @@ import ServerError from '../serverErrorInterface'
 
 export default () => {
   return (request: Request, response: Response, next: NextFunction) => {
-    // Check if the workId is a number
-    if (isNaN(Number(request.params.workId))) {
-      // workId is not correct.
-      const error: ServerError = new Error('The workId is not a number')
+    // Check if the workID is a number
+    if (isNaN(Number(request.params.workID))) {
+      // workID is not correct.
+      const error: ServerError = new Error('The workID is not a number')
       error.status = 400
       error.code = 'trackless.checkId.NaN'
       next(error)
     } else {
       // Get the infomation from the database
       DBcon.query(
-        'SELECT * FROM `TL_work` WHERE `workId`=?',
-        [request.params.workId],
+        'SELECT * FROM `TL_work` WHERE `workID`=?',
+        [request.params.workID],
         handleQuery(next, (result) => {
           if (result.length === 0) {
             // Group does not exsist
-            const error: ServerError = new Error('The workId does not exsist')
+            const error: ServerError = new Error('The workID does not exsist')
             error.status = 404
             error.code = 'trackless.checkId.notFound'
             next(error)

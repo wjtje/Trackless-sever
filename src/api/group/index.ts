@@ -8,7 +8,7 @@ import { TLgroups } from './interface'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT } from '../../scripts/types'
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
-import groupIdRoute from './groupId'
+import groupIDRoute from './groupID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 
 const router = express.Router()
@@ -18,7 +18,7 @@ router.get(
   '/',
   authHandler('trackless.group.readAll'),
   sortHandler([
-    'groupId',
+    'groupID',
     'groupName'
   ]),
   (request, response, next) => {
@@ -27,7 +27,7 @@ router.get(
       'SELECT * FROM `TL_groups` ORDER BY `groupname`' + String(response.locals.sort || ''),
       handleQuery(next, (result: Array<TLgroups>) => {
         const rslt:{
-          groupId: number;
+          groupID: number;
           groupName: string;
           users: object;
         }[] = [] // Result
@@ -36,12 +36,12 @@ router.get(
         Promise.all(result.map((group) => {
           return new Promise((resolve) => {
             DBcon.query(
-              'SELECT `userId`, `firstname`, `lastname`, `username`, `groupId`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupId`) WHERE `groupId`=? ORDER BY `firstname`, `lastname`, `username`',
-              [group.groupId],
+              'SELECT `userID`, `firstname`, `lastname`, `username`, `groupID`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupID`) WHERE `groupID`=? ORDER BY `firstname`, `lastname`, `username`',
+              [group.groupID],
               handleQuery(next, (result) => {
                 // Push the result to the response array
                 rslt.push({
-                  groupId: group.groupId,
+                  groupID: group.groupID,
                   groupName: group.groupName,
                   users: result
                 })
@@ -74,15 +74,15 @@ router.post(
       handleQuery(next, (result) => {
         // Saved into the database
         response.status(201).json({
-          groupId: result.insertId
+          groupID: result.insertId
         })
       })
     )
   }
 )
 
-// Import groupId routes
-router.use('/', groupIdRoute)
+// Import groupID routes
+router.use('/', groupIDRoute)
 
 router.use(unusedRequestTypes())
 

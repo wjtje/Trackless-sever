@@ -7,18 +7,18 @@ import ServerError from '../serverErrorInterface'
 
 export default () => {
   return (request: Request, response: Response, next: NextFunction) => {
-    // Check if the userId is a number
-    if (isNaN(Number(request.params.userId)) && request.params.userId !== '~') {
-      // userId is not correct.
-      const error: ServerError = new Error('The userId is not a number')
+    // Check if the userID is a number
+    if (isNaN(Number(request.params.userID)) && request.params.userID !== '~') {
+      // userID is not correct.
+      const error: ServerError = new Error('The userID is not a number')
       error.status = 400
       error.code = 'trackless.checkId.NaN'
       next(error)
     } else {
       // Get the infomation from the database
       DBcon.query(
-        'SELECT * FROM `TL_users` WHERE `userId`=?',
-        [(request.params.userId === '~') ? request.user?.userId : request.params.userId],
+        'SELECT * FROM `TL_users` WHERE `userID`=?',
+        [(request.params.userID === '~') ? request.user?.userID : request.params.userID],
         handleQuery(next, (result) => {
           if (result.length === 0) {
             // Group does not exsist

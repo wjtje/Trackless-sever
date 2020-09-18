@@ -11,16 +11,16 @@ import { get as _get } from 'lodash'
  * @param apiKey
  */
 export function apiLogin (apiKey:string):Promise<{
-  userId: number;
+  userID: number;
   username: string;
   firstname: string;
   lastname: string;
-  groupId: number;
+  groupID: number;
 }> {
   return new Promise((resolve, reject) => {
     // Check the api key
     DBcon.query(
-      'SELECT `userId`, `username`, `firstname`, `lastname`, `groupId` FROM `TL_apikeys` INNER JOIN `TL_users` USING (`userId`) WHERE apiKey=?',
+      'SELECT `userID`, `username`, `firstname`, `lastname`, `groupID` FROM `TL_apikeys` INNER JOIN `TL_users` USING (`userID`) WHERE apiKey=?',
       [sha512(apiKey)],
       (error, result) => {
         if (error || result.length === 0) { // An sql error or invalid api key

@@ -1,7 +1,7 @@
 {
   "openapi" : "3.0.0",
   "info" : {
-    "version" : "0.4.3",
+    "version" : "0.4.4",
     "title" : "Trackless API",
     "contact" : {
       "name" : "wjtje",
@@ -827,7 +827,7 @@
                   "properties" : {
                     "version" : {
                       "type" : "string",
-                      "example" : "0.4-beta.3"
+                      "example" : "0.4-beta.4"
                     }
                   }
                 }
@@ -1571,6 +1571,23 @@
             "type" : "string"
           },
           "id" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Setting" : {
+        "type" : "object",
+        "properties" : {
+          "settingsId" : {
+            "type" : "integer"
+          },
+          "groupId" : {
+            "type" : "integer"
+          },
+          "setting" : {
+            "type" : "string"
+          },
+          "value" : {
             "type" : "string"
           }
         }

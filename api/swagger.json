@@ -153,6 +153,7 @@
       "get" : {
         "tags" : [ "access" ],
         "summary" : "See where a group has access to",
+        "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
           "name" : "groupId",
@@ -467,10 +468,165 @@
         } ]
       }
     },
+    "/group/{groupId}/user" : {
+      "get" : {
+        "tags" : [ "group" ],
+        "summary" : "List all the users in a group",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "groupId",
+          "description" : "The ID of a group",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Group not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "group" ],
+        "summary" : "Add a user to a group",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "groupId",
+          "description" : "The ID of a group",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "userId" : {
+                    "type" : "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "400" : {
+            "description" : "Invalid ID"
+          },
+          "404" : {
+            "description" : "Group or user not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/group/{groupId}/access" : {
+      "get" : {
+        "tags" : [ "group" ],
+        "summary" : "List all access of a group",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "groupId",
+          "description" : "The ID of a group",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Access"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Group not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "group" ],
+        "summary" : "Gives a group acces to a command",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "groupId",
+          "description" : "The ID of a group",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "access" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "400" : {
+            "description" : "Invalid ID"
+          },
+          "404" : {
+            "description" : "Group or user not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
     "/group/{groupId}/add/{userId}" : {
       "post" : {
         "tags" : [ "group" ],
         "summary" : "Add a user to a group",
+        "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
           "name" : "groupId",
@@ -699,6 +855,7 @@
       "get" : {
         "tags" : [ "location" ],
         "summary" : "Get the last used location",
+        "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
           "name" : "userId",
@@ -735,6 +892,7 @@
       "get" : {
         "tags" : [ "location" ],
         "summary" : "Get the most used location",
+        "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
           "name" : "userId",
@@ -1041,6 +1199,46 @@
         "description" : "You can use an '~' as a userId to list your own account.\nYou don't need to edit every thing at once."
       }
     },
+    "/user/{userId}/access" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "Get all the access infomation for a user",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "userId",
+          "description" : "ID of the user",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Access"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Something is wrong with your input"
+          },
+          "404" : {
+            "description" : "The user is not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ],
+        "description" : "You can use an '~' as a userId to list your own account."
+      }
+    },
     "/work" : {
       "post" : {
         "tags" : [ "work" ],
@@ -1097,6 +1295,7 @@
       "get" : {
         "tags" : [ "work" ],
         "summary" : "Get all the work from a user",
+        "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
           "name" : "userId",
@@ -1136,6 +1335,7 @@
       "get" : {
         "tags" : [ "work" ],
         "summary" : "Get all the work from a user",
+        "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
           "name" : "userId",
@@ -1191,6 +1391,7 @@
       "get" : {
         "tags" : [ "work" ],
         "summary" : "Get a single work object",
+        "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
           "name" : "userId",
@@ -1236,6 +1437,7 @@
       "delete" : {
         "tags" : [ "work" ],
         "summary" : "Remove a single work object",
+        "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
           "name" : "userId",
@@ -1271,6 +1473,7 @@
       "patch" : {
         "tags" : [ "work" ],
         "summary" : "Edit a single work object",
+        "deprecated" : true,
         "parameters" : [ {
           "in" : "path",
           "name" : "userId",

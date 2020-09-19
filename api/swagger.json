@@ -16,14 +16,14 @@
     "/access" : {
       "get" : {
         "tags" : [ "access" ],
-        "summary" : "See where you have access to",
+        "summary" : "List all the access rules on the server",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
           "schema" : {
             "type" : "string"
           },
-          "description" : "Option to sort result by propertie"
+          "description" : "Option to sort result by property"
         } ],
         "responses" : {
           "200" : {
@@ -33,7 +33,16 @@
                 "schema" : {
                   "type" : "array",
                   "items" : {
-                    "$ref" : "#/components/schemas/Access"
+                    "allOf" : [ {
+                      "type" : "object",
+                      "properties" : {
+                        "groupID" : {
+                          "type" : "integer"
+                        }
+                      }
+                    }, {
+                      "$ref" : "#/components/schemas/Access"
+                    } ]
                   }
                 }
               }
@@ -110,7 +119,16 @@
                 "schema" : {
                   "type" : "array",
                   "items" : {
-                    "$ref" : "#/components/schemas/Access"
+                    "allOf" : [ {
+                      "type" : "object",
+                      "properties" : {
+                        "groupID" : {
+                          "type" : "integer"
+                        }
+                      }
+                    }, {
+                      "$ref" : "#/components/schemas/Access"
+                    } ]
                   }
                 }
               }
@@ -352,18 +370,18 @@
       }
     },
     "/group/{groupID}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "groupID",
+        "description" : "ID of the group to return",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
       "get" : {
         "tags" : [ "group" ],
         "summary" : "Get infomation about a single group",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "groupID",
-          "description" : "ID of the group to return",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
         "responses" : {
           "200" : {
             "description" : "Successful operation",
@@ -390,15 +408,6 @@
         "tags" : [ "group" ],
         "summary" : "Removes a single group from the server",
         "description" : "All the user is that group will be moved to group 0 (default). And all access rules for that group will be lost.",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "groupID",
-          "description" : "ID of the group to remove",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
         "responses" : {
           "200" : {
             "description" : "Successful operation"
@@ -417,15 +426,6 @@
       "patch" : {
         "tags" : [ "group" ],
         "summary" : "Edits a group name",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "groupID",
-          "description" : "ID of the group to edit",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -454,17 +454,25 @@
       }
     },
     "/group/{groupID}/user" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "groupID",
+        "description" : "The ID of a group",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
       "get" : {
         "tags" : [ "group", "user" ],
         "summary" : "List all the users in a group",
         "parameters" : [ {
-          "in" : "path",
-          "name" : "groupID",
-          "description" : "The ID of a group",
-          "required" : true,
+          "in" : "query",
+          "name" : "sort",
           "schema" : {
-            "type" : "integer"
-          }
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
         } ],
         "responses" : {
           "200" : {
@@ -491,15 +499,6 @@
       "post" : {
         "tags" : [ "group", "user" ],
         "summary" : "Add a user to a group",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "groupID",
-          "description" : "The ID of a group",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -528,17 +527,25 @@
       }
     },
     "/group/{groupID}/access" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "groupID",
+        "description" : "The ID of a group",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
       "get" : {
         "tags" : [ "group", "access" ],
         "summary" : "List all access of a group",
         "parameters" : [ {
-          "in" : "path",
-          "name" : "groupID",
-          "description" : "The ID of a group",
-          "required" : true,
+          "in" : "query",
+          "name" : "sort",
           "schema" : {
-            "type" : "integer"
-          }
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
         } ],
         "responses" : {
           "200" : {
@@ -564,16 +571,7 @@
       },
       "post" : {
         "tags" : [ "group", "access" ],
-        "summary" : "Gives a group acces to a command",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "groupID",
-          "description" : "The ID of a group",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
+        "summary" : "Gives a group access to a command",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -720,18 +718,18 @@
       }
     },
     "/location/{locationID}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "locationID",
+        "description" : "ID of the location",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
       "get" : {
         "tags" : [ "location" ],
         "summary" : "Get infomation about a single location",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "locationID",
-          "description" : "ID of the location",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
         "responses" : {
           "200" : {
             "description" : "Successful operation",
@@ -758,15 +756,6 @@
         "tags" : [ "location" ],
         "summary" : "Remove a single location",
         "description" : "All work that was using this location will be using locationID 0 (Deleted location).",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "locationID",
-          "description" : "ID of the location",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
         "responses" : {
           "200" : {
             "description" : "Successful operation"
@@ -785,15 +774,6 @@
       "patch" : {
         "tags" : [ "location" ],
         "summary" : "Edit a location",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "locationID",
-          "description" : "ID of the location",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -1057,18 +1037,18 @@
       }
     },
     "/user/{userID}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "userID",
+        "description" : "ID of the user",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
       "get" : {
         "tags" : [ "user" ],
         "summary" : "Get infomation about a single user",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "userID",
-          "description" : "ID of the user",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
         "responses" : {
           "200" : {
             "description" : "Successful operation",
@@ -1095,15 +1075,6 @@
       "delete" : {
         "tags" : [ "user" ],
         "summary" : "Remove a single user",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "userID",
-          "description" : "ID of the user",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
         "responses" : {
           "200" : {
             "description" : "Successful operation"
@@ -1120,15 +1091,6 @@
       "patch" : {
         "tags" : [ "user" ],
         "summary" : "Change a users info",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "userID",
-          "description" : "ID of the user",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -1167,17 +1129,25 @@
       }
     },
     "/user/{userID}/access" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "userID",
+        "description" : "ID of the user",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
       "get" : {
         "tags" : [ "access", "user" ],
         "summary" : "Get all the access infomation for a user",
         "parameters" : [ {
-          "in" : "path",
-          "name" : "userID",
-          "description" : "ID of the user",
-          "required" : true,
+          "in" : "query",
+          "name" : "sort",
           "schema" : {
-            "type" : "integer"
-          }
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
         } ],
         "responses" : {
           "200" : {
@@ -1204,17 +1174,25 @@
       }
     },
     "/user/{userID}/work" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "userID",
+        "description" : "The id of the user",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
       "get" : {
         "tags" : [ "user", "work" ],
         "summary" : "Get all the work from an user",
         "parameters" : [ {
-          "in" : "path",
-          "name" : "userID",
-          "description" : "The id of the user",
-          "required" : true,
+          "in" : "query",
+          "name" : "sort",
           "schema" : {
-            "type" : "integer"
-          }
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
         } ],
         "responses" : {
           "200" : {
@@ -1241,15 +1219,6 @@
       "post" : {
         "tags" : [ "user", "work" ],
         "summary" : "Save your work as a user on the server",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "userID",
-          "description" : "The id of the user",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -1299,6 +1268,103 @@
         "security" : [ {
           "bearer_token" : [ ]
         } ]
+      }
+    },
+    "/user/{userID}/work/{workID}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "userID",
+        "required" : true,
+        "description" : "The user ID",
+        "schema" : {
+          "type" : "integer"
+        }
+      }, {
+        "in" : "path",
+        "name" : "workID",
+        "required" : true,
+        "description" : "The work ID",
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "user", "work" ],
+        "summary" : "Get a single work object that belongs to a user",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Work"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "user", "work" ],
+        "summary" : "Remove a single work object that belongs to a user",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "user", "work" ],
+        "summary" : "Change info for a work object",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "locationID" : {
+                    "type" : "integer"
+                  },
+                  "worktypeID" : {
+                    "type" : "integer"
+                  },
+                  "date" : {
+                    "type" : "string"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  },
+                  "time" : {
+                    "type" : "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
       }
     },
     "/work" : {
@@ -1657,18 +1723,18 @@
       }
     },
     "/worktype/{worktypeID}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "worktypeID",
+        "description" : "ID of the worktype",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
       "get" : {
         "tags" : [ "worktype" ],
         "summary" : "Get infomation about a single worktype",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "worktypeID",
-          "description" : "ID of the worktype",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
         "responses" : {
           "200" : {
             "description" : "Successful operation",
@@ -1694,15 +1760,6 @@
       "delete" : {
         "tags" : [ "worktype" ],
         "summary" : "Remove a single worktype",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "worktypeID",
-          "description" : "ID of the worktype",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
         "responses" : {
           "200" : {
             "description" : "Successful operation"
@@ -1718,15 +1775,6 @@
       "patch" : {
         "tags" : [ "worktype" ],
         "summary" : "Change the info of a worktype",
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "worktypeID",
-          "description" : "ID of the user",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
         "requestBody" : {
           "content" : {
             "application/json" : {

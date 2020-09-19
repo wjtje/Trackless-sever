@@ -9,24 +9,16 @@ Use todo+ to see inline todo's
  - A better way to create all the tabels (On first launch)
  - A way to only allow some device. (example: The admin says that you can only have 2 devices at once)
  - /work/user/:userId (DELETE) will not respond anything
- - A way to sort on multiple properties
+ - A way to sort on multiple properties and limit / offset support
  - Give the api better description including the required access
- - Add more tags
- - Replace Id with ID
 
 ## Now
 
  - Remove all deprecated (v0.4.5)
+ - Check if sort is working
 
 ### Desing
 
- - /user/{userId}/work:
-    - POST
-    - GET
- - /user/{userId}/work/{workId}:
-    - GET
-    - PATCH
-    - DELETE
  - /user/{userId}/work/date/{start}/{end}:
     - GET
 
@@ -37,12 +29,26 @@ Use todo+ to see inline todo's
 
  - /work:
     - GET
-    - POST
  - /work/{workId}:
     - GET
     - PATCH
     - DELETE
  - /work/date/{start}/{end}:
+    - GET
+
+ - /setting:
+    - GET
+    - POST
+ - /setting/{settingID}:
+    - GET
+    - PATCH
+    - DELETE
+
+ - /group/setting:
+    - GET
+    - POST
+
+ - /user/setting:
     - GET
 
 ### Code
@@ -80,4 +86,19 @@ Use todo+ to see inline todo's
     - PATCH
     - DELETE
  - /work/date/{start}/{end}:
+    - GET
+
+ - /setting:
+    - GET
+    - POST
+ - /setting/{settingID}:
+    - GET
+    - PATCH
+    - DELETE
+
+ - /group/setting:
+    - GET
+    - POST
+
+ - /user/setting:
     - GET

@@ -5,13 +5,15 @@ import { DBcon } from '../../..'
 import { handleQuery } from '../../handle'
 import ServerError from '../serverErrorInterface'
 
-export default () => {
+export default (groupIDfunc?: (request: Request) => number) => {
   return (request: Request, response: Response, next: NextFunction) => {
+    const groupID = (groupIDfunc == null) ? request.params.groupID : groupIDfunc(request)
+
     // Check if the groupID is a number
-    if (request.params.groupID === '~') {
+    if (groupID === '~') {
       // You can allways list your own group
       next()
-    } else if (isNaN(Number(request.params.groupID))) {
+    } else if (isNaN(Number(groupID))) {
       // groupID is not correct.
       const error: ServerError = new Error('The groupID is not a number')
       error.status = 400
@@ -19,7 +21,7 @@ export default () => {
       next(error)
     } else {
       // Get the infomation from the database
-      DBcon.query('SELECT * FROM `TL_groups` WHERE `groupID`=?', [request.params.groupID], handleQuery(next, (result) => {
+      DBcon.query('SELECT * FROM `TL_groups` WHERE `groupID`=?', [groupID], handleQuery(next, (result) => {
         if (result.length === 0) {
           // Group does not exsist
           const error: ServerError = new Error('The group does not exsist')

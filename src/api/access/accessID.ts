@@ -11,12 +11,12 @@ const router = express.Router()
 
 router.get(
   '/:accessID',
-  authHandler('trackless.access.read'),
+  authHandler('trackless.access.readAll'),
   accessIDCheckHandler(),
   (request, response, next) => {
     // Get the data from the server
     DBcon.query(
-      'SELECT `accessID`, `access` FROM `TL_access` WHERE `accessID`=?',
+      'SELECT `accessID`, `access`, `groupID` FROM `TL_access` WHERE `accessID`=?',
       [request.params?.accessID],
       handleQuery(next, (result) => {
         response.status(200).json(result)

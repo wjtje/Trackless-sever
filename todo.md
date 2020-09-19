@@ -15,7 +15,6 @@ Use todo+ to see inline todo's
 ## Now
 
  - Remove all deprecated (v0.4.5)
- - Check if sort is working
 
 ### Desing
 
@@ -54,7 +53,6 @@ Use todo+ to see inline todo's
 ### Code
 
  - /group/{groupId}/user:
-    - GET
     - POST
  - /group/{groupId}/access:
     - GET

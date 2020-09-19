@@ -4,6 +4,7 @@
  - Created a new settingsHandler for importing the settings for the user
  - New setting `workLateDays`: how any days late you can enter or edit work
  - New `access.md` file for checking what access you need
+ - Added a lot of new commands
 
 # Changed in this version
 

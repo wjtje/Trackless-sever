@@ -24,14 +24,11 @@
 
  - DELETE: /api/{apiID}
 
-## trackless.group.readAll
+## trackless.group.read
 
  - GET: /group
  - GET: /group/{groupID}
-
-## trackless.group.readOwn
-
- - GET: /group/~
+ - GET: /group/{groupID}/user
 
 ## trackless.group.create
 

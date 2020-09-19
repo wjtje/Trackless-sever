@@ -10,13 +10,14 @@ import { mysqlTEXT } from '../../scripts/types'
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 import groupIDRoute from './groupID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
+import userRoute from './user'
 
 const router = express.Router()
 
 // Return all the groups
 router.get(
   '/',
-  authHandler('trackless.group.readAll'),
+  authHandler('trackless.group.read'),
   sortHandler([
     'groupID',
     'groupName'
@@ -81,8 +82,9 @@ router.post(
   }
 )
 
-// Import groupID routes
+// Import other group routes
 router.use('/', groupIDRoute)
+router.use('/', userRoute)
 
 router.use(unusedRequestTypes())
 

@@ -1,7 +1,6 @@
 // Copyright (c) 2020 Wouter van der Wal
 
 import express from 'express'
-import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 import authHandler from '../../scripts/RequestHandler/authHandler'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
@@ -16,7 +15,7 @@ const router = express.Router()
 // Return a single group
 router.get(
   '/:groupID',
-  authHandler('trackless.group.readAll'),
+  authHandler('trackless.group.read'),
   groupIDCheckHandler(),
   (request, response, next) => {
     // groupID is valid return the info
@@ -113,7 +112,5 @@ router.post(
     )
   }
 )
-
-router.use(unusedRequestTypes())
 
 export default router

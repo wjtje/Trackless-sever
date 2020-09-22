@@ -23,7 +23,7 @@ router.get(
   (request, response, next) => {
     // Get all the api keys from the server
     DBcon.query(
-      'SELECT `apiID`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `userID`=?' + String(response.locals.sort || ''),
+      'SELECT `apiID`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `userID`=?' + String(request.querySort || ''),
       [request.user?.userID],
       handleQuery(next, (result) => {
         // Send the data back to the user

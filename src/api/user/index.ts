@@ -11,6 +11,7 @@ import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT, mysqlINT } from '../../scripts/types'
 import userIDRouter from './userID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
+import workRoute from './work'
 
 const router = express.Router()
 
@@ -29,7 +30,7 @@ router.get(
   (request, response, next) => {
     // Send the request
     DBcon.query(
-      'SELECT `userID`, `firstname`, `lastname`, `username`, `groupID`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupID`) ' + String((response.locals.sort || ' ORDER BY `firstname`, `lastname`, `username`')),
+      'SELECT `userID`, `firstname`, `lastname`, `username`, `groupID`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupID`) ' + String((request.querySort || ' ORDER BY `firstname`, `lastname`, `username`')),
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })
@@ -89,6 +90,7 @@ router.post(
 )
 
 router.use(userIDRouter)
+router.use(workRoute)
 
 router.use(unusedRequestTypes())
 

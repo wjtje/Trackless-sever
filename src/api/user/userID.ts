@@ -1,7 +1,6 @@
 // Copyright (c) 2020 Wouter van der Wal
 
 import express from 'express'
-import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 import authHandler from '../../scripts/RequestHandler/authHandler'
 import userIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIDCheckHandler'
 import { DBcon } from '../..'
@@ -128,7 +127,5 @@ router.patch(
     }
   )
 )
-
-router.use(unusedRequestTypes())
 
 export default router

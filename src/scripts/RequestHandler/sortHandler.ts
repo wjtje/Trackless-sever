@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from 'express'
 import ServerError from './serverErrorInterface'
 
 /**
- * Checks if the request.query.sort is valid
+ * Checks if the request.query.sort is valid and will save the result in request.querySort
  *
  * @since 0.4-beta.3
  */

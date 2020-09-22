@@ -11,6 +11,7 @@
  - groupId 0 doesnt exist any longer exsist
  - Id -> ID (It has been done)
  - changes /access
+ - Changed the way sortHandler saves the request
 
 # Things that are fixed
 

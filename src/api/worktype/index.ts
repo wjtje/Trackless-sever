@@ -23,7 +23,7 @@ router.get(
   (request, response, next) => {
     // Send the request
     DBcon.query(
-      'SELECT `worktypeID`, `name` FROM `TL_worktype` ' + String((response.locals.sort || ' ORDER BY `name`')),
+      'SELECT `worktypeID`, `name` FROM `TL_worktype` ' + String((request.querySort || ' ORDER BY `name`')),
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })

@@ -1,106 +1,137 @@
 # List of access codes
 
-## trackless.access.readAll
+## Access
+
+### trackless.access.readAll
 
  - GET: /access
  - GET: /access/{accessID}
 
-## trackless.access.readOwn
+### trackless.access.readOwn
 
-## trackless.access.create
+### trackless.access.create
 
  - POST: /access
 
-## trackless.access.remove
+### trackless.access.remove
 
  - DELETE: /access/{accessID}
 
-## trackless.api.read
+## Api
+
+### trackless.api.read
 
  - GET: /api
  - GET: /api/{apiID}
 
-## trackless.api.remove
+### trackless.api.remove
 
  - DELETE: /api/{apiID}
 
-## trackless.group.read
+## Group
+
+### trackless.group.read
 
  - GET: /group
  - GET: /group/{groupID}
  - GET: /group/{groupID}/user
 
-## trackless.group.create
+### trackless.group.create
 
  - POST: /group
 
-## trackless.group.remove
+### trackless.group.remove
 
  - DELETE: /group/{groupID}
 
-## trackless.group.edit
+### trackless.group.edit
 
  - PATCH: /group/{groupID}
 
-## trackless.location.read
+### trackless.group.add
+
+ - POST: /group/{groupID}/user
+
+## Location
+
+### trackless.location.read
 
  - GET: /location
  - GET: /location/{locationID}
 
-## trackless.location.create
+### trackless.location.create
 
  - POST: /location
 
-## trackless.location.remove
+### trackless.location.remove
 
  - DELETE: /location/{locationID}
 
-## trackless.location.edit
+### trackless.location.edit
 
  - PATCH: /location/{locationID}
 
-## trackless.user.readAll
+## User
+
+### trackless.user.readAll
 
  - GET: /user
  - GET: /user/{userID}
 
-## trackless.user.readOwn
+### trackless.user.readOwn
 
  - GET: /user/~
 
-## trackless.user.create
+### trackless.user.create
 
  - POST: /user
 
-## trackless.user.remove
+### trackless.user.remove
 
  - DELETE: /user/{userID}
 
-## trackless.user.editAll
+### trackless.user.editAll
 
  - PATCH: /user/{userID}
 
-## trackless.user.editOwn
+### trackless.user.editOwn
 
  - PATCH: /user/~
 
-# trackless.work.create
+## Work
 
+### trackless.work.readAll
+
+ - GET: /user/{userId}/work
+
+### trackless.work.readOwn
+
+ - GET: /user/~/work
+
+### trackless.work.createOwn
+
+ - POST: /user/~/work
+
+### trackless.work.createAll
+
+ - POST: /user/{userID}/work
  - POST: /work
 
-# trackless.worktype.read
+## Worktype
+
+### trackless.worktype.read
 
  - GET: /worktype
  - GET: /worktype/{worktypeID}
 
-# trackless.worktype.create
+### trackless.worktype.create
 
  - POST: /worktype
 
-# trackless.worktype.remove
+### trackless.worktype.remove
 
  - DELETE: /worktype/{worktypeID}
 
-# trackless.worktype.edit
+### trackless.worktype.edit
 
  - PATCH: /worktype/{worktypeID}

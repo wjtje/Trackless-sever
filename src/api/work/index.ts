@@ -16,10 +16,11 @@ const router = express.Router()
 
 router.post(
   '/',
-  authHandler('trackless.work.create'),
+  authHandler('trackless.work.createAll'),
   requireHandler([
     { name: 'locationID', check: mysqlINT },
     { name: 'worktypeID', check: mysqlINT },
+    { name: 'userID', check: mysqlINT },
     { name: 'time', check: mysqlINT },
     { name: 'date', check: mysqlDATE },
     { name: 'description', check: mysqlTEXT }
@@ -31,7 +32,7 @@ router.post(
       DBcon.query(
         'INSERT INTO `TL_work` (`userID`, `locationID`, `worktypeID`, `time`, `date`, `description`) VALUES (?,?,?,?,?,?)',
         [
-          request.user?.userID,
+          request.body.userID,
           request.body.locationID,
           request.body.worktypeID,
           request.body.time,

@@ -18,12 +18,7 @@ Use todo+ to see inline todo's
 
 ### Desing
 
- - /user/{userId}/work/date/{start}/{end}:
-    - GET
-
- - /user/{userId}/location/last:
-    - GET
- - /user/{userId}/location/most:
+ - /user/{userId}/location:
     - GET
 
  - /work:
@@ -32,8 +27,6 @@ Use todo+ to see inline todo's
     - GET
     - PATCH
     - DELETE
- - /work/date/{start}/{end}:
-    - GET
 
  - /setting:
     - GET
@@ -52,8 +45,6 @@ Use todo+ to see inline todo's
 
 ### Code
 
- - /group/{groupId}/user:
-    - POST
  - /group/{groupId}/access:
     - GET
     - POST
@@ -63,17 +54,12 @@ Use todo+ to see inline todo's
 
  - /user/{userId}/work:
     - POST
-    - GET
  - /user/{userId}/work/{workId}:
     - GET
     - PATCH
     - DELETE
- - /user/{userId}/work/date/{start}/{end}:
-    - GET
 
- - /user/{userId}/location/last:
-    - GET
- - /user/{userId}/location/most:
+ - /user/{userId}/location:
     - GET
 
  - /work:
@@ -83,8 +69,6 @@ Use todo+ to see inline todo's
     - GET
     - PATCH
     - DELETE
- - /work/date/{start}/{end}:
-    - GET
 
  - /setting:
     - GET

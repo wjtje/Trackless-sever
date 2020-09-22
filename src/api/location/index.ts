@@ -25,7 +25,7 @@ router.get(
   ]),
   (request, response, next) => {
     DBcon.query(
-      `SELECT * FROM \`TL_locations\` WHERE \`locationID\`!=0 ${(request.query.hidden == null) ? 'AND `hidden`=0' : ''} ${String(response.locals.sort || 'ORDER BY `place`, `name`')}`,
+      `SELECT * FROM \`TL_locations\` WHERE \`locationID\`!=0 ${(request.query.hidden == null) ? 'AND `hidden`=0' : ''} ${String(request.querySort || 'ORDER BY `place`, `name`')}`,
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })

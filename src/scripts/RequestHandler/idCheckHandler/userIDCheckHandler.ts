@@ -5,10 +5,12 @@ import { DBcon } from '../../..'
 import { handleQuery } from '../../handle'
 import ServerError from '../serverErrorInterface'
 
-export default () => {
+export default (userIDfunc?: (request: Request) => number | string) => {
   return (request: Request, response: Response, next: NextFunction) => {
+    const userID = (userIDfunc == null) ? request.params.userID : userIDfunc(request)
+
     // Check if the userID is a number
-    if (isNaN(Number(request.params.userID)) && request.params.userID !== '~') {
+    if (isNaN(Number(userID)) && userID !== '~') {
       // userID is not correct.
       const error: ServerError = new Error('The userID is not a number')
       error.status = 400
@@ -18,7 +20,7 @@ export default () => {
       // Get the infomation from the database
       DBcon.query(
         'SELECT * FROM `TL_users` WHERE `userID`=?',
-        [(request.params.userID === '~') ? request.user?.userID : request.params.userID],
+        [(userID === '~') ? request.user?.userID : userID],
         handleQuery(next, (result) => {
           if (result.length === 0) {
             // Group does not exsist

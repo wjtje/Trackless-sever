@@ -1173,6 +1173,53 @@
         "description" : "You can use an '~' as a userID to list your own account."
       }
     },
+    "/user/{userID}/location" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "userID",
+        "description" : "ID of the user",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "location", "user" ],
+        "summary" : "Get location infomation about the user. Last used and most used",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "last" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/Location"
+                      }
+                    },
+                    "most" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/Location"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
     "/user/{userID}/work" : {
       "parameters" : [ {
         "in" : "path",
@@ -1378,10 +1425,57 @@
           "404" : {
             "description" : "Not found"
           }
-        }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
       }
     },
     "/work" : {
+      "get" : {
+        "tags" : [ "work" ],
+        "summary" : "Get the work from all the users",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "startDate",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Only show work after ..."
+        }, {
+          "in" : "query",
+          "name" : "endDate",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Only show work bevore ..."
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Work"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
       "post" : {
         "tags" : [ "work" ],
         "summary" : "Save your work on the server",
@@ -1432,6 +1526,98 @@
           },
           "400" : {
             "description" : "Bad request"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/work/{workID}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "workID",
+        "required" : true,
+        "description" : "The work ID",
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "work" ],
+        "summary" : "Get a single work object",
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Work"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "work" ],
+        "summary" : "Remove a single work object",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "work" ],
+        "summary" : "Change info for a work object",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "locationID" : {
+                    "type" : "integer"
+                  },
+                  "worktypeID" : {
+                    "type" : "integer"
+                  },
+                  "date" : {
+                    "type" : "string"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  },
+                  "time" : {
+                    "type" : "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
           }
         },
         "security" : [ {

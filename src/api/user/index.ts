@@ -12,6 +12,7 @@ import { mysqlTEXT, mysqlINT } from '../../scripts/types'
 import userIDRouter from './userID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import workRoute from './work'
+import workIDRoute from './workID'
 
 const router = express.Router()
 
@@ -91,6 +92,7 @@ router.post(
 
 router.use(userIDRouter)
 router.use(workRoute)
+router.use(workIDRoute)
 
 router.use(unusedRequestTypes())
 

@@ -11,22 +11,13 @@ Use todo+ to see inline todo's
  - /work/user/:userId (DELETE) will not respond anything
  - A way to sort on multiple properties and limit / offset support
  - Give the api better description including the required access
+ - A better way to connect to the database
 
 ## Now
 
  - Remove all deprecated (v0.4.5)
 
 ### Desing
-
- - /user/{userId}/location:
-    - GET
-
- - /work:
-    - GET
- - /work/{workId}:
-    - GET
-    - PATCH
-    - DELETE
 
  - /setting:
     - GET
@@ -52,10 +43,7 @@ Use todo+ to see inline todo's
  - /user/{userId}/access:
     - GET
 
- - /user/{userId}/work:
-    - POST
  - /user/{userId}/work/{workId}:
-    - GET
     - PATCH
     - DELETE
 
@@ -64,7 +52,6 @@ Use todo+ to see inline todo's
 
  - /work:
     - GET
-    - POST
  - /work/{workId}:
     - GET
     - PATCH

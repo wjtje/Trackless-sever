@@ -103,10 +103,12 @@
 ### trackless.work.readAll
 
  - GET: /user/{userId}/work
+ - GET: /user/{userId}/work/{workID}
 
 ### trackless.work.readOwn
 
  - GET: /user/~/work
+ - GET: /user/~/work/{workID}
 
 ### trackless.work.createOwn
 

@@ -42,11 +42,11 @@ router.get(
     let sort = ''
 
     if (moment(String(request.query.startDate), 'YYYY-MM-DD').isValid()) {
-      sort += ` AND \`date\` >= '${request.query.startDate}' `
+      sort += ` AND \`date\` >= '${moment(String(request.query.startDate), 'YYYY-MM-DD').format('YYYY-MM-DD')}' `
     }
 
     if (moment(String(request.query.endDate), 'YYYY-MM-DD').isValid()) {
-      sort += ` AND \`date\` <= '${request.query.endDate}' `
+      sort += ` AND \`date\` <= '${moment(String(request.query.startDate), 'YYYY-MM-DD').format('YYYY-MM-DD')}' `
     }
 
     // Get all the work for that user

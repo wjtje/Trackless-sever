@@ -514,7 +514,7 @@
           }
         },
         "responses" : {
-          "200" : {
+          "201" : {
             "description" : "Successful operation"
           },
           "404" : {
@@ -587,7 +587,7 @@
           }
         },
         "responses" : {
-          "200" : {
+          "201" : {
             "description" : "Successful operation"
           },
           "404" : {
@@ -1193,6 +1193,20 @@
             "type" : "string"
           },
           "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "startDate",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Only show work after ..."
+        }, {
+          "in" : "query",
+          "name" : "endDate",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Only show work bevore ..."
         } ],
         "responses" : {
           "200" : {
@@ -1262,7 +1276,7 @@
             }
           },
           "400" : {
-            "description" : "your input values are wrong"
+            "description" : "Bad request"
           }
         },
         "security" : [ {
@@ -1292,7 +1306,7 @@
         "tags" : [ "user", "work" ],
         "summary" : "Get a single work object that belongs to a user",
         "responses" : {
-          "200" : {
+          "201" : {
             "description" : "Successful operation",
             "content" : {
               "application/json" : {
@@ -1417,7 +1431,7 @@
             }
           },
           "400" : {
-            "description" : "your input values are wrong"
+            "description" : "Bad request"
           }
         },
         "security" : [ {

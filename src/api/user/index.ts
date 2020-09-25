@@ -13,6 +13,7 @@ import userIDRouter from './userID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import workRoute from './work'
 import workIDRoute from './workID'
+import accessRoute from './access'
 
 const router = express.Router()
 
@@ -93,6 +94,7 @@ router.post(
 router.use(userIDRouter)
 router.use(workRoute)
 router.use(workIDRoute)
+router.use(accessRoute)
 
 router.use(unusedRequestTypes())
 

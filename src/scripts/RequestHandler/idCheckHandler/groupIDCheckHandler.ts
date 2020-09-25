@@ -9,11 +9,7 @@ export default (groupIDfunc?: (request: Request) => number) => {
   return (request: Request, response: Response, next: NextFunction) => {
     const groupID = (groupIDfunc == null) ? request.params.groupID : groupIDfunc(request)
 
-    // Check if the groupID is a number
-    if (groupID === '~') {
-      // You can allways list your own group
-      next()
-    } else if (isNaN(Number(groupID))) {
+    if (isNaN(Number(groupID))) {
       // groupID is not correct.
       const error: ServerError = new Error('The groupID is not a number')
       error.status = 400

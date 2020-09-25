@@ -15,6 +15,10 @@
 
 # Things that are fixed
 
+# Things that are removed
+
+ - You can not use ~ to list your own group
+
 # SQL changes
 
 ```sql

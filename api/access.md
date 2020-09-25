@@ -6,12 +6,17 @@
 
  - GET: /access
  - GET: /access/{accessID}
+ - GET: /group/{groupID}/access
+ - GET: /user/{userID}/access
 
 ### trackless.access.readOwn
+
+ - GET: /user/~/access
 
 ### trackless.access.create
 
  - POST: /access
+ - POST: /gtoup/{groupID}/access
 
 ### trackless.access.remove
 

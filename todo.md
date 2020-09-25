@@ -12,6 +12,7 @@ Use todo+ to see inline todo's
  - A way to sort on multiple properties and limit / offset support
  - Give the api better description including the required access
  - A better way to connect to the database
+ - Add session.io support
 
 ## Now
 
@@ -35,13 +36,6 @@ Use todo+ to see inline todo's
     - GET
 
 ### Code
-
- - /group/{groupId}/access:
-    - GET
-    - POST
-
- - /user/{userId}/access:
-    - GET
 
  - /user/{userId}/work/{workId}:
     - PATCH

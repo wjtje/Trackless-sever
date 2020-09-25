@@ -115,6 +115,14 @@
  - GET: /user/~/work
  - GET: /user/~/work/{workID}
 
+### trackless.work.editAll
+
+ - PATCH: /user/{userID}/work/{workID}
+
+### trackless.work.editOwn
+
+ - PATCH: /user/~/work/{workID}
+
 ### trackless.work.createOwn
 
  - POST: /user/~/work

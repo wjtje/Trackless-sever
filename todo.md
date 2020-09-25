@@ -37,10 +37,6 @@ Use todo+ to see inline todo's
 
 ### Code
 
- - /user/{userId}/work/{workId}:
-    - PATCH
-    - DELETE
-
  - /user/{userId}/location:
     - GET
 

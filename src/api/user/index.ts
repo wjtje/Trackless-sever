@@ -14,6 +14,7 @@ import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import workRoute from './work'
 import workIDRoute from './workID'
 import accessRoute from './access'
+import locationRoute from './location'
 
 const router = express.Router()
 
@@ -95,6 +96,7 @@ router.use(userIDRouter)
 router.use(workRoute)
 router.use(workIDRoute)
 router.use(accessRoute)
+router.use(locationRoute)
 
 router.use(unusedRequestTypes())
 

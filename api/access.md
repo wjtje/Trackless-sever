@@ -63,6 +63,7 @@
 
  - GET: /location
  - GET: /location/{locationID}
+ - GET: /user/{userID}/location
 
 ### trackless.location.create
 

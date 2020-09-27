@@ -7,17 +7,17 @@ Use todo+ to see inline todo's
 
  - A way to see changes made to the database (v0.5-beta.1)
  - A better way to create all the tabels (On first launch)
- - A way to only allow some device. (example: The admin says that you can only have 2 devices at once)
- - /work/user/:userId (DELETE) will not respond anything
- - A way to sort on multiple properties and limit / offset support
  - Give the api better description including the required access
  - A better way to connect to the database
  - Add session.io support
 
+## Next version
+
+ - Remove all deprecated
+ - A way to only allow some device. (example: The admin says that you can only have 2 devices at once)
+ - A way to sort on multiple properties and limit / offset support
+
 ## Now
-
- - Remove all deprecated (v0.4.5)
-
 ### Desing
 
  - /setting:
@@ -36,9 +36,6 @@ Use todo+ to see inline todo's
     - GET
 
 ### Code
-
- - /user/{userId}/location:
-    - GET
 
  - /work:
     - GET

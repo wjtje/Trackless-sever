@@ -11,8 +11,54 @@ import userRoute from './user'
 import settingsHandler from '../../scripts/RequestHandler/settingsHandler'
 import moment from 'moment'
 import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
+import sortHandler from '../../scripts/RequestHandler/sortHandler'
+import { responseWork, TLWork } from '../../scripts/responseWork'
 
 const router = express.Router()
+
+router.get(
+  '/',
+  authHandler('trackless.work.readAll'),
+  sortHandler([
+    'workID',
+    'time',
+    'date',
+    'description',
+    'user.userID',
+    'user.firstname',
+    'user.lastname',
+    'user.username',
+    'user.groupID',
+    'user.groupName',
+    'location.locationID',
+    'location.place',
+    'location.name',
+    'location.id',
+    'worktype.worktypeID',
+    'worktype.name'
+  ]),
+  (request, response, next) => {
+    // Check if the startDate and / or endDate is correct
+    let sort = ''
+
+    if (moment(String(request.query.startDate), 'YYYY-MM-DD').isValid()) {
+      sort += ` AND \`date\` >= '${moment(String(request.query.startDate), 'YYYY-MM-DD').format('YYYY-MM-DD')}' `
+    }
+
+    if (moment(String(request.query.endDate), 'YYYY-MM-DD').isValid()) {
+      sort += ` AND \`date\` <= '${moment(String(request.query.startDate), 'YYYY-MM-DD').format('YYYY-MM-DD')}' `
+    }
+
+    // Get all the work for that user
+    DBcon.query(
+      'SELECT workID, `time`, `date`, description, TL_users.userID as `user.userID`, TL_users.firstname as `user.firstname`, TL_users.lastname as `user.lastname`, TL_users.username as `user.username`, TL_groups.groupID as `user.groupID`, TL_groups.groupName as `user.groupName`, TL_locations.locationID as `location.locationID`, TL_locations.place as `location.place`, TL_locations.name as `location.name`, TL_locations.id as `location.id`, TL_worktype.worktypeID as `worktype.worktypeID`, TL_worktype.name as `worktype.name` FROM `TL_work` INNER JOIN `TL_users` USING (`userID`) INNER JOIN `TL_locations` USING (`locationID`) INNER JOIN `TL_worktype` USING (`worktypeID`) INNER JOIN `TL_groups` USING (`groupID`) WHERE 1=1 ' + sort + String((request.querySort || ' ORDER BY `date`')),
+      [(request.params.userID === '~') ? request.user?.userID : request.params.userID],
+      handleQuery(next, (result:Array<TLWork>) => {
+        responseWork(result, response)
+      })
+    )
+  }
+)
 
 router.post(
   '/',

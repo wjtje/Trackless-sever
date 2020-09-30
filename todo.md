@@ -37,8 +37,6 @@ Use todo+ to see inline todo's
 
 ### Code
 
- - /work:
-    - GET
  - /work/{workId}:
     - GET
     - PATCH

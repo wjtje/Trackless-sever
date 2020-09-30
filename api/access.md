@@ -108,6 +108,7 @@
 
 ### trackless.work.readAll
 
+ - GET: /work
  - GET: /user/{userId}/work
  - GET: /user/{userId}/work/{workID}
 

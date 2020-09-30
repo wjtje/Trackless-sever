@@ -1,7 +1,6 @@
 # To-Do
 
-Global To-Do files
-Use todo+ to see inline todo's
+This is the global To-Do file. There are inline To-Do commands.
 
 ## Longterm
 

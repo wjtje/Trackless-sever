@@ -11,7 +11,7 @@ import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 import settingsHandler from '../../scripts/RequestHandler/settingsHandler'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import { responseWork, TLWork } from '../../scripts/responseWork'
-import { mysqlINT, mysqlDATE, mysqlTEXT } from '../../scripts/types'
+import { mysqlINT, mysqlDATE, mysqlTEXT, mysqlFLOAT } from '../../scripts/types'
 
 const router = express.Router()
 
@@ -67,7 +67,7 @@ router.post(
   requireHandler([
     { name: 'locationID', check: mysqlINT },
     { name: 'worktypeID', check: mysqlINT },
-    { name: 'time', check: mysqlINT },
+    { name: 'time', check: mysqlFLOAT },
     { name: 'date', check: mysqlDATE },
     { name: 'description', check: mysqlTEXT }
   ]),

@@ -4,7 +4,7 @@ import express from 'express'
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 import authHandler from '../../scripts/RequestHandler/authHandler'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
-import { mysqlINT, mysqlDATE, mysqlTEXT } from '../../scripts/types'
+import { mysqlINT, mysqlDATE, mysqlTEXT, mysqlFLOAT } from '../../scripts/types'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 import userRoute from './user'
@@ -67,7 +67,7 @@ router.post(
     { name: 'locationID', check: mysqlINT },
     { name: 'worktypeID', check: mysqlINT },
     { name: 'userID', check: mysqlINT },
-    { name: 'time', check: mysqlINT },
+    { name: 'time', check: mysqlFLOAT },
     { name: 'date', check: mysqlDATE },
     { name: 'description', check: mysqlTEXT }
   ]),

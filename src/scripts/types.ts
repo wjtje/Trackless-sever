@@ -15,6 +15,8 @@ export const mysqlINT = (testValue:any) : boolean => {
     return false // It is not a INT
   } else if (Number(testValue) > 2147483647 || Number(testValue) < -2147483648) { // Check if the value is not to big or to small
     return false // It is not a INT
+  } else if (Number(testValue).toString().split('.').length > 1) { // Check if it is a INT
+    return false // It is a float
   } else {
     return true
   }
@@ -31,8 +33,15 @@ export const mysqlFLOAT = (testValue:any) : boolean => {
   // Check if the value is not NaN
   if (isNaN(Number(testValue))) {
     return false // It is not a FLOAT
-  } else { // TODO: Test if the value is to large
-    return true
+  } else {
+    const float = Number(testValue).toString().split('.')
+    if (float[0].length > 2 || float[1].length > 2) {
+      return false // To large
+    } else if ((float[0] + float[1]).length > 4) {
+      return false
+    } else {
+      return true
+    }
   }
 }
 

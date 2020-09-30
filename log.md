@@ -15,6 +15,10 @@
 
 # Things that are fixed
 
+ - Checks if a Float is correct
+ - Checks if an Int is not a Float
+ - Table TL_work now stores time correct
+
 # Things that are removed
 
  - You can not use ~ to list your own group
@@ -46,4 +50,6 @@ ALTER TABLE `TL_settings` CHANGE `settingId` `settingID` INT NOT NULL AUTO_INCRE
 ALTER TABLE `TL_users` CHANGE `userId` `userID` INT NOT NULL AUTO_INCREMENT, CHANGE `groupId` `groupID` INT NOT NULL DEFAULT 1;
 ALTER TABLE `TL_work` CHANGE `workId` `workID` INT NOT NULL AUTO_INCREMENT, CHANGE `userId` `userID` INT NOT NULL, CHANGE `locationId` `locationID` INT NOT NULL, CHANGE `worktypeId` `worktypeID` INT NOT NULL;
 ALTER TABLE `TL_worktype` CHANGE `worktypeId` `worktypeID` INT NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `TL_work` CHANGE `time` `time` FLOAT(4,2) NOT NULL;
 ```

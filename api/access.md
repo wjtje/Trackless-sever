@@ -109,6 +109,7 @@
 ### trackless.work.readAll
 
  - GET: /work
+ - GET: /work/{workID}
  - GET: /user/{userId}/work
  - GET: /user/{userId}/work/{workID}
 
@@ -119,6 +120,7 @@
 
 ### trackless.work.editAll
 
+ - PATCH: /work/{workID}
  - PATCH: /user/{userID}/work/{workID}
 
 ### trackless.work.editOwn
@@ -131,8 +133,17 @@
 
 ### trackless.work.createAll
 
- - POST: /user/{userID}/work
  - POST: /work
+ - POST: /user/{userID}/work
+
+### trackless.work.removeOwn
+
+ - DELETE: /user/~/work/{workID}
+
+### trackless.work.removeAll
+
+ - DELETE: /work/{workID}
+ - DELETE: /user/{userID}/work/{workID}
 
 ## Worktype
 

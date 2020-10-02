@@ -36,11 +36,6 @@ This is the global To-Do file. There are inline To-Do commands.
 
 ### Code
 
- - /work/{workId}:
-    - GET
-    - PATCH
-    - DELETE
-
  - /setting:
     - GET
     - POST

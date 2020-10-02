@@ -13,6 +13,7 @@ import moment from 'moment'
 import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import { responseWork, TLWork } from '../../scripts/responseWork'
+import workIDRoute from './workID'
 
 const router = express.Router()
 
@@ -109,6 +110,7 @@ router.post(
 )
 
 router.use('/user', userRoute)
+router.use('/', workIDRoute)
 
 router.use(unusedRequestTypes())
 

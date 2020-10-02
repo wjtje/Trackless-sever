@@ -42,7 +42,7 @@ export function patchHandler (editArray: requireObject[], commitFunction: (resol
 export function handlePatchQuery (reject: (value?: any) => void, resolve: (value?: any) => void) {
   return (err: MysqlError | null) => {
     if (err) {
-      const error: ServerError = new Error('Something went wrong while trying to save')
+      const error: ServerError = new Error('Something went wrong while trying to save. Are your ID\'s correct')
       error.code = 'trackless.patch.saveError'
       reject(error)
     } else {

@@ -346,7 +346,7 @@
         },
         "responses" : {
           "201" : {
-            "description" : "Created the new group",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -697,7 +697,7 @@
         },
         "responses" : {
           "201" : {
-            "description" : "Create a new location",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -951,6 +951,171 @@
         }
       }
     },
+    "/setting" : {
+      "get" : {
+        "tags" : [ "setting" ],
+        "summary" : "Get all the settings for all the groups on the server",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by propertie"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Setting"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "setting" ],
+        "summary" : "Create a new setting for a group",
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "groupID" : {
+                    "type" : "integer"
+                  },
+                  "setting" : {
+                    "type" : "string"
+                  },
+                  "value" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "settingID" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Something is wrong with your input"
+          }
+        }
+      }
+    },
+    "/setting/{settingID}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "settingID",
+        "schema" : {
+          "type" : "integer"
+        },
+        "description" : "The settingID",
+        "required" : true
+      } ],
+      "get" : {
+        "tags" : [ "setting" ],
+        "summary" : "Get a setting",
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Setting"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "setting" ],
+        "summary" : "Remove a setting",
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "setting" ],
+        "summary" : "Edit a setting",
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "groupID" : {
+                    "type" : "integer"
+                  },
+                  "setting" : {
+                    "type" : "string"
+                  },
+                  "value" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
+      }
+    },
     "/user" : {
       "get" : {
         "tags" : [ "user" ],
@@ -1013,7 +1178,7 @@
         },
         "responses" : {
           "201" : {
-            "description" : "Created the new user",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -1902,7 +2067,7 @@
         },
         "responses" : {
           "201" : {
-            "description" : "Created the new worktype",
+            "description" : "Successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -2081,6 +2246,9 @@
           },
           "groupID" : {
             "type" : "integer"
+          },
+          "groupName" : {
+            "type" : "string"
           },
           "setting" : {
             "type" : "string"

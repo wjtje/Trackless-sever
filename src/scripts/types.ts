@@ -35,12 +35,24 @@ export const mysqlFLOAT = (testValue:any) : boolean => {
     return false // It is not a FLOAT
   } else {
     const float = Number(testValue).toString().split('.')
-    if (float[0].length > 2 || float[1].length > 2) {
-      return false // To large
-    } else if ((float[0] + float[1]).length > 4) {
+
+    if (float[0] == null) {
       return false
+    } else if (float[1] == null) {
+      // Only one var
+      if (float[0].length > 2) {
+        return false // To large
+      } else {
+        return true
+      }
     } else {
-      return true
+      if (float[0].length > 2 || float[1].length > 2) {
+        return false // To large
+      } else if ((float[0] + float[1]).length > 4) {
+        return false
+      } else {
+        return true
+      }
     }
   }
 }

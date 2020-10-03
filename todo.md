@@ -19,14 +19,6 @@ This is the global To-Do file. There are inline To-Do commands.
 ## Now
 ### Desing
 
- - /setting:
-    - GET
-    - POST
- - /setting/{settingID}:
-    - GET
-    - PATCH
-    - DELETE
-
  - /group/setting:
     - GET
     - POST

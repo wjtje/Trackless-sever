@@ -22,6 +22,7 @@ import severAboutRoute from './api/server/about'
 import nocache from 'nocache'
 import rateLimit from 'express-rate-limit'
 import worktypeRoute from './api/worktype/'
+import settingRoute from './api/setting/'
 
 // Settings
 const port:number = (process.env.PORT === undefined) ? 55565 : Number(process.env.PORT)
@@ -76,6 +77,7 @@ server.use('/api', apiRoute)
 server.use('/group', groupRoute)
 server.use('/location', locationRoute)
 server.use('/login', loginRoute)
+server.use('/setting', settingRoute)
 server.use('/user', userRoute)
 server.use('/work', workRoute)
 server.use('/worktype', worktypeRoute)

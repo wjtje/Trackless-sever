@@ -1,34 +1,42 @@
 // Copyright (c) 2020 Wouter van der Wal
 
 export interface Access {
-  accessId: number;
+  accessID: number;
   access: string;
 }
 
 export interface Api {
-  apiId: number;
+  apiID: number;
   createDate: string;
   lastUsed: string;
   deviceName: string;
 }
 
 export interface User {
-  userId: number;
+  userID: number;
   firstname: string;
   lastname: string;
   username: string;
-  groupId: number;
+  groupID: number;
   groupName: string;
 }
 
 export interface Group {
-  groupId: number;
+  groupID: number;
   groupName: string;
   users: User[];
 }
 
+export interface Setting {
+  groupID: number;
+  groupName: string;
+  settingID: number;
+  setting: string;
+  value: string;
+}
+
 export interface Location {
-  locationId: number;
+  locationID: number;
   hidden: 0 | 1;
   name: string;
   place: string;
@@ -36,12 +44,12 @@ export interface Location {
 }
 
 export interface Worktype {
-  worktypeId: number;
+  worktypeID: number;
   name: string;
 }
 
 export interface Work {
-  workId: number;
+  workID: number;
   time: number;
   date: string;
   description: string;

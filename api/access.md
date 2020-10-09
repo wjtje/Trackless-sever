@@ -77,6 +77,32 @@
 
  - PATCH: /location/{locationID}
 
+## Setting
+
+### trackless.setting.readAll
+
+ - GET: /setting
+ - GET: /setting/{settingID}
+ - GET: /group/{groupID}/setting
+ - GET: /user/{userID}/setting
+
+### trackless.setting.readOwn
+
+ - GET: /user/~/setting
+
+### trackless.setting.create
+
+ - POST: /setting
+ - POST: /group/{groupID}/setting
+
+### trackless.setting.edit
+
+ - PATCH: /setting/{settingID}
+
+### trackless.setting.delete
+
+ - DELETE: /setting/{settingID}
+
 ## User
 
 ### trackless.user.readAll

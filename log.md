@@ -26,10 +26,13 @@
 # SQL changes
 
 ```sql
+-- Change the groupID
 UPDATE `TL_groups` SET `groupId` = '2' WHERE `TL_groups`.`groupId` = 1;
 UPDATE `TL_users` SET `groupId` = '2' WHERE `TL_users`.`groupId` = 1;
 UPDATE `TL_groups` SET `groupId` = '1' WHERE `TL_groups`.`groupId` = 0;
 UPDATE `TL_users` SET `groupId` = '1' WHERE `TL_users`.`groupId` = 0;
+
+-- Create new table
 
 CREATE TABLE `trackless`.`TL_settings` (
   `settingID` INT NOT NULL AUTO_INCREMENT ,
@@ -38,6 +41,8 @@ CREATE TABLE `trackless`.`TL_settings` (
   `value` TEXT NOT NULL ,
   PRIMARY KEY (`settingId`)
 ) ENGINE = InnoDB;
+
+-- Change Id -> ID
 
 ALTER TABLE `TL_access` CHANGE `accessId` `accessID` INT NOT NULL AUTO_INCREMENT, CHANGE `groupId` `groupID` INT NOT NULL;
 ALTER TABLE `TL_apikeys` CHANGE `apiId` `apiID` INT NOT NULL AUTO_INCREMENT, CHANGE `userId` `userID` INT NOT NULL;
@@ -48,7 +53,17 @@ ALTER TABLE `TL_users` CHANGE `userId` `userID` INT NOT NULL AUTO_INCREMENT, CHA
 ALTER TABLE `TL_work` CHANGE `workId` `workID` INT NOT NULL AUTO_INCREMENT, CHANGE `userId` `userID` INT NOT NULL, CHANGE `locationId` `locationID` INT NOT NULL, CHANGE `worktypeId` `worktypeID` INT NOT NULL;
 ALTER TABLE `TL_worktype` CHANGE `worktypeId` `worktypeID` INT NOT NULL AUTO_INCREMENT;
 
+-- PLEASE REMOVE ALL RELATIONS
+-- BEVORE RUNNING THERE COMMANDS
+ALTER TABLE `TL_access` ADD FOREIGN KEY (`groupID`) REFERENCES `TL_groups`(`groupID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `TL_apikeys` ADD FOREIGN KEY (`userID`) REFERENCES `TL_users`(`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `TL_users` ADD FOREIGN KEY (`groupID`) REFERENCES `TL_groups`(`groupID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `TL_work` ADD FOREIGN KEY (`locationID`) REFERENCES `TL_locations`(`locationID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `TL_work` ADD FOREIGN KEY (`userID`) REFERENCES `TL_users`(`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `TL_work` ADD FOREIGN KEY (`worktypeID`) REFERENCES `TL_worktype`(`worktypeID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE `TL_settings` ADD FOREIGN KEY (`groupID`) REFERENCES `TL_groups`(`groupID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Better way to store time
 
 ALTER TABLE `TL_work` CHANGE `time` `time` FLOAT(4,2) NOT NULL;
 ```

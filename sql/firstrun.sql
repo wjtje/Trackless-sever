@@ -5,14 +5,14 @@ CREATE TABLE `TL_users` (
   `firstname` TEXT NOT NULL ,
   `lastname` TEXT NOT NULL ,
   `username` TEXT NOT NULL ,
-  `accgroupID` int NOT NULL DEFAULT '0',
+  `groupID` int NOT NULL DEFAULT '0',
   `salt_hash` TEXT NOT NULL ,
   `hash` TEXT NOT NULL ,
   PRIMARY KEY (`userID`)
 ) ENGINE = InnoDB;
 
 /* Creates a user called admin with the password admin. */
-INSERT INTO `TL_users` (`firstname`, `lastname`, `username`, `accgroupID`, `salt_hash`, `hash`) VALUES ('admin', 'admin', 'admin', 1, 'U736OMcfzID8YsBX', '499e653fc45c668794047f56c298ed213594863a1d18683ea07ae5efe972f9f8');
+INSERT INTO `TL_users` (`firstname`, `lastname`, `username`, `groupID`, `salt_hash`, `hash`) VALUES ('admin', 'admin', 'admin', 1, 'U736OMcfzID8YsBX', '499e653fc45c668794047f56c298ed213594863a1d18683ea07ae5efe972f9f8');
 
 CREATE TABLE `TL_errors` (
     `errorID` INT NOT NULL AUTO_INCREMENT ,
@@ -33,9 +33,9 @@ CREATE TABLE `TL_apikeys` (
 ) ENGINE = InnoDB;
 
 CREATE TABLE `TL_groups` (
-  `accgroupID` INT NOT NULL AUTO_INCREMENT ,
+  `groupID` INT NOT NULL AUTO_INCREMENT ,
   `groupName` TEXT NOT NULL ,
-  PRIMARY KEY (`accgroupID`)
+  PRIMARY KEY (`groupID`)
 ) ENGINE = InnoDB;
 
 /* Creates the groups */
@@ -44,13 +44,13 @@ INSERT INTO `TL_groups` (`groupName`) VALUES ('Admin');
 
 CREATE TABLE `TL_access` (
   `accessID` INT NOT NULL AUTO_INCREMENT ,
-  `accgroupID` INT NOT NULL ,
+  `groupID` INT NOT NULL ,
   `access` TEXT NOT NULL ,
   PRIMARY KEY (`accessID`)
 ) ENGINE = InnoDB;
 
 /* Gives the admin group access to give access */
-INSERT INTO `TL_access` (`accgroupID`, `access`) VALUES (1, 'trackless.access.create');
+INSERT INTO `TL_access` (`groupID`, `access`) VALUES (1, 'trackless.access.create');
 
 CREATE TABLE `TL_locations` (
   `locationID` INT NOT NULL AUTO_INCREMENT ,
@@ -61,9 +61,6 @@ CREATE TABLE `TL_locations` (
   PRIMARY KEY (`locationID`)
 ) ENGINE = InnoDB;
 
-/* Create a location for deleted locations */
-INSERT INTO `TL_locations` (`name`, `place`, `id`) VALUES ('Deleted', 'Deleted', 'Deleted');
-UPDATE `TL_locations` SET `locationID` = 0 WHERE `TL_locations`.`id` = 'Deleted';
 
 CREATE TABLE `TL_work` (
   `workID` INT NOT NULL AUTO_INCREMENT ,
@@ -85,16 +82,17 @@ CREATE TABLE `TL_worktype` (
 /* Create the settings table */
 CREATE TABLE `trackless`.`TL_settings` (
   `settingID` INT NOT NULL AUTO_INCREMENT ,
-  `accgroupID` INT NOT NULL ,
+  `groupID` INT NOT NULL ,
   `setting` TEXT NOT NULL ,
   `value` TEXT NOT NULL ,
   PRIMARY KEY (`settingID`)
 ) ENGINE = InnoDB;
 
 /* Add FOREIGN KEYS */
-ALTER TABLE `TL_access` ADD FOREIGN KEY (`accgroupID`) REFERENCES `TL_groups`(`accgroupID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `TL_access` ADD FOREIGN KEY (`groupID`) REFERENCES `TL_groups`(`groupID`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `TL_apikeys` ADD FOREIGN KEY (`userID`) REFERENCES `TL_users`(`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE `TL_users` ADD FOREIGN KEY (`accgroupID`) REFERENCES `TL_groups`(`accgroupID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `TL_users` ADD FOREIGN KEY (`groupID`) REFERENCES `TL_groups`(`groupID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE `TL_work` ADD FOREIGN KEY (`locationID`) REFERENCES `TL_locations`(`locationID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 ALTER TABLE `TL_work` ADD FOREIGN KEY (`userID`) REFERENCES `TL_users`(`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE `TL_settings` ADD FOREIGN KEY (`accgroupID`) REFERENCES `TL_groups`(`accgroupID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `TL_work` ADD FOREIGN KEY (`worktypeID`) REFERENCES `TL_worktype`(`worktypeID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `TL_settings` ADD FOREIGN KEY (`groupID`) REFERENCES `TL_groups`(`groupID`) ON DELETE CASCADE ON UPDATE CASCADE;

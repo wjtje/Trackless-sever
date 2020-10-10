@@ -46,7 +46,7 @@ router.get(
     }
 
     if (moment(String(request.query.endDate), 'YYYY-MM-DD').isValid()) {
-      sort += ` AND \`date\` <= '${moment(String(request.query.startDate), 'YYYY-MM-DD').format('YYYY-MM-DD')}' `
+      sort += ` AND \`date\` <= '${moment(String(request.query.endDate), 'YYYY-MM-DD').format('YYYY-MM-DD')}' `
     }
 
     // Get all the work for that user

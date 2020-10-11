@@ -1981,7 +1981,8 @@
             "type" : "integer"
           },
           "hidden" : {
-            "type" : "integer"
+            "type" : "integer",
+            "description" : "Hidden locations are not shown to everybody"
           },
           "name" : {
             "type" : "string"
@@ -1991,6 +1992,10 @@
           },
           "id" : {
             "type" : "string"
+          },
+          "time" : {
+            "type" : "integer",
+            "description" : "The total time recorded for this location"
           }
         }
       },
@@ -2044,10 +2049,12 @@
             "type" : "integer"
           },
           "time" : {
-            "type" : "integer"
+            "type" : "integer",
+            "description" : "Time is stored as hours. Example eight hours and 30 minutes eill become 8.5 hours."
           },
           "date" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Date is stored in the format YYYY-MM-DD"
           },
           "description" : {
             "type" : "string"

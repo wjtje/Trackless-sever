@@ -10,9 +10,8 @@ This is the global To-Do file. There are inline To-Do commands.
  - A better way to connect to the database
  - Add session.io support
 
-## Next version
+## Now
 
- - Remove all deprecated
  - A way to only allow some device. (example: The admin says that you can only have 2 devices at once)
  - A way to sort on multiple properties and limit / offset support
  - Show total time by locations

@@ -7,7 +7,6 @@ import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlINT, mysqlDATE, mysqlTEXT, mysqlFLOAT } from '../../scripts/types'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
-import userRoute from './user'
 import settingsHandler from '../../scripts/RequestHandler/settingsHandler'
 import moment from 'moment'
 import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
@@ -109,7 +108,6 @@ router.post(
   }
 )
 
-router.use('/user', userRoute)
 router.use('/', workIDRoute)
 
 router.use(unusedRequestTypes())

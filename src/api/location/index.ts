@@ -7,7 +7,6 @@ import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT } from '../../scripts/types'
-import userRoute from './user'
 import locationIDRoute from './locationID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 
@@ -59,8 +58,6 @@ router.post(
     )
   }
 )
-
-router.use('/user', userRoute)
 
 router.use('/', locationIDRoute)
 

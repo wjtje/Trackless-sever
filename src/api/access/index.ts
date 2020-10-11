@@ -7,7 +7,6 @@ import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlINT, mysqlTEXT } from '../../scripts/types'
-import groupRouter from './group'
 import accessIDRoute from './accessID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import groupIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/groupIDCheckHandler'
@@ -59,8 +58,6 @@ router.post(
     )
   }
 )
-
-router.use('/group', groupRouter)
 
 router.use('/', accessIDRoute)
 

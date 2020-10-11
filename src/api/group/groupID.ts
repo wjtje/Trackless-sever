@@ -7,7 +7,6 @@ import { handleQuery } from '../../scripts/handle'
 import groupIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/groupIDCheckHandler'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT } from '../../scripts/types'
-import userIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIDCheckHandler'
 import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 
 const router = express.Router()
@@ -80,29 +79,6 @@ router.patch(
       [
         request.body.groupName,
         request.params.groupID
-      ],
-      handleQuery(next, () => {
-        response.status(200).json({
-          message: 'Updated'
-        })
-      })
-    )
-  }
-)
-
-// Add a user to a group
-router.post(
-  '/:groupID/add/:userID',
-  authHandler('trackless.group.add'),
-  groupIDCheckHandler(),
-  userIDCheckHandler(),
-  (request, response, next) => {
-    // Change it in the database
-    DBcon.query(
-      'UPDATE `TL_users` SET `groupID`=? WHERE `userID`=?',
-      [
-        request.params.groupID,
-        request.params.userID
       ],
       handleQuery(next, () => {
         response.status(200).json({

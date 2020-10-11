@@ -1,7 +1,7 @@
 {
   "openapi" : "3.0.0",
   "info" : {
-    "version" : "0.4.4",
+    "version" : "0.4.5",
     "title" : "Trackless API",
     "contact" : {
       "name" : "wjtje",
@@ -157,43 +157,6 @@
         "responses" : {
           "200" : {
             "description" : "Successful operation"
-          },
-          "404" : {
-            "description" : "Not found"
-          }
-        },
-        "security" : [ {
-          "bearer_token" : [ ]
-        } ]
-      }
-    },
-    "/access/group/{groupID}" : {
-      "get" : {
-        "tags" : [ "access" ],
-        "summary" : "See where a group has access to",
-        "deprecated" : true,
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "groupID",
-          "description" : "ID of the group to return",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Successful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Access"
-                  }
-                }
-              }
-            }
           },
           "404" : {
             "description" : "Not found"
@@ -684,41 +647,6 @@
         }
       }
     },
-    "/group/{groupID}/add/{userID}" : {
-      "post" : {
-        "tags" : [ "group" ],
-        "summary" : "Add a user to a group",
-        "deprecated" : true,
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "groupID",
-          "description" : "ID of the group ",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        }, {
-          "in" : "path",
-          "name" : "userID",
-          "description" : "ID of the user",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Successful operation"
-          },
-          "404" : {
-            "description" : "Not found"
-          }
-        },
-        "security" : [ {
-          "bearer_token" : [ ]
-        } ]
-      }
-    },
     "/location" : {
       "get" : {
         "tags" : [ "location" ],
@@ -892,80 +820,6 @@
         } ]
       }
     },
-    "/location/user/{userID}/last" : {
-      "get" : {
-        "tags" : [ "location" ],
-        "summary" : "Get the last used location",
-        "deprecated" : true,
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "userID",
-          "description" : "ID of the user",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Successful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Location"
-                  }
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not found"
-          }
-        },
-        "security" : [ {
-          "bearer_token" : [ ]
-        } ]
-      }
-    },
-    "/location/user/{userID}/most" : {
-      "get" : {
-        "tags" : [ "location" ],
-        "summary" : "Get the most used location",
-        "deprecated" : true,
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "userID",
-          "description" : "ID of the user",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Successful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Location"
-                  }
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not found"
-          }
-        },
-        "security" : [ {
-          "bearer_token" : [ ]
-        } ]
-      }
-    },
     "/login" : {
       "post" : {
         "tags" : [ "login" ],
@@ -1026,7 +880,7 @@
                   "properties" : {
                     "version" : {
                       "type" : "string",
-                      "example" : "0.4-beta.4"
+                      "example" : "0.4-beta.5"
                     }
                   }
                 }
@@ -1900,230 +1754,6 @@
                   },
                   "time" : {
                     "type" : "integer"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses" : {
-          "200" : {
-            "description" : "Successful operation"
-          },
-          "404" : {
-            "description" : "Not found"
-          }
-        },
-        "security" : [ {
-          "bearer_token" : [ ]
-        } ]
-      }
-    },
-    "/work/user/{userID}" : {
-      "get" : {
-        "tags" : [ "work" ],
-        "summary" : "Get all the work from a user",
-        "deprecated" : true,
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "userID",
-          "description" : "ID of the user",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Successful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Work"
-                  }
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not found"
-          }
-        },
-        "security" : [ {
-          "bearer_token" : [ ]
-        } ]
-      }
-    },
-    "/work/user/{userID}/date/{start}/{end}" : {
-      "get" : {
-        "tags" : [ "work" ],
-        "summary" : "Get all the work from a user",
-        "deprecated" : true,
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "userID",
-          "description" : "ID of the user",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        }, {
-          "in" : "path",
-          "name" : "start",
-          "description" : "The start date",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "in" : "path",
-          "name" : "end",
-          "description" : "The end date",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Successful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Work"
-                  }
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not found"
-          }
-        },
-        "security" : [ {
-          "bearer_token" : [ ]
-        } ]
-      }
-    },
-    "/work/user/{userID}/{workID}" : {
-      "get" : {
-        "tags" : [ "work" ],
-        "summary" : "Get a single work object",
-        "deprecated" : true,
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "userID",
-          "description" : "ID of the user",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        }, {
-          "in" : "path",
-          "name" : "workID",
-          "description" : "Id of the work",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Successful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Work"
-                  }
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not found"
-          }
-        },
-        "security" : [ {
-          "bearer_token" : [ ]
-        } ]
-      },
-      "delete" : {
-        "tags" : [ "work" ],
-        "summary" : "Remove a single work object",
-        "deprecated" : true,
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "userID",
-          "description" : "ID of the user",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        }, {
-          "in" : "path",
-          "name" : "workID",
-          "description" : "Id of the work",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Successful operation"
-          },
-          "404" : {
-            "description" : "Not found"
-          }
-        },
-        "security" : [ {
-          "bearer_token" : [ ]
-        } ]
-      },
-      "patch" : {
-        "tags" : [ "work" ],
-        "summary" : "Edit a single work object",
-        "deprecated" : true,
-        "parameters" : [ {
-          "in" : "path",
-          "name" : "userID",
-          "description" : "ID of the user",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        }, {
-          "in" : "path",
-          "name" : "workID",
-          "description" : "Id of the work",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "type" : "object",
-                "properties" : {
-                  "locationID" : {
-                    "type" : "integer"
-                  },
-                  "date" : {
-                    "type" : "string"
-                  },
-                  "time" : {
-                    "type" : "integer"
-                  },
-                  "description" : {
-                    "type" : "string"
                   }
                 }
               }

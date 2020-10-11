@@ -15,6 +15,7 @@ import workRoute from './work'
 import workIDRoute from './workID'
 import accessRoute from './access'
 import locationRoute from './location'
+import settingRoute from './setting'
 
 const router = express.Router()
 
@@ -97,6 +98,7 @@ router.use(workRoute)
 router.use(workIDRoute)
 router.use(accessRoute)
 router.use(locationRoute)
+router.use(settingRoute)
 
 router.use(unusedRequestTypes())
 

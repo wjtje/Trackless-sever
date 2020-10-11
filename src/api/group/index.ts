@@ -12,6 +12,7 @@ import groupIDRoute from './groupID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import userRoute from './user'
 import accessRoute from './access'
+import settingRoute from './setting'
 
 const router = express.Router()
 
@@ -87,6 +88,7 @@ router.post(
 router.use('/', groupIDRoute)
 router.use('/', userRoute)
 router.use('/', accessRoute)
+router.use(settingRoute)
 
 router.use(unusedRequestTypes())
 

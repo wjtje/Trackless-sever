@@ -4,27 +4,21 @@ import express from 'express'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/authHandler'
+import groupIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/groupIDCheckHandler'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
-import sortHandler from '../../scripts/RequestHandler/sortHandler'
-import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
-import { mysqlINT, mysqlTEXT } from '../../scripts/types'
-import settingIDhandler from './settingID'
+import { mysqlTEXT } from '../../scripts/types'
 
 const router = express.Router()
 
+// Get all settings for a single group
 router.get(
-  '/',
+  '/:groupID/setting',
   authHandler('trackless.setting.readAll'),
-  sortHandler([
-    'settingID',
-    'setting',
-    'value',
-    'groupID',
-    'groupName'
-  ]),
+  groupIDCheckHandler(),
   (request, response, next) => {
     DBcon.query(
-      'SELECT `settingID`, `setting`, `value`, `groupID`, `groupName` FROM `TL_settings` JOIN `TL_groups` USING(`groupID`) ' + String(request.querySort || ''),
+      'SELECT settingID, setting, value, groupID, groupName FROM TL_settings join TL_groups USING(groupID) where groupID=?',
+      [request.params.groupID],
       handleQuery(next, (result) => {
         response.json(result)
       })
@@ -32,18 +26,19 @@ router.get(
   }
 )
 
+// Create a new setting for a single group
 router.post(
-  '/',
+  '/:groupID/setting',
   authHandler('trackless.setting.create'),
+  groupIDCheckHandler(),
   requireHandler([
     { name: 'setting', check: mysqlTEXT },
-    { name: 'value', check: mysqlTEXT },
-    { name: 'groupID', check: mysqlINT }
+    { name: 'value', check: mysqlTEXT }
   ]),
   (request, response, next) => {
     DBcon.query(
       'INSERT INTO `TL_settings`(`groupID`, `setting`, `value`) VALUES (?, ?, ?)',
-      [request.body.groupID, request.body.setting, request.body.value],
+      [request.params.groupID, request.body.setting, request.body.value],
       handleQuery(next, (result) => {
         response.json({
           settingsID: result.insertId
@@ -52,8 +47,5 @@ router.post(
     )
   }
 )
-
-router.use(settingIDhandler)
-router.use(unusedRequestTypes())
 
 export default router

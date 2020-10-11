@@ -99,7 +99,7 @@
 
  - PATCH: /setting/{settingID}
 
-### trackless.setting.delete
+### trackless.setting.remove
 
  - DELETE: /setting/{settingID}
 

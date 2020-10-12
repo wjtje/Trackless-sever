@@ -7,7 +7,7 @@ import authHandler from '../../scripts/RequestHandler/authHandler'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
-import { mysqlINT, mysqlTEXT } from '../../scripts/types'
+import { mysqlINT, mysqlTEXT, mysqlVARCHAR } from '../../scripts/types'
 import settingIDhandler from './settingID'
 
 const router = express.Router()
@@ -36,7 +36,7 @@ router.post(
   '/',
   authHandler('trackless.setting.create'),
   requireHandler([
-    { name: 'setting', check: mysqlTEXT },
+    { name: 'setting', check: mysqlVARCHAR(64) },
     { name: 'value', check: mysqlTEXT },
     { name: 'groupID', check: mysqlINT }
   ]),

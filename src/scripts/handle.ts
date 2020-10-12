@@ -4,6 +4,7 @@ import { NextFunction } from 'express'
 import { sqlError } from './error'
 import { MysqlError } from 'mysql'
 import ServerError from './RequestHandler/serverErrorInterface'
+import { DBcon } from '..'
 
 /**
  * A function for handling a query
@@ -37,6 +38,27 @@ export function handleQuery (next: NextFunction, then: (result: any) => void, re
           err.code = 'trackless.reference.notFound'
           next(err)
           break
+        case 1062:
+          err.message = 'Duplicate entry. Please check your values.'
+          err.status = 400
+          err.code = 'trackless.duplicate.err'
+          next(err)
+          break
+        default:
+          // Save the error
+          DBcon.query(
+            'INSERT INTO `TL_errors` (`error_code`, `error_message`) VALUES (?,?)',
+            [
+              error.errno,
+              error.sqlMessage
+            ]
+          )
+
+          // Report to the user
+          err.message = `An unknown sql error. (${error.errno})`
+          err.status = 500
+          err.code = 'trackless.sql.unknown'
+          next(err)
       }
     } else if (error && !(error?.errno === 1451 && referencedErr != null)) { // Remove reference error
       sqlError(next, error)

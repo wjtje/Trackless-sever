@@ -78,7 +78,7 @@ export const mysqlDATE = (testValue:any) : boolean => {
 export const mysqlTEXT = (testValue:any) : boolean => {
   const testValueString = String(testValue) // Make sure it is a string
 
-  if (Buffer.from([testValueString]).length > 65535 || typeof testValue !== 'string' || testValueString === '') {
+  if (testValueString.length > 65535 || typeof testValue !== 'string' || testValueString === '') {
     return false // The string is to large
   } else {
     return true
@@ -95,12 +95,13 @@ export const mysqlTEXT = (testValue:any) : boolean => {
 export const mysqlLONGTEXT = (testValue:any) : boolean => {
   const testValueString = String(testValue) // Make sure it is a string
 
-  if (Buffer.from([testValueString]).length > 4294967296 || typeof testValue !== 'string' || testValueString === '') {
+  if (testValueString.length > 4294967296 || typeof testValue !== 'string' || testValueString === '') {
     return false // The string is to large
   } else {
     return true
   }
 }
+
 /**
  * Tests a value if it is a mysql BOOLEAN
  *
@@ -113,5 +114,23 @@ export const mysqlBOOLEAN = (testValue: any) : boolean => {
     return true
   } else {
     return false
+  }
+}
+
+/**
+ * Test is a value is a correct mysql VARCHAR
+ * @since 0.4-beta.5
+ * @param length The length of the varchar
+ * @returns {(testvalue: any) => boolean} A test function
+ */
+export const mysqlVARCHAR = (length: number) : ((testValue: any) => boolean) => {
+  return (testValue) => {
+    const testValueString = String(testValue) // Make sure it is a string
+
+    if (testValueString.length > length || typeof testValue !== 'string' || testValueString === '') {
+      return false // The string is to large or not correct
+    } else {
+      return true
+    }
   }
 }

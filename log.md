@@ -1,16 +1,19 @@
 # New in this version
 
  - List the total time recorded by each location
+ - The database will check if the combination groupID and setting in unique
 
 # Changed in this version
 
 # Things that are fixed
 
  - Fixed the sort
+ - It is now impossible to store two users with the same username
 
 # Things that are removed
 
  - All deprecated commands are removed
+ - Every error now has a response
 
 # SQL changes
 
@@ -56,4 +59,12 @@ INNER JOIN `TL_users` USING(`userID`)
 INNER JOIN `TL_vLocations` USING(`locationID`)
 INNER JOIN `TL_worktype` USING(`worktypeID`)
 INNER JOIN `TL_groups` USING(`groupID`)
+
+-- Make the username row uniqe inside the database
+ALTER TABLE `TL_users` CHANGE `username` `username` VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL;
+ALTER TABLE `trackless`.`TL_users` ADD UNIQUE (`username`);
+
+-- Make sure that the combination groupID and setting is unique
+ALTER TABLE `TL_settings` CHANGE `setting` `setting` VARCHAR(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL;
+ALTER TABLE `trackless`.`TL_settings` ADD UNIQUE (`groupID`, `setting`);
 ```

@@ -8,7 +8,7 @@ import { handleQuery } from '../../scripts/handle'
 import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 import { storePassword } from '../../scripts/security'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
-import { mysqlTEXT, mysqlINT } from '../../scripts/types'
+import { mysqlTEXT, mysqlINT, mysqlVARCHAR } from '../../scripts/types'
 import userIDRouter from './userID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import workRoute from './work'
@@ -49,7 +49,7 @@ router.post(
   requireHandler([
     { name: 'firstname', check: mysqlTEXT },
     { name: 'lastname', check: mysqlTEXT },
-    { name: 'username', check: mysqlTEXT },
+    { name: 'username', check: mysqlVARCHAR(64) },
     { name: 'password', check: mysqlTEXT },
     { name: 'groupID', check: mysqlINT }
   ]),

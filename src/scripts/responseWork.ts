@@ -16,9 +16,11 @@ export interface TLWork {
   'user.groupID': number;
   'user.groupName': string;
   'location.locationID': number;
+  'location.hidden': 0 | 1;
   'location.place': string;
   'location.name': string;
   'location.id': string;
+  'location.time': number;
   'worktype.worktypeID': number;
   'worktype.name': string;
 }
@@ -35,7 +37,7 @@ export function responseWork (result: TLWork[], response:Response) {
   const tmp: {
     workID: number;
     user: { userID: number; firstname: string; lastname: string; username: string; groupID: number; groupName: string };
-    location: { locationID: number; place: string; name: string; id: string; };
+    location: { locationID: number; hidden: 0 | 1; place: string; name: string; id: string; time: number; };
     worktype: { worktypeID: number; name: string; }
     time: string;
     date: string;
@@ -58,9 +60,11 @@ export function responseWork (result: TLWork[], response:Response) {
       // Add the location info
       location: {
         locationID: i['location.locationID'],
+        hidden: i['location.hidden'],
         place: i['location.place'],
         name: i['location.name'],
-        id: i['location.id']
+        id: i['location.id'],
+        time: i['location.time']
       },
       // Add the worktype info
       worktype: {

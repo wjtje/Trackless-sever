@@ -21,7 +21,7 @@ router.get(
   (request, response, next) => {
     // Get the work from the server
     DBcon.query(
-      'SELECT workID, `time`, `date`, description, TL_users.userID as `user.userID`, TL_users.firstname as `user.firstname`, TL_users.lastname as `user.lastname`, TL_users.username as `user.username`, TL_groups.groupID as `user.groupID`, TL_groups.groupName as `user.groupName`, TL_locations.locationID as `location.locationID`, TL_locations.place as `location.place`, TL_locations.name as `location.name`, TL_locations.id as `location.id`, TL_worktype.worktypeID as `worktype.worktypeID`, TL_worktype.name as `worktype.name` FROM `TL_work` INNER JOIN `TL_users` USING (`userID`) INNER JOIN `TL_locations` USING (`locationID`) INNER JOIN `TL_worktype` USING (`worktypeID`) INNER JOIN `TL_groups` USING (`groupID`) WHERE `workID`=?',
+      'SELECT * FROM `TL_vWork` WHERE `workID`=?',
       [request.params.workID],
       handleQuery(next, (result:Array<TLWork>) => {
         responseWork(result, response)

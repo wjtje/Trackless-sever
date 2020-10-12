@@ -19,7 +19,7 @@ router.get(
   (request, response, next) => {
     // Get the data from the server
     DBcon.query(
-      'SELECT * FROM `TL_locations` WHERE `locationID`=?',
+      'SELECT * FROM `TL_vLocations` WHERE `locationID`=?',
       [request.params.locationID],
       handleQuery(next, (result) => {
         response.status(200).json(result)

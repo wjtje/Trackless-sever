@@ -15,6 +15,7 @@ router.get(
   authHandler('trackless.location.read'),
   userIDCheckHandler(),
   (request, response, next) => {
+    // It is by desing that this does not return a total used time
     // Get the last used
     DBcon.query(
       'SELECT `locationID`, `name`, `place`, `id` FROM `TL_work` INNER JOIN `TL_locations` USING (`locationID`) WHERE `userID`=? AND `hidden`=0 ORDER BY `workID` DESC LIMIT 1',

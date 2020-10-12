@@ -41,6 +41,7 @@ export interface Location {
   name: string;
   place: string;
   id: string;
+  time: number;
 }
 
 export interface Worktype {

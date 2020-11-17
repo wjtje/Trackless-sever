@@ -99,7 +99,7 @@ export const mysqlTEXT = (testValue:any) : boolean => {
     return false // The string is to large
   } else {
     // Test if string only contains acsii
-    return /^[\x32-\x7E]*$/.test(testValue)
+    return /^[\x20-\x7E]*$/.test(testValue)
   }
 }
 
@@ -117,7 +117,7 @@ export const mysqlLONGTEXT = (testValue:any) : boolean => {
     return false // The string is to large
   } else {
     // Test if string only contains acsii
-    return /^[\x32-\x7E]*$/.test(testValue)
+    return /^[\x20-\x7E]*$/.test(testValue)
   }
 }
 

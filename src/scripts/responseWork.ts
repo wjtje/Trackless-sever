@@ -40,7 +40,7 @@ export function responseWork (result: TLWork[], response:Response) {
     user: { userID: number; firstname: string; lastname: string; username: string; groupID: number; groupName: string };
     location: { locationID: number; hidden: 0 | 1; place: string; name: string; id: string; time: number; };
     worktype: { worktypeID: number; name: string; }
-    time: string;
+    time: number;
     date: string;
     description: string;
   }[] = []
@@ -73,7 +73,7 @@ export function responseWork (result: TLWork[], response:Response) {
         name: i['worktype.name']
       },
       // Add the work info
-      time: String(i.time),
+      time: i.time,
       date: moment(i.date).format('yyyy-MM-DD'),
       description: decodeText(i.description)
     })

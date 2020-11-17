@@ -9,7 +9,8 @@ import workIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/work
 import { patchHandler, handlePatchQuery } from '../../scripts/RequestHandler/patchHandler'
 import settingsHandler from '../../scripts/RequestHandler/settingsHandler'
 import { TLWork, responseWork } from '../../scripts/responseWork'
-import { mysqlINT, mysqlDATE, mysqlTEXT } from '../../scripts/types'
+import { encodeText } from '../../scripts/testEncoding'
+import { mysqlINT, mysqlDATE, mysqlUTFTEXT } from '../../scripts/types'
 
 const router = express.Router()
 
@@ -41,14 +42,20 @@ router.patch(
     { name: 'locationID', check: mysqlINT },
     { name: 'date', check: mysqlDATE },
     { name: 'time', check: mysqlINT },
-    { name: 'description', check: mysqlTEXT },
+    { name: 'description', check: mysqlUTFTEXT },
     { name: 'worktypeID', check: mysqlINT },
     { name: 'userID', check: mysqlINT }
   ], (resolve, reject, key, request) => {
+    let body = request.body[key]
+
+    if (key === 'description') {
+      body = encodeText(request.body[key])
+    }
+
     DBcon.query(
       'UPDATE `TL_work` SET `' + key + '`=? WHERE `workID`=?',
       [
-        request.body[key],
+        body,
         request.params.workID
       ],
       handlePatchQuery(reject, resolve)

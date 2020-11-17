@@ -2,6 +2,7 @@
 
 import { Response } from 'express'
 import moment from 'moment'
+import { decodeText } from '../scripts/testEncoding'
 
 // Define the mysql result type
 export interface TLWork {
@@ -74,7 +75,7 @@ export function responseWork (result: TLWork[], response:Response) {
       // Add the work info
       time: String(i.time),
       date: moment(i.date).format('yyyy-MM-DD'),
-      description: i.description
+      description: decodeText(i.description)
     })
   })
 

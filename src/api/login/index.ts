@@ -3,12 +3,13 @@
 import express from 'express'
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
-import { mysqlTEXT } from '../../scripts/types'
+import { mysqlTEXT, mysqlUTFTEXT } from '../../scripts/types'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 import { sha512_256 as sha512 } from 'js-sha512'
 import _ from 'lodash'
 import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
+import { encodeText } from '../../scripts/testEncoding'
 
 const router = express.Router()
 
@@ -17,7 +18,7 @@ router.post(
   requireHandler([
     { name: 'username', check: mysqlTEXT },
     { name: 'password', check: mysqlTEXT },
-    { name: 'deviceName', check: mysqlTEXT }
+    { name: 'deviceName', check: mysqlUTFTEXT }
   ]),
   (request, response, next) => {
     // Get the hash, salt and userID from the server
@@ -36,7 +37,7 @@ router.post(
             'INSERT INTO `TL_apikeys` (`apiKey`, `deviceName`, `userID`) VALUES (?,?,?)',
             [
               sha512(apiKey),
-              request.body.deviceName,
+              encodeText(request.body.deviceName),
               result[0].userID
             ],
             handleQuery(next, () => {

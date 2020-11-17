@@ -11,7 +11,8 @@ import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 import settingsHandler from '../../scripts/RequestHandler/settingsHandler'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import { responseWork, TLWork } from '../../scripts/responseWork'
-import { mysqlINT, mysqlDATE, mysqlTEXT, mysqlFLOAT } from '../../scripts/types'
+import { encodeText } from '../../scripts/testEncoding'
+import { mysqlINT, mysqlDATE, mysqlFLOAT, mysqlUTFTEXT } from '../../scripts/types'
 
 const router = express.Router()
 
@@ -62,14 +63,14 @@ router.get(
 
 router.post(
   '/:userID/work',
-  authHandler(request => (request.params.userID === '~') ? 'trackless.work.createOwn' : 'trackles..work.createAll'),
+  authHandler(request => (request.params.userID === '~') ? 'trackless.work.createOwn' : 'trackless.work.createAll'),
   userIDCheckHandler(),
   requireHandler([
     { name: 'locationID', check: mysqlINT },
     { name: 'worktypeID', check: mysqlINT },
     { name: 'time', check: mysqlFLOAT },
     { name: 'date', check: mysqlDATE },
-    { name: 'description', check: mysqlTEXT }
+    { name: 'description', check: mysqlUTFTEXT }
   ]),
   settingsHandler(),
   (request, response, next) => {
@@ -83,7 +84,7 @@ router.post(
           request.body.worktypeID,
           request.body.time,
           request.body.date,
-          request.body.description
+          encodeText(request.body.description)
         ],
         handleQuery(next, (result) => {
           // Response with the new id

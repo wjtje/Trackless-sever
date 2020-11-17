@@ -6,6 +6,7 @@ import authHandler from '../../scripts/RequestHandler/authHandler'
 import apiIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/apiIDCheckHandler'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
+import { decodeJSON } from '../../scripts/testEncoding'
 
 const router = express.Router()
 
@@ -21,7 +22,7 @@ router.get(
       [request.user?.userID, request.params.apiID],
       handleQuery(next, (result) => {
         // Send the data back to the user
-        response.status(200).json(result)
+        response.status(200).json(decodeJSON(result, 'deviceName'))
       })
     )
   }

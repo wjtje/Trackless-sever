@@ -69,6 +69,23 @@ export const mysqlDATE = (testValue:any) : boolean => {
 }
 
 /**
+ * Tests a value if it is a mysql TEXT with full utf8 support
+ *
+ * @since 0.4-beta.5
+ * @param testValue
+ * @returns {boolean}
+ */
+export const mysqlUTFTEXT = (testValue:any) : boolean => {
+  const testValueString = String(testValue) // Make sure it is a string
+
+  if (testValueString.length > 65535 || typeof testValue !== 'string' || testValueString === '') {
+    return false // The string is to large
+  } else {
+    return true
+  }
+}
+
+/**
  * Tests a value if it is a mysql TEXT
  *
  * @since 0.3-beta.4
@@ -81,7 +98,8 @@ export const mysqlTEXT = (testValue:any) : boolean => {
   if (testValueString.length > 65535 || typeof testValue !== 'string' || testValueString === '') {
     return false // The string is to large
   } else {
-    return true
+    // Test if string only contains acsii
+    return /^[\x32-\x7E]*$/.test(testValue)
   }
 }
 
@@ -98,7 +116,8 @@ export const mysqlLONGTEXT = (testValue:any) : boolean => {
   if (testValueString.length > 4294967296 || typeof testValue !== 'string' || testValueString === '') {
     return false // The string is to large
   } else {
-    return true
+    // Test if string only contains acsii
+    return /^[\x32-\x7E]*$/.test(testValue)
   }
 }
 

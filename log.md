@@ -2,8 +2,12 @@
 
  - List the total time recorded by each location
  - The database will check if the combination groupID and setting in unique
+ - Added full utf-8 text support to the desciption and deviceName
+ - The system now checks if you are using valid values
 
 # Changed in this version
+
+ - Some values in the database now uses base64. Run the `upgrade/base64.ts` to upgrade.
 
 # Things that are fixed
 

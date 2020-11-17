@@ -8,10 +8,10 @@ import checkLateWork from '../../scripts/RequestHandler/checkLateWork'
 import userIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIDCheckHandler'
 import workIDuserIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/workIDuserIDCheckHandler'
 import { patchHandler, handlePatchQuery } from '../../scripts/RequestHandler/patchHandler'
-import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 import settingsHandler from '../../scripts/RequestHandler/settingsHandler'
 import { TLWork, responseWork } from '../../scripts/responseWork'
-import { mysqlINT, mysqlDATE, mysqlTEXT } from '../../scripts/types'
+import { encodeText } from '../../scripts/testEncoding'
+import { mysqlINT, mysqlDATE, mysqlUTFTEXT } from '../../scripts/types'
 
 const router = express.Router()
 
@@ -24,7 +24,7 @@ router.get(
   (request, response, next) => {
     // Get the work from the server
     DBcon.query(
-      'SELECT * FROM `TL_vWork` WHERE `userID`=? AND `workID`=?',
+      'SELECT * FROM `TL_vWork` WHERE `user.userID`=? AND `workID`=?',
       [(request.params.userID === '~') ? request.user?.userID : request.params.userID, request.params.workID],
       handleQuery(next, (result:Array<TLWork>) => {
         responseWork(result, response)
@@ -45,41 +45,24 @@ router.patch(
     { name: 'locationID', check: mysqlINT },
     { name: 'date', check: mysqlDATE },
     { name: 'time', check: mysqlINT },
-    { name: 'description', check: mysqlTEXT },
+    { name: 'description', check: mysqlUTFTEXT },
     { name: 'worktypeID', check: mysqlINT }
   ], (resolve, reject, key, request) => {
-    function changeWork () {
-      DBcon.query(
-        'UPDATE `TL_work` SET `' + key + '`=? WHERE `workID`=? AND `userID`=?',
-        [
-          request.body[key],
-          request.params.workID,
-          (request.params.userID === '~') ? request.user?.userID : request.params.userID
-        ],
-        handlePatchQuery(reject, resolve)
-      )
+    let body = request.body[key]
+
+    if (key === 'description') {
+      body = encodeText(request.body[key])
     }
 
-    if (key === 'locationID') {
-      // Check if the location is valid
-      DBcon.query(
-        'SELECT `locationID` FROM `TL_locations` WHERE `locationID`=?',
-        [request.body.locationID],
-        (error, result) => {
-          if (error || result.length === 0) {
-            // Something wrong in the array
-            const error: ServerError = new Error('Your location id is not valid')
-            error.status = 400
-            error.code = 'trackless.work.notValidlocationID'
-            reject(error)
-          } else {
-            changeWork()
-          }
-        })
-    } else {
-      // Change it
-      changeWork()
-    }
+    DBcon.query(
+      'UPDATE `TL_work` SET `' + key + '`=? WHERE `workID`=? AND `userID`=?',
+      [
+        body,
+        request.params.workID,
+        (request.params.userID === '~') ? request.user?.userID : request.params.userID
+      ],
+      handlePatchQuery(reject, resolve)
+    )
   })
 )
 

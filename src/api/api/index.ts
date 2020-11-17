@@ -7,6 +7,7 @@ import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 import apiIDRoute from './apiID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
+import { decodeJSON } from '../../scripts/testEncoding'
 
 const router = express.Router()
 
@@ -27,7 +28,7 @@ router.get(
       [request.user?.userID],
       handleQuery(next, (result) => {
         // Send the data back to the user
-        response.status(200).json(result)
+        response.status(200).json(decodeJSON(result, 'deviceName'))
       })
     )
   }

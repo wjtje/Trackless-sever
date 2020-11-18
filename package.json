@@ -39,7 +39,7 @@
     "@types/express": "^4.17.8",
     "@types/express-rate-limit": "^5.1.0",
     "@types/js-sha512": "^0.7.0",
-    "@types/lodash": "^4.14.162",
+    "@types/lodash": "^4.14.165",
     "@types/morgan": "^1.9.1",
     "@types/mysql": "^2.15.15",
     "@types/node": "^14.14.7",

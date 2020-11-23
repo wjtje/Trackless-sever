@@ -10,7 +10,7 @@ import { patchHandler, handlePatchQuery } from '../../scripts/RequestHandler/pat
 import settingsHandler from '../../scripts/RequestHandler/settingsHandler'
 import { TLWork, responseWork } from '../../scripts/responseWork'
 import { encodeText } from '../../scripts/testEncoding'
-import { mysqlINT, mysqlDATE, mysqlUTFTEXT } from '../../scripts/types'
+import { mysqlINT, mysqlDATE, mysqlUTFTEXT, mysqlFLOAT } from '../../scripts/types'
 
 const router = express.Router()
 
@@ -41,7 +41,7 @@ router.patch(
   patchHandler([
     { name: 'locationID', check: mysqlINT },
     { name: 'date', check: mysqlDATE },
-    { name: 'time', check: mysqlINT },
+    { name: 'time', check: mysqlFLOAT },
     { name: 'description', check: mysqlUTFTEXT },
     { name: 'worktypeID', check: mysqlINT },
     { name: 'userID', check: mysqlINT }

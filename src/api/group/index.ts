@@ -49,7 +49,7 @@ router.get(
                   users: result
                 })
 
-                resolve()
+                resolve(null)
               })
             )
           })

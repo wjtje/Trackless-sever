@@ -28,7 +28,7 @@ export function bodyOnlyContains (body: Request['body'], searchList: requireObje
     })
 
     if (!isRejected) {
-      resolve()
+      resolve(null)
     }
   })
 }

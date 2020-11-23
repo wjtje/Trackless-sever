@@ -23,7 +23,7 @@ export default (require: requireObject[]) => {
           reject(new Error(`wrong: ${i.name}`))
         } else {
           // The given value is correct
-          resolve()
+          resolve(null)
         }
       })
     })).then(() => {

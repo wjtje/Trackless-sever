@@ -27,7 +27,7 @@ And `npm start` to start the server.
 
 ## How to get started
 
-Take a look at the (wiki)[https://github.com/wjtje/Trackless-server/wiki/How-to-get-started] to learn more.
+Take a look at the [wiki](https://github.com/wjtje/Trackless-server/wiki/How-to-get-started) to learn more.
 
 ## Npm commands
 

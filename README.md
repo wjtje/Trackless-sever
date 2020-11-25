@@ -25,21 +25,9 @@ Run the `npm install` command to install all the needed packages.
 At last your can run `npm run build` to compile the typescript code into normal javacript.
 And `npm start` to start the server. 
 
-## Docker
-
-If you don't want to create your own mysql server and set everything up.
-You can use our dockerfile. (It is not compatible with the Raspberry Pi)
-
-See the `README.md` file inside the docker folder
-
 ## How to get started
 
-A basic account with a username of `admin` and with a password `admin` has been created.
-
-You can use a program like postman to interface with the server.
-Or use the `trackless` project as a client. (WIP)
-
-All the api's are documented in the `api/swagger.json`
+Take a look at the (wiki)[https://github.com/wjtje/Trackless-server/wiki/How-to-get-started] to learn more.
 
 ## Npm commands
 

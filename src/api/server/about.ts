@@ -1,8 +1,8 @@
 // Copyright (c) 2020 Wouter van der Wal
 
-import { version } from '../../global/about'
 import express from 'express'
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
+import pjson from '../../../package.json'
 
 const router = express.Router()
 
@@ -10,7 +10,7 @@ router.get(
   '/',
   (request, response) => {
     response.status(200).json({
-      version: version
+      version: pjson.version
     })
   }
 )

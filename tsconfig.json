@@ -9,6 +9,7 @@
     "importHelpers": true,
     "removeComments": true,
     "strict": true,
+    "resolveJsonModule": true,
     "lib": [
       "ES6"
     ]

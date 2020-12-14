@@ -9,7 +9,6 @@ import cors from 'cors'
 import serverErrorHandler from './scripts/RequestHandler/serverErrorHandler'
 import ServerError from './scripts/RequestHandler/serverErrorInterface'
 import { apiLogin } from './scripts/apiLogin'
-import { DBhost, DBuser, DBpassword, DBdatabase } from './user'
 import morgan from 'morgan'
 import accessRoute from './api/access'
 import apiRoute from './api/api'
@@ -24,15 +23,12 @@ import rateLimit from 'express-rate-limit'
 import worktypeRoute from './api/worktype/'
 import settingRoute from './api/setting/'
 
-// Settings
-const port:number = (process.env.PORT === undefined) ? 55565 : Number(process.env.PORT)
-
 // Setup the connection with the database
 export const DBcon = mysqlCreateConnection({
-  host: DBhost,
-  user: DBuser,
-  password: DBpassword,
-  database: DBdatabase
+  host: process.env.DBhost ?? 'localhost',
+  user: process.env.DBuser ?? 'root',
+  password: process.env.DBpassword ?? '',
+  database: process.env.DBdatabase ?? 'trackless'
 })
 
 // Connect to the database
@@ -95,6 +91,8 @@ server.use((request, response, next) => {
 server.use(serverErrorHandler())
 
 // Start the server
+const port = process.env.PORT ?? 55565
+
 try {
   server.listen(port, () => {
     console.log('SERVER: Started! on ' + port)

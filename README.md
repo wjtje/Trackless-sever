@@ -18,7 +18,22 @@ It work with nodejs version 10.x, 12.x and 14.x.
 Create a new mysql database and user for that database.
 Import the `sql/firstrun.sql` into the newly create database.
 
-Copy the `src/user.ts.temp` to `src/user.ts` and enter your own information.
+Set the environment variables with your information:
+Powershell:
+```powershell
+$env:DBhost = 'localhost'
+$env:DBuser = 'root'
+$env:DBpassword = ''
+$env:DBdatabase = 'trackless'
+```
+
+Bash:
+```bash
+DBhost = 'localhost'
+DBuser = 'root'
+DBpassword = ''
+DBdatabase = 'trackless'
+```
 
 Run the `npm install` command to install all the needed packages.
 

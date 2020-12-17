@@ -26,7 +26,7 @@ import settingRoute from './api/setting/'
 // Setup the connection with the database
 export const DBcon = mysqlCreateConnection({
   host: process.env.DBhost ?? 'localhost',
-  user: process.env.DBuser ?? 'root',
+  user: process.env.DBuser ?? '',
   password: process.env.DBpassword ?? '',
   database: process.env.DBdatabase ?? 'trackless'
 })

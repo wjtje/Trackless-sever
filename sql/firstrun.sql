@@ -49,7 +49,7 @@ CREATE TABLE `TL_locations` (
 CREATE TABLE `TL_settings` (
   `settingID` int NOT NULL AUTO_INCREMENT,
   `groupID` int NOT NULL,
-  `setting` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `setting` varchar(128) NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY (`settingID`),
   UNIQUE KEY `groupID` (`groupID`,`setting`)
@@ -59,7 +59,7 @@ CREATE TABLE `TL_users` (
   `userID` int NOT NULL AUTO_INCREMENT,
   `firstname` text NOT NULL,
   `lastname` text NOT NULL,
-  `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `username` varchar(64) NOT NULL,
   `groupID` int NOT NULL DEFAULT '1',
   `salt_hash` text NOT NULL,
   `hash` text NOT NULL,

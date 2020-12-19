@@ -1,7 +1,7 @@
 {
   "openapi" : "3.0.0",
   "info" : {
-    "version" : "0.4.5",
+    "version" : "0.4.6",
     "title" : "Trackless API",
     "contact" : {
       "name" : "wjtje",
@@ -16,7 +16,7 @@
     "/access" : {
       "get" : {
         "tags" : [ "access" ],
-        "summary" : "List all the access rules on the server",
+        "summary" : "List all the access rules on the server (trackless.access.readAll)",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
@@ -55,7 +55,7 @@
       },
       "post" : {
         "tags" : [ "access" ],
-        "summary" : "Give some group access to a command",
+        "summary" : "Give some group access to a command (trackless.access.create)",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -101,7 +101,7 @@
     "/access/{accessID}" : {
       "get" : {
         "tags" : [ "access" ],
-        "summary" : "Display an access rule",
+        "summary" : "Display an access rule (trackless.access.readAll)",
         "parameters" : [ {
           "in" : "path",
           "name" : "accessID",
@@ -144,7 +144,7 @@
       },
       "delete" : {
         "tags" : [ "access" ],
-        "summary" : "Remove an access rule",
+        "summary" : "Remove an access rule (trackless.access.remove)",
         "parameters" : [ {
           "in" : "path",
           "name" : "accessID",
@@ -170,7 +170,7 @@
     "/api" : {
       "get" : {
         "tags" : [ "api" ],
-        "summary" : "Get all your active api keys",
+        "summary" : "Get all your active api keys (trackless.api.read)",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
@@ -202,7 +202,7 @@
     "/api/{apiID}" : {
       "get" : {
         "tags" : [ "api" ],
-        "summary" : "Get infomation about a single api key",
+        "summary" : "Get infomation about a single api key (trackless.api.read)",
         "parameters" : [ {
           "in" : "path",
           "name" : "apiID",
@@ -236,7 +236,7 @@
       },
       "delete" : {
         "tags" : [ "api" ],
-        "summary" : "Remove a single api key",
+        "summary" : "Remove a single api key (trackless.api.remove)",
         "parameters" : [ {
           "in" : "path",
           "name" : "apiID",
@@ -262,7 +262,7 @@
     "/group" : {
       "get" : {
         "tags" : [ "group" ],
-        "summary" : "Get all the groups on the server",
+        "summary" : "Get all the groups on the server (trackless.group.read)",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
@@ -292,7 +292,7 @@
       },
       "post" : {
         "tags" : [ "group" ],
-        "summary" : "Create a new group on the server",
+        "summary" : "Create a new group on the server (trackless.group.create)",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -344,7 +344,7 @@
       } ],
       "get" : {
         "tags" : [ "group" ],
-        "summary" : "Get infomation about a single group",
+        "summary" : "Get infomation about a single group (trackless.group.read)",
         "responses" : {
           "200" : {
             "description" : "Successful operation",
@@ -369,7 +369,7 @@
       },
       "delete" : {
         "tags" : [ "group" ],
-        "summary" : "Removes a single group from the server",
+        "summary" : "Removes a single group from the server (trackless.group.remove)",
         "description" : "All the user is that group will be moved to group 0 (default). And all access rules for that group will be lost.",
         "responses" : {
           "200" : {
@@ -388,7 +388,7 @@
       },
       "patch" : {
         "tags" : [ "group" ],
-        "summary" : "Edits a group name",
+        "summary" : "Edits a group name (trackless.group.edit)",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -428,7 +428,7 @@
       } ],
       "get" : {
         "tags" : [ "group", "user" ],
-        "summary" : "List all the users in a group",
+        "summary" : "List all the users in a group (trackless.group.read)",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
@@ -461,7 +461,7 @@
       },
       "post" : {
         "tags" : [ "group", "user" ],
-        "summary" : "Add a user to a group",
+        "summary" : "Add a user to a group (trackless.group.add)",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -501,7 +501,7 @@
       } ],
       "get" : {
         "tags" : [ "group", "access" ],
-        "summary" : "List all access of a group",
+        "summary" : "List all access of a group (trackless.access.readAll)",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
@@ -534,7 +534,7 @@
       },
       "post" : {
         "tags" : [ "group", "access" ],
-        "summary" : "Gives a group access to a command",
+        "summary" : "Gives a group access to a command (trackless.access.create)",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -574,7 +574,7 @@
       } ],
       "get" : {
         "tags" : [ "group", "setting" ],
-        "summary" : "Get all the settings for a single groups on the server",
+        "summary" : "Get all the settings for a single groups on the server (trackless.setting.readAll)",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
@@ -604,7 +604,7 @@
       },
       "post" : {
         "tags" : [ "group", "setting" ],
-        "summary" : "Create a new setting for a group",
+        "summary" : "Create a new setting for a group (trackless.setting.create)",
         "security" : [ {
           "bearer_token" : [ ]
         } ],
@@ -650,7 +650,7 @@
     "/location" : {
       "get" : {
         "tags" : [ "location" ],
-        "summary" : "Get all the locations on the server",
+        "summary" : "Get all the locations on the server (trackless.location.read)",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
@@ -687,7 +687,7 @@
       },
       "post" : {
         "tags" : [ "location" ],
-        "summary" : "Create a new location",
+        "summary" : "Create a new location (trackless.location.create)",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -742,7 +742,7 @@
       } ],
       "get" : {
         "tags" : [ "location" ],
-        "summary" : "Get infomation about a single location",
+        "summary" : "Get infomation about a single location (trackless.location.read)",
         "responses" : {
           "200" : {
             "description" : "Successful operation",
@@ -767,8 +767,8 @@
       },
       "delete" : {
         "tags" : [ "location" ],
-        "summary" : "Remove a single location",
-        "description" : "All work that was using this location will be using locationID 0 (Deleted location).",
+        "summary" : "Remove a single location (trackless.location.remove)",
+        "description" : "If this location is in use then it can't be deleted. You can use the hide option to disable it.",
         "responses" : {
           "200" : {
             "description" : "Successful operation"
@@ -786,7 +786,7 @@
       },
       "patch" : {
         "tags" : [ "location" ],
-        "summary" : "Edit a location",
+        "summary" : "Edit a location (trackless.location.edit)",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -893,7 +893,7 @@
     "/setting" : {
       "get" : {
         "tags" : [ "setting" ],
-        "summary" : "Get all the settings for all the groups on the server",
+        "summary" : "Get all the settings for all the groups on the server (trackless.setting.readAll)",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
@@ -923,7 +923,7 @@
       },
       "post" : {
         "tags" : [ "setting" ],
-        "summary" : "Create a new setting for a group",
+        "summary" : "Create a new setting for a group (trackless.setting.create)",
         "security" : [ {
           "bearer_token" : [ ]
         } ],
@@ -981,7 +981,7 @@
       } ],
       "get" : {
         "tags" : [ "setting" ],
-        "summary" : "Get a setting",
+        "summary" : "Get a setting (trackless.setting.readAll)",
         "security" : [ {
           "bearer_token" : [ ]
         } ],
@@ -1006,7 +1006,7 @@
       },
       "delete" : {
         "tags" : [ "setting" ],
-        "summary" : "Remove a setting",
+        "summary" : "Remove a setting (trackless.setting.remove)",
         "security" : [ {
           "bearer_token" : [ ]
         } ],
@@ -1021,7 +1021,7 @@
       },
       "patch" : {
         "tags" : [ "setting" ],
-        "summary" : "Edit a setting",
+        "summary" : "Edit a setting (trackless.setting.edit)",
         "security" : [ {
           "bearer_token" : [ ]
         } ],
@@ -1058,7 +1058,7 @@
     "/user" : {
       "get" : {
         "tags" : [ "user" ],
-        "summary" : "Get all the users from the system",
+        "summary" : "Get all the users from the system (trackless.user.readAll)",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
@@ -1088,7 +1088,7 @@
       },
       "post" : {
         "tags" : [ "user" ],
-        "summary" : "Create a new user on the server",
+        "summary" : "Create a new user on the server (trackless.user.create)",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -1152,7 +1152,7 @@
       } ],
       "get" : {
         "tags" : [ "user" ],
-        "summary" : "Get infomation about a single user",
+        "summary" : "Get infomation about a single user (trackless.user.readAll / trackless.user.readOwn)",
         "responses" : {
           "200" : {
             "description" : "Successful operation",
@@ -1178,7 +1178,7 @@
       },
       "delete" : {
         "tags" : [ "user" ],
-        "summary" : "Remove a single user",
+        "summary" : "Remove a single user (trackless.user.remove)",
         "responses" : {
           "200" : {
             "description" : "Successful operation"
@@ -1194,7 +1194,7 @@
       },
       "patch" : {
         "tags" : [ "user" ],
-        "summary" : "Change a users info",
+        "summary" : "Change a users info (trackless.user.editAll / trackless.user.editOwn)",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -1244,7 +1244,7 @@
       } ],
       "get" : {
         "tags" : [ "access", "user" ],
-        "summary" : "Get all the access infomation for a user",
+        "summary" : "Get all the access infomation for a user (trackless.access.readAll / trackless.access.readOwn)",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
@@ -1289,7 +1289,7 @@
       } ],
       "get" : {
         "tags" : [ "location", "user" ],
-        "summary" : "Get location infomation about the user. Last used and most used",
+        "summary" : "Get location infomation about the user. Last used and most used. (trackless.location.read)",
         "responses" : {
           "200" : {
             "description" : "Successful operation",
@@ -1336,7 +1336,7 @@
       } ],
       "get" : {
         "tags" : [ "user", "setting" ],
-        "summary" : "Get all the settings for a single user on the server",
+        "summary" : "Get all the settings for a single user on the server (trackless.setting.readAll / trackless.setting.readOwn)",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
@@ -1377,7 +1377,7 @@
       } ],
       "get" : {
         "tags" : [ "user", "work" ],
-        "summary" : "Get all the work from an user",
+        "summary" : "Get all the work from an user (trackless.work.readAll / trackless.work.readOwn)",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
@@ -1424,7 +1424,7 @@
       },
       "post" : {
         "tags" : [ "user", "work" ],
-        "summary" : "Save your work as a user on the server",
+        "summary" : "Save your work as a user on the server (trackless.work.createAll / trackless.work.createOwn)",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -1496,7 +1496,7 @@
       } ],
       "get" : {
         "tags" : [ "user", "work" ],
-        "summary" : "Get a single work object that belongs to a user",
+        "summary" : "Get a single work object that belongs to a user (trackless.work.readAll / trackless.work.readOwn)",
         "responses" : {
           "201" : {
             "description" : "Successful operation",
@@ -1521,7 +1521,7 @@
       },
       "delete" : {
         "tags" : [ "user", "work" ],
-        "summary" : "Remove a single work object that belongs to a user",
+        "summary" : "Remove a single work object that belongs to a user (trackless.work.removeAll / trackless.work.removeOwn)",
         "responses" : {
           "200" : {
             "description" : "Successful operation"
@@ -1536,7 +1536,7 @@
       },
       "patch" : {
         "tags" : [ "user", "work" ],
-        "summary" : "Change info for a work object",
+        "summary" : "Change info for a work object (trackless.work.editAll / trackless.work.editOwn)",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -1579,7 +1579,7 @@
     "/work" : {
       "get" : {
         "tags" : [ "work" ],
-        "summary" : "Get the work from all the users",
+        "summary" : "Get the work from all the users (trackless.work.readAll)",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
@@ -1623,7 +1623,7 @@
       },
       "post" : {
         "tags" : [ "work" ],
-        "summary" : "Save your work on the server",
+        "summary" : "Save your work on the server (trackless.work.createAll)",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -1690,7 +1690,7 @@
       } ],
       "get" : {
         "tags" : [ "work" ],
-        "summary" : "Get a single work object",
+        "summary" : "Get a single work object (trackless.work.readAll)",
         "responses" : {
           "201" : {
             "description" : "Successful operation",
@@ -1715,7 +1715,7 @@
       },
       "delete" : {
         "tags" : [ "work" ],
-        "summary" : "Remove a single work object",
+        "summary" : "Remove a single work object (trackless.work.removeAll)",
         "responses" : {
           "200" : {
             "description" : "Successful operation"
@@ -1730,7 +1730,7 @@
       },
       "patch" : {
         "tags" : [ "work" ],
-        "summary" : "Change info for a work object",
+        "summary" : "Change info for a work object (trackless.work.editAll)",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -1776,7 +1776,7 @@
     "/worktype" : {
       "get" : {
         "tags" : [ "worktype" ],
-        "summary" : "Get all the worktypes from the system",
+        "summary" : "Get all the worktypes from the system (trackless.worktype.read)",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",
@@ -1806,7 +1806,7 @@
       },
       "post" : {
         "tags" : [ "worktype" ],
-        "summary" : "Create a new worktype on the server",
+        "summary" : "Create a new worktype on the server (trackless.worktype.create)",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -1858,7 +1858,7 @@
       } ],
       "get" : {
         "tags" : [ "worktype" ],
-        "summary" : "Get infomation about a single worktype",
+        "summary" : "Get infomation about a single worktype (trackless.worktype.read)",
         "responses" : {
           "200" : {
             "description" : "Successful operation",
@@ -1883,7 +1883,7 @@
       },
       "delete" : {
         "tags" : [ "worktype" ],
-        "summary" : "Remove a single worktype",
+        "summary" : "Remove a single worktype (trackless.worktype.remove)",
         "responses" : {
           "200" : {
             "description" : "Successful operation"
@@ -1898,7 +1898,7 @@
       },
       "patch" : {
         "tags" : [ "worktype" ],
-        "summary" : "Change the info of a worktype",
+        "summary" : "Change the info of a worktype (trackless.worktype.edit)",
         "requestBody" : {
           "content" : {
             "application/json" : {

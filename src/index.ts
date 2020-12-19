@@ -22,6 +22,7 @@ import nocache from 'nocache'
 import rateLimit from 'express-rate-limit'
 import worktypeRoute from './api/worktype/'
 import settingRoute from './api/setting/'
+import docs from '../api/swagger.json'
 
 // Setup the connection with the database
 export const DBcon = mysqlCreateConnection({
@@ -35,6 +36,7 @@ export const DBcon = mysqlCreateConnection({
 DBcon.connect(function (err) {
   if (err) {
     console.log('MYSQL: FAILED!')
+    console.log(err)
   } else {
     console.log('MYSQL: Connected!')
   }
@@ -78,6 +80,11 @@ server.use('/user', userRoute)
 server.use('/work', workRoute)
 server.use('/worktype', worktypeRoute)
 server.use('/server/about', severAboutRoute)
+
+// Docs route
+server.get('/docs', (req, res) => {
+  res.json(docs)
+})
 
 // Add 404 response
 server.use((request, response, next) => {

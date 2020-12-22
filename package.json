@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec \"(tsc || exit 1) && node --inspect dist/index.js\" -e ts",
     "build": "tsc --sourceMap false --outDir build",
-    "start": "node ./build/index.js",
+    "start": "node ./build/src/index.js",
     "test": "standardx **/*.ts && tsc"
   },
   "repository": {

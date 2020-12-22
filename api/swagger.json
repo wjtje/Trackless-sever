@@ -469,7 +469,7 @@
                 "type" : "object",
                 "properties" : {
                   "userID" : {
-                    "type" : "integer"
+                    "type" : "string"
                   }
                 }
               }
@@ -1147,7 +1147,7 @@
         "description" : "ID of the user",
         "required" : true,
         "schema" : {
-          "type" : "integer"
+          "type" : "string"
         }
       } ],
       "get" : {
@@ -1239,7 +1239,7 @@
         "description" : "ID of the user",
         "required" : true,
         "schema" : {
-          "type" : "integer"
+          "type" : "string"
         }
       } ],
       "get" : {
@@ -1284,7 +1284,7 @@
         "description" : "ID of the user",
         "required" : true,
         "schema" : {
-          "type" : "integer"
+          "type" : "string"
         }
       } ],
       "get" : {
@@ -1331,7 +1331,7 @@
         "description" : "The ID of a user",
         "required" : true,
         "schema" : {
-          "type" : "integer"
+          "type" : "string"
         }
       } ],
       "get" : {
@@ -1372,7 +1372,7 @@
         "description" : "The id of the user",
         "required" : true,
         "schema" : {
-          "type" : "integer"
+          "type" : "string"
         }
       } ],
       "get" : {
@@ -1483,7 +1483,7 @@
         "required" : true,
         "description" : "The user ID",
         "schema" : {
-          "type" : "integer"
+          "type" : "string"
         }
       }, {
         "in" : "path",

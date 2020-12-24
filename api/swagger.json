@@ -1431,7 +1431,7 @@
               "schema" : {
                 "type" : "object",
                 "properties" : {
-                  "worktypeId" : {
+                  "worktypeID" : {
                     "type" : "integer"
                   },
                   "locationID" : {
@@ -1630,10 +1630,10 @@
               "schema" : {
                 "type" : "object",
                 "properties" : {
-                  "worktypeId" : {
+                  "worktypeID" : {
                     "type" : "integer"
                   },
-                  "userId" : {
+                  "userID" : {
                     "type" : "integer"
                   },
                   "locationID" : {

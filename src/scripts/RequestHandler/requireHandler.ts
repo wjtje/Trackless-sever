@@ -30,7 +30,7 @@ export default (require: requireObject[]) => {
       next()
     }).catch((err: Error) => {
       // The user is missing something
-      const error:ServerError = new Error(err.message)
+      const error: ServerError = new Error(err.message)
       error.status = 400
       error.code = 'trackless.require.failed'
       next(error)

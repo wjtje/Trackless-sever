@@ -13,7 +13,7 @@ import ServerError from './RequestHandler/serverErrorInterface'
  * @param {MysqlError} error
  * @param {string} errorMessage
  */
-export function sqlError (next:NextFunction, err:MysqlError) {
+export function sqlError (next: NextFunction, err: MysqlError) {
   // Save it in the database
   DBcon.query(
     'INSERT INTO `TL_errors` (`error_code`, `error_message`) VALUES (?,?)',
@@ -24,7 +24,7 @@ export function sqlError (next:NextFunction, err:MysqlError) {
   )
 
   // Trow a new error
-  const error:ServerError = new Error('Sql error')
+  const error: ServerError = new Error('Sql error')
   error.code = 'trackless.sql.unknownError'
   next(error)
 }

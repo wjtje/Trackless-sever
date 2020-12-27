@@ -88,7 +88,7 @@ server.get('/docs', (req, res) => {
 
 // Add 404 response
 server.use((request, response, next) => {
-  const error:ServerError = new Error('Not found')
+  const error: ServerError = new Error('Not found')
   error.status = 404
   error.code = 'trackless.notFound'
   next(error)

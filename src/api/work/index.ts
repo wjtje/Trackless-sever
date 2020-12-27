@@ -54,7 +54,7 @@ router.get(
     DBcon.query(
       'SELECT * FROM `TL_vWork` WHERE 1=1 ' + sort + String((request.querySort || ' ORDER BY `date`')),
       [(request.params.userID === '~') ? request.user?.userID : request.params.userID],
-      handleQuery(next, (result:Array<TLWork>) => {
+      handleQuery(next, (result: Array<TLWork>) => {
         responseWork(result, response)
       })
     )

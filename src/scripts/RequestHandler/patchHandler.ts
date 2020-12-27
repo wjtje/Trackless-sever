@@ -7,7 +7,7 @@ import { DBcon } from '../..'
 import { requireObject } from './interface'
 import { MysqlError } from 'mysql'
 
-export function patchHandler (editArray: requireObject[], commitFunction: (resolve: (value?:any) => void, reject: (value?:any) => void, key: string, request: Request) => void) {
+export function patchHandler (editArray: requireObject[], commitFunction: (resolve: (value?: any) => void, reject: (value?: any) => void, key: string, request: Request) => void) {
   return (request: Request, response: Response, next: NextFunction) => {
     // Make sure the array does not contain any wrong thing
     bodyOnlyContains(request.body, editArray).then(() => {

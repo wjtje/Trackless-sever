@@ -19,12 +19,12 @@ export default (access: accessFunction | string) => {
     passport.authenticate('bearer', (error, user: userInfo) => {
       if (error) {
         // Something went wrong
-        const error:ServerError = new Error('Internal server error')
+        const error: ServerError = new Error('Internal server error')
         error.code = 'trackless.auth.user.failed'
         next(error)
       } else if (!user) {
         // User not found
-        const error:ServerError = new Error('Forbidden')
+        const error: ServerError = new Error('Forbidden')
         error.status = 401
         error.code = 'trackless.auth.user.notFound'
         next(error)
@@ -38,7 +38,7 @@ export default (access: accessFunction | string) => {
           ], handleQuery(next, (result) => {
             if (result.length === 0 && user.groupID !== 1) {
               // User does not have access
-              const error:ServerError = new Error('Forbidden')
+              const error: ServerError = new Error('Forbidden')
               error.status = 403
               error.code = 'trackless.auth.user.noAccess'
               next(error)

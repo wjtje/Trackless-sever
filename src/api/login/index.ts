@@ -30,7 +30,7 @@ router.post(
         if (sha512(request.body.password + _.get(result, '[0].salt_hash', '')) === _.get(result, '[0].hash', '')) {
           // Password correct
           // Create an apiKey using time
-          const apiKey:string = sha512(Date.now().toString())
+          const apiKey: string = sha512(Date.now().toString())
 
           // Save it to the database
           DBcon.query(

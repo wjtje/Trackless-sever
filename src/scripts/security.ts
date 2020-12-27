@@ -9,12 +9,12 @@ import { sha512_256 as sha512 } from 'js-sha512'
  * @param {number} length Length of the string
  * @returns {string} An random string
  */
-export function generateRandomString (length:number) : string {
+export function generateRandomString (length: number): string {
   let result = ''
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   const charLength = chars.length
 
-  for (var i = 0; i < length; i++) {
+  for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * charLength))
   }
 

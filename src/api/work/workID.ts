@@ -24,7 +24,7 @@ router.get(
     DBcon.query(
       'SELECT * FROM `TL_vWork` WHERE `workID`=?',
       [request.params.workID],
-      handleQuery(next, (result:Array<TLWork>) => {
+      handleQuery(next, (result: Array<TLWork>) => {
         responseWork(result, response)
       })
     )

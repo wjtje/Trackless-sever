@@ -29,7 +29,7 @@ router.get(
     DBcon.query(
       'SELECT * FROM `TL_groups` ORDER BY `groupname`' + String(request.querySort || ''),
       handleQuery(next, (result: Array<TLgroups>) => {
-        const rslt:{
+        const rslt: {
           groupID: number;
           groupName: string;
           users: object;

@@ -9,7 +9,7 @@ import moment from 'moment'
  * @param testValue
  * @returns {boolean}
  */
-export const mysqlINT = (testValue:any) : boolean => {
+export const mysqlINT = (testValue: any): boolean => {
   // Check if the value is not NaN
   if (isNaN(Number(testValue))) {
     return false // It is not a INT
@@ -29,7 +29,7 @@ export const mysqlINT = (testValue:any) : boolean => {
  * @param testValue
  * @returns {boolean}
  */
-export const mysqlFLOAT = (testValue:any) : boolean => {
+export const mysqlFLOAT = (testValue: any): boolean => {
   // Check if the value is not NaN
   if (isNaN(Number(testValue))) {
     return false // It is not a FLOAT
@@ -64,7 +64,7 @@ export const mysqlFLOAT = (testValue:any) : boolean => {
  * @param testValue
  * @returns {boolean}
  */
-export const mysqlDATE = (testValue:any) : boolean => {
+export const mysqlDATE = (testValue: any): boolean => {
   return moment(testValue, 'YYYY-MM-DD').isValid()
 }
 
@@ -75,7 +75,7 @@ export const mysqlDATE = (testValue:any) : boolean => {
  * @param testValue
  * @returns {boolean}
  */
-export const mysqlUTFTEXT = (testValue:any) : boolean => {
+export const mysqlUTFTEXT = (testValue: any): boolean => {
   const testValueString = String(testValue) // Make sure it is a string
 
   if (testValueString.length > 65535 || typeof testValue !== 'string' || testValueString === '') {
@@ -92,7 +92,7 @@ export const mysqlUTFTEXT = (testValue:any) : boolean => {
  * @param testValue
  * @returns {boolean}
  */
-export const mysqlTEXT = (testValue:any) : boolean => {
+export const mysqlTEXT = (testValue: any): boolean => {
   const testValueString = String(testValue) // Make sure it is a string
 
   if (testValueString.length > 65535 || typeof testValue !== 'string' || testValueString === '') {
@@ -110,7 +110,7 @@ export const mysqlTEXT = (testValue:any) : boolean => {
  * @param testValue
  * @returns {boolean}
  */
-export const mysqlLONGTEXT = (testValue:any) : boolean => {
+export const mysqlLONGTEXT = (testValue: any): boolean => {
   const testValueString = String(testValue) // Make sure it is a string
 
   if (testValueString.length > 4294967296 || typeof testValue !== 'string' || testValueString === '') {
@@ -128,7 +128,7 @@ export const mysqlLONGTEXT = (testValue:any) : boolean => {
  * @param testValue
  * @returns {boolean}
  */
-export const mysqlBOOLEAN = (testValue: any) : boolean => {
+export const mysqlBOOLEAN = (testValue: any): boolean => {
   if (Number(testValue) === 0 || Number(testValue) === 1) {
     return true
   } else {
@@ -142,7 +142,7 @@ export const mysqlBOOLEAN = (testValue: any) : boolean => {
  * @param length The length of the varchar
  * @returns {(testvalue: any) => boolean} A test function
  */
-export const mysqlVARCHAR = (length: number) : ((testValue: any) => boolean) => {
+export const mysqlVARCHAR = (length: number): ((testValue: any) => boolean) => {
   return (testValue) => {
     const testValueString = String(testValue) // Make sure it is a string
 

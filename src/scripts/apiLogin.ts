@@ -10,7 +10,7 @@ import { get as _get } from 'lodash'
  * @since 0.2-beta.1
  * @param apiKey
  */
-export function apiLogin (apiKey:string):Promise<{
+export function apiLogin (apiKey: string): Promise<{
   userID: number;
   username: string;
   firstname: string;

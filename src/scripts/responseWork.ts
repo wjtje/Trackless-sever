@@ -33,7 +33,7 @@ export interface TLWork {
  * @param result
  * @param response
  */
-export function responseWork (result: TLWork[], response:Response) {
+export function responseWork (result: TLWork[], response: Response) {
   // Create a tmp buffer
   const tmp: {
     workID: number;

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec \"(tsc || exit 1) && node --inspect dist/index.js\" -e ts",
     "build": "tsc --sourceMap false --outDir build",
-    "start": "node ./build/index.js",
+    "start": "node ./build/src/index.js",
     "test": "standardx **/*.ts && tsc"
   },
   "repository": {
@@ -39,14 +39,14 @@
     "@types/express": "^4.17.9",
     "@types/express-rate-limit": "^5.1.0",
     "@types/js-sha512": "^0.7.0",
-    "@types/lodash": "^4.14.165",
+    "@types/lodash": "^4.14.166",
     "@types/morgan": "^1.9.2",
     "@types/mysql": "^2.15.16",
-    "@types/node": "^14.14.14",
+    "@types/node": "^14.14.16",
     "@types/passport": "^1.0.4",
     "@types/passport-http-bearer": "^1.0.36",
-    "@typescript-eslint/eslint-plugin": "^4.10.0",
-    "@typescript-eslint/parser": "^4.10.0",
+    "@typescript-eslint/eslint-plugin": "^4.11.0",
+    "@typescript-eslint/parser": "^4.11.0",
     "nodemon": "^2.0.6",
     "standardx": "^7.0.0",
     "typescript": "^4.1.3"

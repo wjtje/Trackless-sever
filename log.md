@@ -1,5 +1,7 @@
 # New in this version
 
+ - Able to sort on multiple properties
+
 # Changed in this version
 
  - Added environment variables

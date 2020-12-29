@@ -11,20 +11,35 @@ import ServerError from './serverErrorInterface'
 export default (options: string[]) => {
   return (request: Request, response: Response, next: NextFunction) => {
     // Check if the sort options is active
-    if (request.query?.sort === undefined) {
+    if (typeof request.query?.sort !== 'string') {
       request.querySort = ''
       next()
     } else {
-      // Check if the option is valid
-      if (options.includes(String(request.query?.sort))) {
-        // The options is valid
-        request.querySort = ` ORDER BY \`${String(request.query?.sort)}\` `
+      // Check if all the options are valid
+      const userInput = request.query?.sort.replace(/ /g, '').split(',')
+
+      let sql = ' ORDER BY '
+
+      try {
+        userInput.forEach(value => {
+          // Check if the value is allows
+          if (options.includes(value)) {
+            sql += `${value},`
+          } else {
+            // The options is not allowed
+            // Show an error to the user
+            const error: ServerError = new Error('Wrong sort option')
+            error.code = 'trackless.sort.wrong'
+            error.status = 400
+            throw error
+          }
+        })
+
+        // Make the sql correct
+        request.querySort = sql.slice(0, -1)
         next()
-      } else {
-        // The option is wrong
-        const error: ServerError = new Error('Wrong sort option')
-        error.code = 'trackless.sort.wrong'
-        error.status = 400
+      } catch (error) {
+        // Catch the error
         next(error)
       }
     }

@@ -9,6 +9,7 @@ import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT } from '../../scripts/types'
 import locationIDRoute from './locationID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
+import limitOffsetHandler from '../../scripts/RequestHandler/limitOffsetHandler'
 
 const router = express.Router()
 
@@ -23,11 +24,13 @@ router.get(
     'hidden',
     'time'
   ]),
+  limitOffsetHandler(),
   (request, response, next) => {
     DBcon.query(
       `SELECT * FROM TL_vLocations 
         ${(request.query.hidden == null) ? 'WHERE `hidden`=0' : ''} 
-        ${String(request.querySort || 'ORDER BY `place`, `name`')}
+        ${request.querySort ?? 'ORDER BY `place`, `name`'}
+        ${request.queryLimitOffset ?? ''}
       `,
       handleQuery(next, (result) => {
         response.status(200).json(result)

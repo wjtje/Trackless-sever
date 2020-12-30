@@ -16,6 +16,7 @@ import workIDRoute from './workID'
 import accessRoute from './access'
 import locationRoute from './location'
 import settingRoute from './setting'
+import limitOffsetHandler from '../../scripts/RequestHandler/limitOffsetHandler'
 
 const router = express.Router()
 
@@ -31,10 +32,12 @@ router.get(
     'groupID',
     'groupName'
   ]),
+  limitOffsetHandler(),
   (request, response, next) => {
     // Send the request
     DBcon.query(
-      'SELECT `userID`, `firstname`, `lastname`, `username`, `groupID`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupID`) ' + String((request.querySort || ' ORDER BY `firstname`, `lastname`, `username`')),
+      'SELECT `userID`, `firstname`, `lastname`, `username`, `groupID`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupID`) ' +
+      `${request.querySort ?? ' ORDER BY `firstname`, `lastname`, `username`'} ${request.queryLimitOffset ?? ''}`,
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })

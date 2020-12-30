@@ -6,6 +6,7 @@ import { handleQuery } from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/authHandler'
 import groupIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/groupIDCheckHandler'
 import userIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIDCheckHandler'
+import limitOffsetHandler from '../../scripts/RequestHandler/limitOffsetHandler'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import { mysqlINT } from '../../scripts/types'
@@ -25,10 +26,11 @@ router.get(
     'groupID',
     'groupName'
   ]),
+  limitOffsetHandler(),
   (request, response, next) => {
     // Get all the infomation we need
     DBcon.query(
-      'SELECT `userID`, `firstname`, `lastname`, `username`, `groupID`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupID`) WHERE `groupID`=?' + String(request.querySort || 'ORDER BY `firstname`, `lastname`, `username`'),
+      'SELECT `userID`, `firstname`, `lastname`, `username`, `groupID`, `groupName` FROM `TL_users` INNER JOIN `TL_groups` USING (`groupID`) WHERE `groupID`=?' + `${request.querySort ?? 'ORDER BY `firstname`, `lastname`, `username`'} ${request.queryLimitOffset ?? ''}`,
       [request.params.groupID],
       handleQuery(next, (result) => {
         // Return the infomation

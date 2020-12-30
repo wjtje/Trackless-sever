@@ -7,9 +7,9 @@ declare global {
   namespace Express {
     interface Request {
       /**
-       * This will define the sort setting for the sql command
+       * This will define the limit and offset settings for the sql command
        */
-      querySort?: string;
+      queryLimitOffset?: string;
     }
   }
 }

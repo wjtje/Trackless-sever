@@ -8,6 +8,7 @@ import { handleQuery } from '../../scripts/handle'
 import apiIDRoute from './apiID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import { decodeJSON } from '../../scripts/testEncoding'
+import limitOffsetHandler from '../../scripts/RequestHandler/limitOffsetHandler'
 
 const router = express.Router()
 
@@ -21,10 +22,11 @@ router.get(
     'lastUsed',
     'deviceName'
   ]),
+  limitOffsetHandler(),
   (request, response, next) => {
     // Get all the api keys from the server
     DBcon.query(
-      'SELECT `apiID`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `userID`=?' + String(request.querySort || ''),
+      'SELECT `apiID`, `createDate`, `lastUsed`, `deviceName` FROM `TL_apikeys` WHERE `userID`=?' + String(request.querySort || '') + ` ${request.queryLimitOffset ?? ''}`,
       [request.user?.userID],
       handleQuery(next, (result) => {
         // Send the data back to the user

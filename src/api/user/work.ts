@@ -6,6 +6,7 @@ import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/authHandler'
 import userIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/userIDCheckHandler'
+import limitOffsetHandler from '../../scripts/RequestHandler/limitOffsetHandler'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import ServerError from '../../scripts/RequestHandler/serverErrorInterface'
 import settingsHandler from '../../scripts/RequestHandler/settingsHandler'
@@ -38,6 +39,7 @@ router.get(
     'worktype.worktypeID',
     'worktype.name'
   ]),
+  limitOffsetHandler(),
   (request, response, next) => {
     // Check if the startDate and / or endDate is correct
     let sort = ''
@@ -52,7 +54,7 @@ router.get(
 
     // Get all the work for that user
     DBcon.query(
-      'SELECT * FROM `TL_vWork` WHERE `user.userID`=? ' + sort + String((request.querySort || ' ORDER BY `date`')),
+      'SELECT * FROM `TL_vWork` WHERE `user.userID`=? ' + `${sort} ${request.querySort ?? ' ORDER BY `date`'} ${request.queryLimitOffset ?? ''}`,
       [(request.params.userID === '~') ? request.user?.userID : request.params.userID],
       handleQuery(next, (result: Array<TLWork>) => {
         responseWork(result, response)

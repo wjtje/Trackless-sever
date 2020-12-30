@@ -9,6 +9,7 @@ import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT } from '../../scripts/types'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import worktypeIDRouter from './worktypeID'
+import limitOffsetHandler from '../../scripts/RequestHandler/limitOffsetHandler'
 
 const router = express.Router()
 
@@ -20,10 +21,11 @@ router.get(
     'worktypeID',
     'name'
   ]),
+  limitOffsetHandler(),
   (request, response, next) => {
     // Send the request
     DBcon.query(
-      'SELECT `worktypeID`, `name` FROM `TL_worktype` ' + String((request.querySort || ' ORDER BY `name`')),
+      'SELECT `worktypeID`, `name` FROM `TL_worktype` ' + `${request.querySort ?? ' ORDER BY `name`'} ${request.queryLimitOffset ?? ''}`,
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })

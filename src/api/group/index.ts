@@ -13,6 +13,7 @@ import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import userRoute from './user'
 import accessRoute from './access'
 import settingRoute from './setting'
+import limitOffsetHandler from '../../scripts/RequestHandler/limitOffsetHandler'
 
 const router = express.Router()
 
@@ -24,10 +25,11 @@ router.get(
     'groupID',
     'groupName'
   ]),
+  limitOffsetHandler(),
   (request, response, next) => {
     // List all group
     DBcon.query(
-      'SELECT * FROM `TL_groups` ORDER BY `groupname`' + String(request.querySort || ''),
+      'SELECT * FROM `TL_groups` ORDER BY `groupname`' + `${request.querySort ?? ''} ${request.queryLimitOffset ?? ''}`,
       handleQuery(next, (result: Array<TLgroups>) => {
         const rslt: {
           groupID: number;

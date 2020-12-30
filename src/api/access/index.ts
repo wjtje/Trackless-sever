@@ -10,6 +10,7 @@ import { mysqlINT, mysqlTEXT } from '../../scripts/types'
 import accessIDRoute from './accessID'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import groupIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/groupIDCheckHandler'
+import limitOffsetHandler from '../../scripts/RequestHandler/limitOffsetHandler'
 
 const router = express.Router()
 
@@ -22,10 +23,11 @@ router.get(
     'accessID',
     'access'
   ]),
+  limitOffsetHandler(),
   (request, response, next) => {
     // Get all the data from the server
     DBcon.query(
-      'SELECT `accessID`, `access`, `groupID` FROM `TL_access`' + String(request.querySort || ''),
+      'SELECT `accessID`, `access`, `groupID` FROM `TL_access`' + String(request.querySort || '') + ` ${request.queryLimitOffset ?? ''}`,
       handleQuery(next, (result) => {
         response.status(200).json(result)
       })

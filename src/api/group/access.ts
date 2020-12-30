@@ -5,6 +5,7 @@ import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/authHandler'
 import groupIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/groupIDCheckHandler'
+import limitOffsetHandler from '../../scripts/RequestHandler/limitOffsetHandler'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import { mysqlTEXT } from '../../scripts/types'
 
@@ -15,9 +16,10 @@ router.get(
   '/:groupID/access',
   authHandler('trackless.access.readAll'),
   groupIDCheckHandler(),
+  limitOffsetHandler(),
   (request, response, next) => {
     DBcon.query(
-      'SELECT `accessID`, `access` FROM `TL_access` WHERE `groupID`=?',
+      'SELECT `accessID`, `access` FROM `TL_access` WHERE `groupID`=?' + ` ${request.queryLimitOffset ?? ''}`,
       [request.params.groupID],
       handleQuery(next, (result) => {
         response.status(200).json(result)

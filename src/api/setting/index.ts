@@ -4,6 +4,7 @@ import express from 'express'
 import { DBcon } from '../..'
 import { handleQuery } from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/authHandler'
+import limitOffsetHandler from '../../scripts/RequestHandler/limitOffsetHandler'
 import requireHandler from '../../scripts/RequestHandler/requireHandler'
 import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
@@ -22,9 +23,10 @@ router.get(
     'groupID',
     'groupName'
   ]),
+  limitOffsetHandler(),
   (request, response, next) => {
     DBcon.query(
-      'SELECT `settingID`, `setting`, `value`, `groupID`, `groupName` FROM `TL_settings` JOIN `TL_groups` USING(`groupID`) ' + String(request.querySort || ''),
+      'SELECT `settingID`, `setting`, `value`, `groupID`, `groupName` FROM `TL_settings` JOIN `TL_groups` USING(`groupID`) ' + `${request.querySort ?? ''} ${request.queryLimitOffset ?? ''}`,
       handleQuery(next, (result) => {
         response.json(result)
       })

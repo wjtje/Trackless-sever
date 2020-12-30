@@ -14,6 +14,7 @@ import sortHandler from '../../scripts/RequestHandler/sortHandler'
 import { responseWork, TLWork } from '../../scripts/responseWork'
 import workIDRoute from './workID'
 import { encodeText } from '../../scripts/testEncoding'
+import limitOffsetHandler from '../../scripts/RequestHandler/limitOffsetHandler'
 
 const router = express.Router()
 
@@ -38,6 +39,7 @@ router.get(
     'worktype.worktypeID',
     'worktype.name'
   ]),
+  limitOffsetHandler(),
   (request, response, next) => {
     // Check if the startDate and / or endDate is correct
     let sort = ''
@@ -52,7 +54,7 @@ router.get(
 
     // Get all the work for that user
     DBcon.query(
-      'SELECT * FROM `TL_vWork` WHERE 1=1 ' + sort + String((request.querySort || ' ORDER BY `date`')),
+      'SELECT * FROM `TL_vWork` WHERE 1=1 ' + `${sort} ${request.querySort ?? ' ORDER BY `date`'} ${request.queryLimitOffset ?? ''}`,
       [(request.params.userID === '~') ? request.user?.userID : request.params.userID],
       handleQuery(next, (result: Array<TLWork>) => {
         responseWork(result, response)

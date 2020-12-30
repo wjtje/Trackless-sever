@@ -24,6 +24,20 @@
             "type" : "string"
           },
           "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
         } ],
         "responses" : {
           "200" : {
@@ -177,7 +191,21 @@
           "schema" : {
             "type" : "string"
           },
-          "description" : "Option to sort result by propertie"
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
         } ],
         "responses" : {
           "200" : {
@@ -269,7 +297,21 @@
           "schema" : {
             "type" : "string"
           },
-          "description" : "Option to sort result by propertie"
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
         } ],
         "responses" : {
           "200" : {
@@ -436,6 +478,20 @@
             "type" : "string"
           },
           "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
         } ],
         "responses" : {
           "200" : {
@@ -509,6 +565,20 @@
             "type" : "string"
           },
           "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
         } ],
         "responses" : {
           "200" : {
@@ -581,7 +651,21 @@
           "schema" : {
             "type" : "string"
           },
-          "description" : "Option to sort result by propertie"
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
         } ],
         "responses" : {
           "200" : {
@@ -657,7 +741,7 @@
           "schema" : {
             "type" : "string"
           },
-          "description" : "Option to sort result by propertie"
+          "description" : "Option to sort result by property"
         }, {
           "in" : "query",
           "name" : "hidden",
@@ -665,6 +749,20 @@
             "type" : "string"
           },
           "description" : "If used the server will show the hidden locations"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
         } ],
         "responses" : {
           "200" : {
@@ -900,7 +998,21 @@
           "schema" : {
             "type" : "string"
           },
-          "description" : "Option to sort result by propertie"
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
         } ],
         "responses" : {
           "200" : {
@@ -1065,7 +1177,21 @@
           "schema" : {
             "type" : "string"
           },
-          "description" : "Option to sort result by propertie"
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
         } ],
         "responses" : {
           "200" : {
@@ -1252,6 +1378,20 @@
             "type" : "string"
           },
           "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
         } ],
         "responses" : {
           "200" : {
@@ -1343,7 +1483,21 @@
           "schema" : {
             "type" : "string"
           },
-          "description" : "Option to sort result by propertie"
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
         } ],
         "responses" : {
           "200" : {
@@ -1399,6 +1553,20 @@
             "type" : "string"
           },
           "description" : "Only show work bevore ..."
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
         } ],
         "responses" : {
           "200" : {
@@ -1601,6 +1769,20 @@
             "type" : "string"
           },
           "description" : "Only show work bevore ..."
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
         } ],
         "responses" : {
           "200" : {
@@ -1783,7 +1965,21 @@
           "schema" : {
             "type" : "string"
           },
-          "description" : "Option to sort result by propertie"
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
         } ],
         "responses" : {
           "200" : {

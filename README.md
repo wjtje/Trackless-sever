@@ -44,6 +44,19 @@ And `npm start` to start the server.
 
 Take a look at the [wiki](https://github.com/wjtje/Trackless-server/wiki/How-to-get-started) to learn more.
 
+## FAQ
+### For who is this project?
+
+This is a personal project without any commercial vision.
+
+### Then why did you create this?
+
+This project is use to learn how to create a server (and client) application with a simple database. And how to comunicate between them. There are probably projects that do all these things better than this one. But thats not the point.
+
+### Should I even use this project?
+
+The short anwser is no, and the longer anwser is still no.
+
 ## Npm commands
 
  - `dev` Compile the code and run it. Refresh if a file changes.
@@ -54,4 +67,5 @@ Take a look at the [wiki](https://github.com/wjtje/Trackless-server/wiki/How-to-
 ## LICENSE
 
 The MIT License (MIT)
+
 Copyright (c) 2020 Wouter van der Wal

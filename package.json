@@ -42,7 +42,7 @@
     "@types/lodash": "^4.14.167",
     "@types/morgan": "^1.9.2",
     "@types/mysql": "^2.15.17",
-    "@types/node": "^14.14.19",
+    "@types/node": "^14.14.20",
     "@types/passport": "^1.0.5",
     "@types/passport-http-bearer": "^1.0.36",
     "@typescript-eslint/eslint-plugin": "^4.11.1",

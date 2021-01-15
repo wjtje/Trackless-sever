@@ -23,13 +23,17 @@ import rateLimit from 'express-rate-limit'
 import worktypeRoute from './api/worktype/'
 import settingRoute from './api/setting/'
 import docs from '../api/swagger.json'
+import fs from 'fs'
 
 // Setup the connection with the database
 export const DBcon = mysqlCreateConnection({
   host: process.env.DBhost ?? 'localhost',
   user: process.env.DBuser ?? '',
   password: process.env.DBpassword ?? '',
-  database: process.env.DBdatabase ?? 'trackless'
+  database: process.env.DBdatabase ?? 'trackless',
+  ssl: {
+    ca: fs.readFileSync(process.env.CA ?? '')
+  }
 })
 
 // Connect to the database

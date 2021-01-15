@@ -51,7 +51,7 @@ This is a personal project without any commercial vision.
 
 ### Then why did you create this?
 
-This project is use to learn how to create a server (and client) application with a simple database. And how to comunicate between them. There are probably projects that do all these things better than this one. But thats not the point.
+This project is used to learn how to create a server (and client) application with a simple database. And how to comunicate between them. There are probably projects that do all these things better than this one. But thats not the point.
 
 ### Should I even use this project?
 

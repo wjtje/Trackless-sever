@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "nodemon --exec \"(tsc || exit 1) && node --inspect dist/index.js\" -e ts",
+    "dev": "nodemon --exec \"(tsc || exit 1) && node --inspect dist/src/index.js\" -e ts",
     "build": "tsc --sourceMap false --outDir build",
     "start": "node ./build/src/index.js",
     "test": "standardx **/*.ts && tsc"
@@ -32,7 +32,8 @@
     "nocache": "^2.1.0",
     "passport": "^0.4.1",
     "passport-http-bearer": "^1.0.1",
-    "tslib": "^2.0.3"
+    "tslib": "^2.0.3",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.9",

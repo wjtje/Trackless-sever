@@ -24,6 +24,29 @@ import worktypeRoute from './api/worktype/'
 import settingRoute from './api/setting/'
 import docs from '../api/swagger.json'
 import fs from 'fs'
+import winston from 'winston'
+
+// Create a logger
+// This logger will go to a file and the console
+export const logger = winston.createLogger({
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({
+      filename: 'trackless.log'
+    })
+  ]
+})
+
+// Test if we need to use ssl
+let ssl = {}
+
+if (process.env.CA != null) {
+  ssl = {
+    ssl: {
+      ca: fs.readFileSync(process.env.CA)
+    }
+  }
+}
 
 // Setup the connection with the database
 export const DBcon = mysqlCreateConnection({
@@ -31,18 +54,15 @@ export const DBcon = mysqlCreateConnection({
   user: process.env.DBuser ?? '',
   password: process.env.DBpassword ?? '',
   database: process.env.DBdatabase ?? 'trackless',
-  ssl: {
-    ca: fs.readFileSync(process.env.CA ?? '')
-  }
+  ...ssl
 })
 
 // Connect to the database
-DBcon.connect(function (err) {
-  if (err) {
-    console.log('MYSQL: FAILED!')
-    console.log(err)
+DBcon.connect(function (error) {
+  if (error) {
+    logger.error('Mysql: connection failed', error)
   } else {
-    console.log('MYSQL: Connected!')
+    logger.info('Mysql: Connected')
   }
 })
 
@@ -60,7 +80,15 @@ server.use(bodyParser.json())
 server.use(cors())
 server.use(nocache())
 server.use(passport.initialize())
-server.use(morgan('tiny'))
+
+// Make sure that morgan uses winston for loggin
+server.use(morgan('combined', {
+  stream: {
+    write: (message) => {
+      logger.info(message)
+    }
+  }
+}))
 
 // Use passport
 passport.use(new BearerStrategy(
@@ -106,8 +134,8 @@ const port = process.env.PORT ?? 55565
 
 try {
   server.listen(port, () => {
-    console.log('SERVER: Started! on ' + port)
+    logger.info(`Server started on port: ${port}`)
   })
 } catch {
-  console.log(`SERVER: ${port} is in use`)
+  logger.warn(`port ${port} is in use`)
 }

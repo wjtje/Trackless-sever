@@ -7,3 +7,4 @@ test
 src/user.ts
 githubPush
 .vscode
+*.log

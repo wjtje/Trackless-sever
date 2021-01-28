@@ -2,7 +2,7 @@
 
 import { NextFunction } from 'express'
 import { MysqlError } from 'mysql'
-import { DBcon } from '..'
+import { DBcon, logger } from '..'
 import ServerError from './RequestHandler/serverErrorInterface'
 
 /**
@@ -22,6 +22,9 @@ export function sqlError (next: NextFunction, err: MysqlError) {
       err?.sqlMessage
     ]
   )
+
+  // Use winston to log the error
+  logger.log('error', 'SQL ERROR', err)
 
   // Trow a new error
   const error: ServerError = new Error('Sql error')

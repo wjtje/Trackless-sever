@@ -2,6 +2,7 @@
 
 * Fixed the dev command
 * Use winston to track errors
+* Added a docker-compose.yml file
 
 # Online API [0.4.6]
 

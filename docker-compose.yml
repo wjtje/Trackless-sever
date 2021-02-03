@@ -17,7 +17,7 @@ services:
   mariadb:
     image: mariadb:10
     volumes: 
-      - trackless-mariadb-data:/var/lib/mysql
+      - mariadb-data:/var/lib/mysql
       - ./sql/:/docker-entrypoint-initdb.d
     # ports: 
     #   - 3306:3306
@@ -26,4 +26,4 @@ services:
       MYSQL_DATABASE: trackless
 
 volumes: 
-  trackless-mariadb-data:
+  mariadb-data:

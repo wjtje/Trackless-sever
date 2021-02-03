@@ -209,7 +209,7 @@ INSERT INTO `TL_access` (`groupID`, `access`) VALUES
 
 -- Create a admin user
 INSERT INTO `TL_users` (`firstname`, `lastname`, `username`, `groupID`, `salt_hash`, `hash`) VALUES
-('admin', 'admin', 'admin', 1, 'U736OMcfzID8YsBX', '499e653fc45c668794047f56c298ed213594863a1d18683ea07ae5efe972f9f8');
+('admin', 'admin', 'admin', 2, 'U736OMcfzID8YsBX', '499e653fc45c668794047f56c298ed213594863a1d18683ea07ae5efe972f9f8');
 
 -- Save the database
 COMMIT;

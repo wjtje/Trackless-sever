@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  server:
+    image: node:14-alpine
+    command: sh -c "npm i && npm run build && npm start"
+    ports: 
+      - 55565:55565
+    working_dir: /app
+    volumes: 
+      - ./:/app
+    environment:
+      DBhost: mariadb
+      DBuser: root
+      DBpassword: changethis
+
+  mariadb:
+    image: mariadb:10
+    volumes: 
+      - trackless-mariadb-data:/var/lib/mysql
+      - ./sql/:/docker-entrypoint-initdb.d
+    # ports: 
+    #   - 3306:3306
+    environment: 
+      MYSQL_ROOT_PASSWORD: changethis
+      MYSQL_DATABASE: trackless
+
+volumes: 
+  trackless-mariadb-data:

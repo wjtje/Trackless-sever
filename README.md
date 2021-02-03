@@ -40,6 +40,18 @@ Run the `npm install` command to install all the needed packages.
 At last your can run `npm run build` to compile the typescript code into normal javacript.
 And `npm start` to start the server. 
 
+## Docker installation
+
+If setting up your own database is something you don't want to do, you can use the docker-compose.yml file.
+
+1. change the `changethis` password to something else
+
+2. Build the containers `docker-compose up -d`
+
+3. Your server it up and runnning on port 55565
+
+You can uncommand the port section in the mariadb service if you want access to the internal database.
+
 ## How to get started
 
 Take a look at the [wiki](https://github.com/wjtje/Trackless-server/wiki/How-to-get-started) to learn more.

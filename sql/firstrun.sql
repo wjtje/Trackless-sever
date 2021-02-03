@@ -148,12 +148,68 @@ ALTER TABLE `TL_work`
   ADD CONSTRAINT `TL_work_ibfk_3` FOREIGN KEY (`worktypeID`) REFERENCES `TL_worktype` (`worktypeID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 -- Create the basic groups
-INSERT INTO `TL_groups` (`groupName`) VALUES ('Default');
-INSERT INTO `TL_groups` (`groupName`) VALUES ('Admin');
+INSERT INTO `TL_groups` (`groupID`, `groupName`) VALUES (1, 'Default');
+INSERT INTO `TL_groups` (`groupID`, `groupName`) VALUES (2, 'Admin');
 
--- Create a basic user and give it access to give more access
-INSERT INTO `TL_users` (`firstname`, `lastname`, `username`, `groupID`, `salt_hash`, `hash`) VALUES ('admin', 'admin', 'admin', 1, 'U736OMcfzID8YsBX', '499e653fc45c668794047f56c298ed213594863a1d18683ea07ae5efe972f9f8');
-INSERT INTO `TL_access` (`groupID`, `access`) VALUES (1, 'trackless.access.create');
+
+-- Give the admin group all rights and the default group some right
+INSERT INTO `TL_access` (`groupID`, `access`) VALUES
+(1, 'trackless.access.readOwn'),
+(1, 'trackless.user.readOwn'),
+(1, 'trackless.user.editOwn'),
+(1, 'trackless.api.read'),
+(1, 'trackless.api.remove'),
+
+(2, 'trackless.access.readOwn'),
+(2, 'trackless.access.readAll'),
+(2, 'trackless.access.create'),
+(2, 'trackless.access.remove'),
+
+(2, 'trackless.api.read'),
+(2, 'trackless.api.remove'),
+
+(2, 'trackless.group.read'),
+(2, 'trackless.group.create'),
+(2, 'trackless.group.remove'),
+(2, 'trackless.group.edit'),
+(2, 'trackless.group.add'),
+
+(2, 'trackless.user.readAll'),
+(2, 'trackless.user.readOwn'),
+(2, 'trackless.user.create'),
+(2, 'trackless.user.remove'),
+(2, 'trackless.user.editOwn'),
+(2, 'trackless.user.editAll'),
+
+(2, 'trackless.setting.readOwn'),
+(2, 'trackless.setting.readAll'),
+(2, 'trackless.setting.create'),
+(2, 'trackless.setting.remove'),
+(2, 'trackless.setting.edit'),
+
+(2, 'trackless.location.readOwn'),
+(2, 'trackless.location.readAll'),
+(2, 'trackless.location.create'),
+(2, 'trackless.location.remove'),
+(2, 'trackless.location.edit'),
+
+(2, 'trackless.work.readOwn'),
+(2, 'trackless.work.readAll'),
+(2, 'trackless.work.createOwn'),
+(2, 'trackless.work.createAll'),
+(2, 'trackless.work.removeOwn'),
+(2, 'trackless.work.removeAll'),
+(2, 'trackless.work.editOwn'),
+(2, 'trackless.work.editAll'),
+
+(2, 'trackless.worktype.read'),
+(2, 'trackless.worktype.create'),
+(2, 'trackless.worktype.remove'),
+(2, 'trackless.worktype.edit');
+
+-- Create a admin user
+INSERT INTO `TL_users` (`firstname`, `lastname`, `username`, `groupID`, `salt_hash`, `hash`) VALUES
+('admin', 'admin', 'admin', 1, 'U736OMcfzID8YsBX', '499e653fc45c668794047f56c298ed213594863a1d18683ea07ae5efe972f9f8');
 
 -- Save the database
 COMMIT;

@@ -3,6 +3,7 @@
 * Fixed the dev command
 * Use winston to track errors
 * Added a docker-compose.yml file
+* trackless.location.readOwn is now a thing
 
 # Online API [0.4.6]
 

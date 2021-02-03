@@ -12,7 +12,13 @@ const router = express.Router()
 
 router.get(
   '/:userID/location',
-  authHandler('trackless.location.read'),
+  authHandler((request) => {
+    if (request.params.userID === '~') {
+      return 'trackless.location.readOwn'
+    } else {
+      return 'trackless.location.readAll'
+    }
+  }),
   userIDCheckHandler(),
   (request, response, next) => {
     // It is by desing that this does not return a total used time

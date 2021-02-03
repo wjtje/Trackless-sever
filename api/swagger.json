@@ -1,7 +1,7 @@
 {
   "openapi" : "3.0.0",
   "info" : {
-    "version" : "0.4.6",
+    "version" : "0.4.7",
     "title" : "Trackless API",
     "contact" : {
       "name" : "wjtje",
@@ -1429,7 +1429,7 @@
       } ],
       "get" : {
         "tags" : [ "location", "user" ],
-        "summary" : "Get location infomation about the user. Last used and most used. (trackless.location.read)",
+        "summary" : "Get location infomation about the user. Last used and most used. (trackless.location.readAll / trackless.location.readOwn)",
         "responses" : {
           "200" : {
             "description" : "Successful operation",

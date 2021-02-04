@@ -1,6 +1,6 @@
 // Copyright (c) 2020 Wouter van der Wal
 
-import { createConnection as mysqlCreateConnection, createPool } from 'mysql'
+import { createPool } from 'mysql'
 import express from 'express'
 import bodyParser from 'body-parser'
 import passport from 'passport'

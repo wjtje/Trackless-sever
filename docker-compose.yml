@@ -2,13 +2,9 @@ version: "3.8"
 
 services:
   server:
-    image: node:14-alpine
-    command: sh -c "npm i && npm run build && npm start"
+    image: trackless-server:latest
     ports: 
       - 55565:55565
-    working_dir: /app
-    volumes: 
-      - ./:/app
     environment:
       DBhost: mariadb
       DBuser: root

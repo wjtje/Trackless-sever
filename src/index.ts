@@ -1,6 +1,6 @@
 // Copyright (c) 2020 Wouter van der Wal
 
-import { createConnection as mysqlCreateConnection } from 'mysql'
+import { createConnection as mysqlCreateConnection, createPool } from 'mysql'
 import express from 'express'
 import bodyParser from 'body-parser'
 import passport from 'passport'
@@ -49,7 +49,7 @@ if (process.env.CA != null) {
 }
 
 // Setup the connection with the database
-export const DBcon = mysqlCreateConnection({
+export const DBcon = createPool({
   host: process.env.DBhost ?? 'localhost',
   user: process.env.DBuser ?? '',
   password: process.env.DBpassword ?? '',
@@ -57,12 +57,13 @@ export const DBcon = mysqlCreateConnection({
   ...ssl
 })
 
-// Connect to the database
-DBcon.connect(function (error) {
+// Test the connection to the database
+DBcon.getConnection((error, connection) => {
   if (error) {
     logger.error('Mysql: connection failed', error)
   } else {
     logger.info('Mysql: Connected')
+    connection.release()
   }
 })
 

@@ -189,6 +189,7 @@ INSERT INTO `TL_access` (`groupID`, `access`) VALUES
 
 (2, 'trackless.location.readOwn'),
 (2, 'trackless.location.readAll'),
+(2, 'trackless.location.read'),
 (2, 'trackless.location.create'),
 (2, 'trackless.location.remove'),
 (2, 'trackless.location.edit'),

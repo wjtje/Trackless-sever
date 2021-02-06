@@ -24,11 +24,13 @@ export function patchHandler (editArray: requireObject[], commitFunction: (resol
         })).then(() => {
           // Save the changes
           connection.query('COMMIT')
+          connection.release()
           response.status(200).json({
             message: 'saved'
           })
         }).catch((error) => {
           connection.query('ROLLBACK')
+          connection.release()
           next(error)
         })
       })  

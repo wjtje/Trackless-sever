@@ -5,30 +5,33 @@ import { bodyOnlyContains } from '../dataCheck'
 import ServerError from './serverErrorInterface'
 import { DBcon } from '../..'
 import { requireObject } from './interface'
-import { MysqlError } from 'mysql'
+import { MysqlError, PoolConnection } from 'mysql'
 
-export function patchHandler (editArray: requireObject[], commitFunction: (resolve: (value?: any) => void, reject: (value?: any) => void, key: string, request: Request) => void) {
+export function patchHandler (editArray: requireObject[], commitFunction: (resolve: (value?: any) => void, reject: (value?: any) => void, key: string, request: Request, connection: PoolConnection) => void) {
   return (request: Request, response: Response, next: NextFunction) => {
     // Make sure the array does not contain any wrong thing
     bodyOnlyContains(request.body, editArray).then(() => {
-      // Start a transaction
-      DBcon.query('START TRANSACTION')
-
-      // Run all changes
-      Promise.all(Object.keys(request.body).map((key: string) => {
-        return new Promise((resolve, reject) => {
-          commitFunction(resolve, reject, key, request)
+      // Create a connection
+      DBcon.getConnection((error, connection) => {
+        // Start a transaction
+        connection.query('START TRANSACTION')
+  
+        // Run all changes
+        Promise.all(Object.keys(request.body).map((key: string) => {
+          return new Promise((resolve, reject) => {
+            commitFunction(resolve, reject, key, request, connection)
+          })
+        })).then(() => {
+          // Save the changes
+          connection.query('COMMIT')
+          response.status(200).json({
+            message: 'saved'
+          })
+        }).catch((error) => {
+          connection.query('ROLLBACK')
+          next(error)
         })
-      })).then(() => {
-        // Save the changes
-        DBcon.query('COMMIT')
-        response.status(200).json({
-          message: 'saved'
-        })
-      }).catch((error) => {
-        DBcon.query('ROLLBACK')
-        next(error)
-      })
+      })  
     }).catch(() => {
       // Something wrong in the array
       const error: ServerError = new Error('Please check the documentation')

@@ -60,9 +60,9 @@ router.patch(
     { name: 'place', check: mysqlTEXT },
     { name: 'id', check: mysqlTEXT },
     { name: 'hidden', check: mysqlBOOLEAN }
-  ], (resolve, reject, key, request) => {
+  ], (resolve, reject, key, request, connection) => {
     // Update the key
-    DBcon.query(
+    connection.query(
       'UPDATE `TL_locations` SET `' + key + '`=? WHERE `locationID`=?',
       [request.body[key], request.params.locationID],
       handlePatchQuery(reject, resolve)

@@ -73,9 +73,9 @@ router.patch(
       { name: 'username', check: mysqlTEXT },
       { name: 'password', check: mysqlTEXT }
     ],
-    (resolve, reject, key, request) => {
+    (resolve, reject, key, request, connection) => {
       function changeUser () {
-        DBcon.query(
+        connection.query(
           'UPDATE `TL_users` SET `' + key + '`=? WHERE `userID`=?',
           [
             request.body[key],
@@ -88,7 +88,7 @@ router.patch(
       switch (key) {
         case 'username':
           // Check if the username has been used
-          DBcon.query(
+          connection.query(
             'SELECT `userID` FROM `TL_users` WHERE `username`=?',
             [request.body.username],
             (error, result) => {
@@ -113,7 +113,7 @@ router.patch(
           // Update password
           const [salt, hash] = storePassword(request.body[key])
 
-          DBcon.query('UPDATE `TL_users` SET `salt_hash`=?, `hash`=? where `userID`=?', [
+          connection.query('UPDATE `TL_users` SET `salt_hash`=?, `hash`=? where `userID`=?', [
             salt,
             hash,
             (request.params.userID === '~') ? request.user?.userID : request.params.userID

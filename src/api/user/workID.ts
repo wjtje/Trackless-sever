@@ -47,14 +47,14 @@ router.patch(
     { name: 'time', check: mysqlFLOAT },
     { name: 'description', check: mysqlUTFTEXT },
     { name: 'worktypeID', check: mysqlINT }
-  ], (resolve, reject, key, request) => {
+  ], (resolve, reject, key, request, connection) => {
     let body = request.body[key]
 
     if (key === 'description') {
       body = encodeText(request.body[key])
     }
 
-    DBcon.query(
+    connection.query(
       'UPDATE `TL_work` SET `' + key + '`=? WHERE `workID`=? AND `userID`=?',
       [
         body,

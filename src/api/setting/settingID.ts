@@ -54,8 +54,8 @@ router.patch(
       { name: 'setting', check: mysqlTEXT },
       { name: 'value', check: mysqlTEXT }
     ],
-    (resolve, reject, key, request) => {
-      DBcon.query(
+    (resolve, reject, key, request, connection) => {
+      connection.query(
         'UPDATE `TL_settings` SET `' + key + '`=? WHERE `settingID`=?',
         [
           request.body[key],

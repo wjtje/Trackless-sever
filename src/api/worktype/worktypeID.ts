@@ -63,8 +63,8 @@ router.patch(
     [
       { name: 'name', check: mysqlTEXT }
     ],
-    (resolve, reject, key, request) => {
-      DBcon.query(
+    (resolve, reject, key, request, connection) => {
+      connection.query(
         'UPDATE `TL_worktype` SET `' + key + '`=? WHERE `worktypeID`=?',
         [
           request.body[key],

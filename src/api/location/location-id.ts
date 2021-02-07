@@ -12,6 +12,7 @@ import ServerError from '../../scripts/RequestHandler/server-error-interface'
 
 const router = expressRouter()
 
+// Get a single location
 router.get(
 	'/:locationID',
 	authHandler('trackless.location.read'),
@@ -28,6 +29,7 @@ router.get(
 	}
 )
 
+// Remove a location
 router.delete(
 	'/:locationID',
 	authHandler('trackless.location.remove'),
@@ -51,6 +53,7 @@ router.delete(
 	}
 )
 
+// Edit a location
 router.patch(
 	'/:locationID',
 	authHandler('trackless.location.edit'),

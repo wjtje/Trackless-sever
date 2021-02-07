@@ -9,6 +9,7 @@ import {handleQuery} from '../../scripts/handle'
 
 const router = expressRouter()
 
+// Get a single access rule
 router.get(
 	'/:accessID',
 	authHandler('trackless.access.readAll'),
@@ -25,6 +26,7 @@ router.get(
 	}
 )
 
+// Remove a access rule
 router.delete(
 	'/:accessID',
 	authHandler('trackless.access.remove'),

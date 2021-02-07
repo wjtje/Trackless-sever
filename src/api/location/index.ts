@@ -13,6 +13,7 @@ import limitOffsetHandler from '../../scripts/RequestHandler/limit-offset-handle
 
 const router = expressRouter()
 
+// Get all the location on the server
 router.get(
 	'/',
 	authHandler('trackless.location.read'),
@@ -26,8 +27,12 @@ router.get(
 	]),
 	limitOffsetHandler(),
 	(request, response, next) => {
+		// Get all the locations
+		// Check if the user wants to see hidden locations
+		// Check how we need to sort the array
+		// Check if we need a limit or offset
 		DBcon.query(
-			`SELECT * FROM TL_vLocations 
+			`SELECT * FROM TL_vLocations
         ${(request.query.hidden === undefined) ? 'WHERE `hidden`=0' : ''} 
         ${request.querySort ?? 'ORDER BY `place`, `name`'}
         ${request.queryLimitOffset ?? ''}
@@ -39,6 +44,7 @@ router.get(
 	}
 )
 
+// Add a new location to the system
 router.post(
 	'/',
 	authHandler('trackless.location.create'),
@@ -57,7 +63,7 @@ router.post(
 				request.body.id
 			],
 			handleQuery(next, result => {
-				// Saved to the database
+				// Respond to the user
 				response.status(201).json({
 					locationID: result.insertId
 				})

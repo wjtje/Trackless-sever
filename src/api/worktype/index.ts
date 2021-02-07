@@ -32,8 +32,7 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Create a new user
@@ -56,8 +55,7 @@ router.post(
 				})
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 router.use('/', worktypeIDRouter)

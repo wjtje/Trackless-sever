@@ -25,8 +25,7 @@ router.get(
 				response.json(result)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Remove a single setting
@@ -45,8 +44,7 @@ router.delete(
 				})
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Edit a setting
@@ -70,8 +68,7 @@ router.patch(
 				handlePatchQuery(reject, resolve)
 			)
 		}
-	),
-	closeDatabaseConnection()
+	)
 )
 
 export default router

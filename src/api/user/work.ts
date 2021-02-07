@@ -62,8 +62,7 @@ router.get(
 				responseWork(result, response)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 router.post(
@@ -113,8 +112,7 @@ router.post(
 				'trackless.work.toLate'
 			))
 		}
-	},
-	closeDatabaseConnection()
+	}
 )
 
 export default router

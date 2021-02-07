@@ -35,8 +35,7 @@ router.get(
 				response.status(200).json(decodeJSON(result, 'deviceName'))
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 router.use('/', apiIDRoute)

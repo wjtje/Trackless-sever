@@ -31,8 +31,7 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Remove a user
@@ -52,8 +51,7 @@ router.delete(
 				})
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Edit a user
@@ -129,8 +127,7 @@ router.patch(
 					changeUser()
 			}
 		}
-	),
-	closeDatabaseConnection()
+	)
 )
 
 export default router

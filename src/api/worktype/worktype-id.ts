@@ -29,8 +29,7 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Remove a worktype
@@ -56,8 +55,7 @@ router.delete(
 				))
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Edit a worktype
@@ -80,8 +78,7 @@ router.patch(
 				handlePatchQuery(reject, resolve)
 			)
 		}
-	),
-	closeDatabaseConnection()
+	)
 )
 
 router.use(unusedRequestTypes())

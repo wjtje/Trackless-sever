@@ -25,8 +25,7 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Remove a access rule
@@ -46,8 +45,7 @@ router.delete(
 				})
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 router.use(unusedRequestTypes())

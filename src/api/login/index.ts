@@ -58,8 +58,7 @@ router.post(
 				}
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 router.use(unusedRequestTypes())

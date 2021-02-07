@@ -34,8 +34,7 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Give someone access
@@ -62,8 +61,7 @@ router.post(
 				})
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 router.use('/', accessIDRoute)

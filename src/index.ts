@@ -25,6 +25,7 @@ import fs from 'fs'
 import winston from 'winston'
 import ServerError from './classes/server-error'
 import handleServerError from './handlers/server-error'
+import {closeDatabaseConnection} from './handlers/database-connection'
 
 // Create a logger
 // This logger will go to a file and the console
@@ -82,6 +83,9 @@ server.use(cors())
 server.use(nocache())
 server.use(passport.initialize())
 
+// This will close the database connection at the end of each request
+server.use(closeDatabaseConnection())
+
 // Make sure that morgan uses winston for loggin
 server.use(morgan('combined', {
 	stream: {
@@ -94,11 +98,13 @@ server.use(morgan('combined', {
 // Use passport
 passport.use(new BearerStrategy(
 	(token, done) => {
-		apiLogin(token).then(user => {
-			done(null, user)
-		}).catch(() => {
-			done(null, false)
-		})
+		apiLogin(token)
+			.then(user => {
+				done(null, user)
+			})
+			.catch(() => {
+				done(null, false)
+			})
 	}
 ))
 

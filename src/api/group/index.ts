@@ -70,8 +70,7 @@ router.get(
 					})
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Create a new group
@@ -94,8 +93,7 @@ router.post(
 				})
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Import other group routes

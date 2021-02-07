@@ -2,7 +2,6 @@
 
 import {Router as expressRouter} from 'express'
 import unusedRequestTypes from '../../scripts/RequestHandler/unused-request-type'
-import authHandler from '../../scripts/RequestHandler/auth-handler'
 import {DBcon} from '../..'
 import {handleQuery} from '../../scripts/handle'
 import requireHandler from '../../scripts/RequestHandler/require-handler'
@@ -11,6 +10,7 @@ import locationIDRoute from './location-id'
 import sortHandler from '../../scripts/RequestHandler/sort-handler'
 import limitOffsetHandler from '../../scripts/RequestHandler/limit-offset-handler'
 import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
+import authHandler from '../../handlers/auth-handler'
 
 const router = expressRouter()
 
@@ -44,8 +44,7 @@ router.get(
 				next()
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Add a new location to the system
@@ -74,8 +73,7 @@ router.post(
 				})
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 router.use('/', locationIDRoute)

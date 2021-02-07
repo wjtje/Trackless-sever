@@ -39,8 +39,7 @@ router.get(
 				)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Remove a single group

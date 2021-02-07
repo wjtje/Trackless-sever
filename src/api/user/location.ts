@@ -52,8 +52,7 @@ router.get(
 				)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 export default router

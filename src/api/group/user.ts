@@ -39,8 +39,7 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Add a user to a group
@@ -67,8 +66,7 @@ router.post(
 				})
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 export default router

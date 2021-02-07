@@ -33,8 +33,7 @@ router.get(
 				response.json(result)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 router.post(
@@ -56,8 +55,7 @@ router.post(
 				})
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 router.use(settingIDhandler)

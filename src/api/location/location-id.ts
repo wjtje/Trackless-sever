@@ -28,8 +28,7 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Remove a location
@@ -55,8 +54,7 @@ router.delete(
 				))
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Edit a location
@@ -77,8 +75,7 @@ router.patch(
 			[request.body[key], request.params.locationID],
 			handlePatchQuery(reject, resolve)
 		)
-	}),
-	closeDatabaseConnection()
+	})
 )
 
 router.use(unusedRequestTypes)

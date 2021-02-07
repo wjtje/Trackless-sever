@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response} from 'express'
 import {DBcon, logger} from '..'
 import ServerError from '../classes/server-error'
+import onFinished from 'on-finished'
 
 /**
  * Get a database connection
@@ -35,20 +36,22 @@ const getDatabaseConnection = () => {
  */
 const closeDatabaseConnection = () => {
 	return (request: Request, response: Response, next: NextFunction) => {
-		// Check if there is a active database connection
-		if (request.database === undefined) {
-			logger.info('No active database connection')
-		} else {
-			// Get the connection and connection threadId
-			const connection = request.database.connection
-			const threadId = connection?.threadId ?? 'unknown'
+		onFinished(response, () => {
+			// Check if there is a active database connection
+			if (request.database === undefined) {
+				logger.info('No active database connection')
+			} else {
+				// Get the connection and connection threadId
+				const connection = request.database.connection
+				const threadId = connection?.threadId ?? 'unknown'
 
-			// Add the infomation to the logger
-			logger.info(`Closed the connection to the database (${String(threadId)})`)
+				// Add the infomation to the logger
+				logger.info(`Closed the connection to the database (${String(threadId)})`)
 
-			// Release the connection
-			connection?.release()
-		}
+				// Release the connection
+				connection?.release()
+			}
+		})
 
 		// Go to the next function
 		next()

@@ -25,8 +25,7 @@ router.get(
 				response.json(result)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 export default router

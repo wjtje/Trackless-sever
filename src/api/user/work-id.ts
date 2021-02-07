@@ -32,8 +32,7 @@ router.get(
 				responseWork(result, response)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Edit a work object
@@ -67,8 +66,7 @@ router.patch(
 			],
 			handlePatchQuery(reject, resolve)
 		)
-	}),
-	closeDatabaseConnection()
+	})
 )
 
 // Remove a work object
@@ -93,8 +91,7 @@ router.delete(
 				})
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 export default router

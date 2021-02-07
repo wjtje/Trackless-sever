@@ -27,8 +27,7 @@ router.get(
 				response.json(result)
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 // Create a new setting for a single group
@@ -51,8 +50,7 @@ router.post(
 				})
 			})
 		)
-	},
-	closeDatabaseConnection()
+	}
 )
 
 export default router

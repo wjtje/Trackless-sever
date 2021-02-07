@@ -5,6 +5,9 @@ declare global {
 	namespace Express {
 		interface Request {
 			database: {
+				/**
+				 * This is a connection to the database
+				 */
 				connection?: PoolConnection;
 			};
 		}

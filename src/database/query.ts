@@ -5,7 +5,7 @@ import ServerError from '../classes/server-error'
 /**
  * Run a sql query on the database as a promise
  */
-const databaseQuery = async (connection: PoolConnection | undefined, sqlCommand: string, sqlParameters: string[]): Promise<any[]> => {
+const databaseQuery = async (connection: PoolConnection | undefined, sqlCommand: string, sqlParameters: string[]): Promise<any> => {
 	return new Promise((resolve, reject) => {
 		// Check the connection
 		if (connection === undefined) {

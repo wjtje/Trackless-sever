@@ -6,7 +6,6 @@ import bodyParser from 'body-parser'
 import passport from 'passport'
 import {Strategy as BearerStrategy} from 'passport-http-bearer'
 import cors from 'cors'
-import {apiLogin} from './scripts/api-login'
 import morgan from 'morgan'
 import accessRoute from './api/access'
 import apiRoute from './api/api'
@@ -26,6 +25,7 @@ import winston from 'winston'
 import ServerError from './classes/server-error'
 import handleServerError from './handlers/server-error'
 import {closeDatabaseConnection} from './handlers/database-connection'
+import apiLogin from './scripts/api-login'
 
 // Create a logger
 // This logger will go to a file and the console
@@ -102,8 +102,8 @@ passport.use(new BearerStrategy(
 			.then(user => {
 				done(null, user)
 			})
-			.catch(() => {
-				done(null, false)
+			.catch(error => {
+				done(error, false)
 			})
 	}
 ))

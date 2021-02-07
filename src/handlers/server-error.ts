@@ -10,12 +10,6 @@ import ServerError from '../classes/server-error'
  */
 const handleServerError = () => {
 	return (error: ServerError, request: Request, response: Response, next: NextFunction) => {
-		// Close any open database connection
-		if (request.database !== undefined) {
-			logger.info('info', 'Closing database connection due to an error')
-			request.database.connection?.release()
-		}
-
 		// If this is an other error than not found add it to the log
 		if (error.status !== 404) {
 			logger.log('warn', error.message, error)

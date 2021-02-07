@@ -46,10 +46,14 @@ const closeDatabaseConnection = () => {
 				const threadId = connection?.threadId ?? 'unknown'
 
 				// Add the infomation to the logger
-				logger.info(`Closed the connection to the database (${String(threadId)})`)
+				logger.info(`Closed the connection to the database (${String(threadId)}) (${String(connection?.state)})`)
 
 				// Release the connection
-				connection?.release()
+				try {
+					connection?.release()
+				} catch {
+					logger.error('Could not disconnect the connection to the database')
+				}
 			}
 		})
 

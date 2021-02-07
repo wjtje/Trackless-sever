@@ -8,13 +8,15 @@ import {DBcon} from '../..'
 import {handleQuery} from '../../scripts/handle'
 import {patchHandler, handlePatchQuery} from '../../scripts/RequestHandler/patch-handler'
 import {mysqlTEXT, mysqlBOOLEAN} from '../../scripts/types'
-import ServerError from '../../scripts/RequestHandler/server-error-interface'
+import ServerError from '../../classes/server-error'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
 // Get a single location
 router.get(
 	'/:locationID',
+	getDatabaseConnection(),
 	authHandler('trackless.location.read'),
 	locationIDCheckHandler(),
 	(request, response, next) => {
@@ -26,12 +28,14 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Remove a location
 router.delete(
 	'/:locationID',
+	getDatabaseConnection(),
 	authHandler('trackless.location.remove'),
 	locationIDCheckHandler(),
 	(request, response, next) => {
@@ -44,18 +48,21 @@ router.delete(
 					message: 'done'
 				})
 			}, () => {
-				const error: ServerError = new Error('Location can not be removed')
-				error.code = 'trackless.location.removeFailed'
-				error.status = 409
-				next(error)
+				next(new ServerError(
+					'Location can not be removed',
+					409,
+					'trackless.location.removeFailed'
+				))
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Edit a location
 router.patch(
 	'/:locationID',
+	getDatabaseConnection(),
 	authHandler('trackless.location.edit'),
 	locationIDCheckHandler(),
 	patchHandler([
@@ -70,7 +77,8 @@ router.patch(
 			[request.body[key], request.params.locationID],
 			handlePatchQuery(reject, resolve)
 		)
-	})
+	}),
+	closeDatabaseConnection()
 )
 
 router.use(unusedRequestTypes)

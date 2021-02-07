@@ -2,6 +2,7 @@
 
 import {Router as expressRouter} from 'express'
 import {DBcon} from '../..'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 import {handleQuery} from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/auth-handler'
 import userIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/user-id-check-handler'
@@ -12,6 +13,7 @@ const router = expressRouter()
 // Get all settings for a single user
 router.get(
 	'/:userID/setting',
+	getDatabaseConnection(),
 	authHandler(request => (request.params.userID === '~') ? 'trackless.setting.readOwn' : 'trackless.setting.readAll'),
 	userIDCheckHandler(),
 	limitOffsetHandler(),
@@ -23,7 +25,8 @@ router.get(
 				response.json(result)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 export default router

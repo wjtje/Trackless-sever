@@ -7,12 +7,14 @@ import apiIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/api-i
 import {DBcon} from '../..'
 import {handleQuery} from '../../scripts/handle'
 import {decodeJSON} from '../../scripts/test-encoding'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
 // Get infomation about a single api key
 router.get(
 	'/:apiID',
+	getDatabaseConnection(),
 	authHandler('trackless.api.read'),
 	apiIDCheckHandler(),
 	(request, response, next) => {
@@ -25,12 +27,14 @@ router.get(
 				response.status(200).json(decodeJSON(result, 'deviceName'))
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Remove a single api key
 router.delete(
 	'/:apiID',
+	getDatabaseConnection(),
 	authHandler('trackless.api.remove'),
 	apiIDCheckHandler(),
 	(request, response, next) => {
@@ -44,7 +48,8 @@ router.delete(
 				})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 router.use(unusedRequestTypes())

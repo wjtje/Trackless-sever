@@ -5,7 +5,6 @@ import unusedRequestTypes from '../../scripts/RequestHandler/unused-request-type
 import authHandler from '../../scripts/RequestHandler/auth-handler'
 import {DBcon} from '../..'
 import {handleQuery} from '../../scripts/handle'
-import ServerError from '../../scripts/RequestHandler/server-error-interface'
 import {storePassword} from '../../scripts/security'
 import requireHandler from '../../scripts/RequestHandler/require-handler'
 import {mysqlTEXT, mysqlINT, mysqlVARCHAR} from '../../scripts/types'
@@ -17,12 +16,15 @@ import accessRoute from './access'
 import locationRoute from './location'
 import settingRoute from './setting'
 import limitOffsetHandler from '../../scripts/RequestHandler/limit-offset-handler'
+import ServerError from '../../classes/server-error'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
 // Get all the users from the system
 router.get(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.user.readAll'),
 	sortHandler([
 		'userID',
@@ -42,12 +44,14 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Create a new user
 router.post(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.user.create'),
 	requireHandler([
 		{name: 'firstname', check: mysqlTEXT},
@@ -64,10 +68,11 @@ router.post(
 			handleQuery(next, result => {
 				if (result.length > 0) {
 					// Username is taken
-					const error: ServerError = new Error('Username has been taken')
-					error.status = 400
-					error.code = 'trackless.user.usernameTaken'
-					next(error)
+					next(new ServerError(
+						'Username has been taken',
+						400,
+						'trackless.user.usernameTaken'
+					))
 				} else {
 					// Create a new user
 					// Store the password
@@ -93,7 +98,8 @@ router.post(
 				}
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 router.use(userIDRouter)

@@ -2,6 +2,7 @@
 
 import {Router as expressRouter} from 'express'
 import {DBcon} from '../..'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 import {handleQuery} from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/auth-handler'
 import limitOffsetHandler from '../../scripts/RequestHandler/limit-offset-handler'
@@ -15,6 +16,7 @@ const router = expressRouter()
 
 router.get(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.setting.readAll'),
 	sortHandler([
 		'settingID',
@@ -31,11 +33,13 @@ router.get(
 				response.json(result)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 router.post(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.setting.create'),
 	requireHandler([
 		{name: 'setting', check: mysqlVARCHAR(64)},
@@ -52,7 +56,8 @@ router.post(
 				})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 router.use(settingIDhandler)

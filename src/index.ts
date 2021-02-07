@@ -6,8 +6,6 @@ import bodyParser from 'body-parser'
 import passport from 'passport'
 import {Strategy as BearerStrategy} from 'passport-http-bearer'
 import cors from 'cors'
-import serverErrorHandler from './scripts/RequestHandler/server-error-handler'
-import ServerError from './scripts/RequestHandler/server-error-interface'
 import {apiLogin} from './scripts/api-login'
 import morgan from 'morgan'
 import accessRoute from './api/access'
@@ -25,6 +23,8 @@ import settingRoute from './api/setting'
 import docs from '../api/swagger.json'
 import fs from 'fs'
 import winston from 'winston'
+import ServerError from './classes/server-error'
+import handleServerError from './handlers/server-error'
 
 // Create a logger
 // This logger will go to a file and the console
@@ -121,14 +121,15 @@ server.get('/docs', (request, response) => {
 
 // Add 404 response
 server.use((request, response, next) => {
-	const error: ServerError = new Error('Not found')
-	error.status = 404
-	error.code = 'trackless.notFound'
-	next(error)
+	next(new ServerError(
+		'The requested source was not found',
+		404,
+		'trackless.notFound'
+	))
 })
 
 // Handle server errors
-server.use(serverErrorHandler())
+server.use(handleServerError())
 
 // Start the server
 const port = process.env.PORT ?? 55565

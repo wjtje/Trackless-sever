@@ -2,10 +2,10 @@
 
 import {Request, Response, NextFunction} from 'express'
 import {bodyOnlyContains} from '../data-check'
-import ServerError from './server-error-interface'
 import {DBcon} from '../..'
 import {requireObject} from './interface'
 import {MysqlError, PoolConnection} from 'mysql'
+import ServerError from '../../classes/server-error'
 
 interface commitFunction {
 	/**
@@ -63,10 +63,11 @@ export function patchHandler(editArray: requireObject[], commitFunction: (option
 			})
 		}).catch(() => {
 			// Something wrong in the array
-			const error: ServerError = new Error('Please check the documentation')
-			error.status = 400
-			error.code = 'trackless.patch.bodyError'
-			next(error)
+			next(new ServerError(
+				'Please check the documentation',
+				400,
+				'trackless.patch.bodyError'
+			))
 		})
 	}
 }
@@ -74,9 +75,11 @@ export function patchHandler(editArray: requireObject[], commitFunction: (option
 export function handlePatchQuery(reject: (value?: any) => void, resolve: (value?: any) => void) {
 	return (error: MysqlError | null) => {
 		if (error) {
-			const error: ServerError = new Error('Something went wrong while trying to save. Are your ID\'s correct')
-			error.code = 'trackless.patch.saveError'
-			reject(error)
+			reject(new ServerError(
+				'Something went wrong while trying to save. Are your ID\'s correct',
+				500,
+				'trackless.patch.saveError'
+			))
 		} else {
 			resolve()
 		}

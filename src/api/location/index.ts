@@ -10,12 +10,14 @@ import {mysqlTEXT} from '../../scripts/types'
 import locationIDRoute from './location-id'
 import sortHandler from '../../scripts/RequestHandler/sort-handler'
 import limitOffsetHandler from '../../scripts/RequestHandler/limit-offset-handler'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
 // Get all the location on the server
 router.get(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.location.read'),
 	sortHandler([
 		'locationID',
@@ -31,7 +33,7 @@ router.get(
 		// Check if the user wants to see hidden locations
 		// Check how we need to sort the array
 		// Check if we need a limit or offset
-		DBcon.query(
+		request.database?.connection?.query(
 			`SELECT * FROM TL_vLocations
         ${(request.query.hidden === undefined) ? 'WHERE `hidden`=0' : ''} 
         ${request.querySort ?? 'ORDER BY `place`, `name`'}
@@ -39,14 +41,17 @@ router.get(
       `,
 			handleQuery(next, result => {
 				response.status(200).json(result)
+				next()
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Add a new location to the system
 router.post(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.location.create'),
 	requireHandler([
 		{name: 'name', check: mysqlTEXT},
@@ -69,7 +74,8 @@ router.post(
 				})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 router.use('/', locationIDRoute)

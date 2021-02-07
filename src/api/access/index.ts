@@ -11,12 +11,14 @@ import accessIDRoute from './access-id'
 import sortHandler from '../../scripts/RequestHandler/sort-handler'
 import groupIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/group-id-check-handler'
 import limitOffsetHandler from '../../scripts/RequestHandler/limit-offset-handler'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
 // Get your access
 router.get(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.access.readAll'),
 	sortHandler([
 		'groupID',
@@ -32,12 +34,14 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Give someone access
 router.post(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.access.create'),
 	requireHandler([
 		{name: 'groupID', check: mysqlINT},
@@ -58,7 +62,8 @@ router.post(
 				})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 router.use('/', accessIDRoute)

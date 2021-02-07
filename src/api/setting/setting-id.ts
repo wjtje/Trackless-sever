@@ -2,6 +2,7 @@
 
 import {Router as expressRouter} from 'express'
 import {DBcon} from '../..'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 import {handleQuery} from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/auth-handler'
 import settingIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/setting-id-check-handler'
@@ -13,6 +14,7 @@ const router = expressRouter()
 // Get infomation about a single setting
 router.get(
 	'/:settingID',
+	getDatabaseConnection(),
 	authHandler('trackless.setting.readAll'),
 	settingIDCheckHandler(),
 	(request, response, next) => {
@@ -23,12 +25,14 @@ router.get(
 				response.json(result)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Remove a single setting
 router.delete(
 	'/:settingID',
+	getDatabaseConnection(),
 	authHandler('trackless.setting.remove'),
 	settingIDCheckHandler(),
 	(request, response, next) => {
@@ -41,12 +45,14 @@ router.delete(
 				})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Edit a setting
 router.patch(
 	'/:settingID',
+	getDatabaseConnection(),
 	authHandler('trackless.setting.edit'),
 	patchHandler(
 		[
@@ -64,7 +70,8 @@ router.patch(
 				handlePatchQuery(reject, resolve)
 			)
 		}
-	)
+	),
+	closeDatabaseConnection()
 )
 
 export default router

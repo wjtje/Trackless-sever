@@ -2,6 +2,7 @@
 
 import {Router as expressRouter} from 'express'
 import {DBcon} from '../..'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 import {handleQuery} from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/auth-handler'
 import groupIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/group-id-check-handler'
@@ -14,6 +15,7 @@ const router = expressRouter()
 // List all access rules for a group
 router.get(
 	'/:groupID/access',
+	getDatabaseConnection(),
 	authHandler('trackless.access.readAll'),
 	groupIDCheckHandler(),
 	limitOffsetHandler(),
@@ -25,12 +27,14 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Add a new access rule for a group
 router.post(
 	'/:groupID/access',
+	getDatabaseConnection(),
 	authHandler('trackless.access.create'),
 	requireHandler([
 		{name: 'access', check: mysqlTEXT}
@@ -50,7 +54,8 @@ router.post(
 				})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 export default router

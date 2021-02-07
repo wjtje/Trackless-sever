@@ -2,6 +2,7 @@
 
 import {Router as expressRouter} from 'express'
 import {DBcon} from '../..'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 import {handleQuery} from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/auth-handler'
 import groupIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/group-id-check-handler'
@@ -16,6 +17,7 @@ const router = expressRouter()
 // Get all the users in a group
 router.get(
 	'/:groupID/user',
+	getDatabaseConnection(),
 	authHandler('trackless.group.read'),
 	groupIDCheckHandler(),
 	sortHandler([
@@ -37,12 +39,14 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Add a user to a group
 router.post(
 	'/:groupID/user',
+	getDatabaseConnection(),
 	authHandler('trackless.group.add'),
 	groupIDCheckHandler(),
 	requireHandler([
@@ -63,7 +67,8 @@ router.post(
 				})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 export default router

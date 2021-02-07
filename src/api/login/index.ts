@@ -8,13 +8,15 @@ import {DBcon} from '../..'
 import {handleQuery} from '../../scripts/handle'
 import {sha512_256 as sha512} from 'js-sha512'
 import _ from 'lodash'
-import ServerError from '../../scripts/RequestHandler/server-error-interface'
 import {encodeText} from '../../scripts/test-encoding'
+import ServerError from '../../classes/server-error'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
 router.post(
 	'/',
+	getDatabaseConnection(),
 	requireHandler([
 		{name: 'username', check: mysqlTEXT},
 		{name: 'password', check: mysqlTEXT},
@@ -47,15 +49,17 @@ router.post(
 						})
 					)
 				} else {
-					// Password incorrect
-					const error: ServerError = new Error('Incorrect username or password')
-					error.code = 'trackless.login.badLogin'
-					error.status = 400
-					next(error)
+					// Incorrect password or username
+					next(new ServerError(
+						'Incorrect username or password',
+						400,
+						'trackless.login.badLogin'
+					))
 				}
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 router.use(unusedRequestTypes())

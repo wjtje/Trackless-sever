@@ -6,12 +6,14 @@ import authHandler from '../../scripts/RequestHandler/auth-handler'
 import accessIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/access-id-check-handler'
 import {DBcon} from '../..'
 import {handleQuery} from '../../scripts/handle'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
 // Get a single access rule
 router.get(
 	'/:accessID',
+	getDatabaseConnection(),
 	authHandler('trackless.access.readAll'),
 	accessIDCheckHandler(),
 	(request, response, next) => {
@@ -23,12 +25,14 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Remove a access rule
 router.delete(
 	'/:accessID',
+	getDatabaseConnection(),
 	authHandler('trackless.access.remove'),
 	accessIDCheckHandler(),
 	(request, response, next) => {
@@ -42,7 +46,8 @@ router.delete(
 				})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 router.use(unusedRequestTypes())

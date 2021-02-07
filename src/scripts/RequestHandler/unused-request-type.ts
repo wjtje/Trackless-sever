@@ -1,13 +1,14 @@
 // Copyright (c) 2020 Wouter van der Wal
 
 import {Request, Response, NextFunction} from 'express'
-import ServerError from './server-error-interface'
+import ServerError from '../../classes/server-error'
 
 export default function unusedRequestTypes() {
 	return (request: Request, response: Response, next: NextFunction) => {
-		const error: ServerError = new Error('This request type does not exists on that route')
-		error.status = 404
-		error.code = 'trackless.router.requestError'
-		next(error)
+		next(new ServerError(
+			'This request type does not exists on that route',
+			404,
+			'trackless.router.requestError'
+		))
 	}
 }

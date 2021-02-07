@@ -2,6 +2,7 @@
 
 import {Router as expressRouter} from 'express'
 import {DBcon} from '../..'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 import {handleQuery} from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/auth-handler'
 import groupIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/group-id-check-handler'
@@ -14,6 +15,7 @@ const router = expressRouter()
 // Get all settings for a single group
 router.get(
 	'/:groupID/setting',
+	getDatabaseConnection(),
 	authHandler('trackless.setting.readAll'),
 	groupIDCheckHandler(),
 	limitOffsetHandler(),
@@ -25,12 +27,14 @@ router.get(
 				response.json(result)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Create a new setting for a single group
 router.post(
 	'/:groupID/setting',
+	getDatabaseConnection(),
 	authHandler('trackless.setting.create'),
 	groupIDCheckHandler(),
 	requireHandler([
@@ -47,7 +51,8 @@ router.post(
 				})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 export default router

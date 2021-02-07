@@ -4,6 +4,7 @@ import {Router as expressRouter} from 'express'
 import _ from 'lodash'
 import moment from 'moment'
 import {DBcon} from '../..'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 import {handleQuery} from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/auth-handler'
 import userIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/user-id-check-handler'
@@ -12,6 +13,7 @@ const router = expressRouter()
 
 router.get(
 	'/:userID/location',
+	getDatabaseConnection(),
 	authHandler(request => {
 		return request.params.userID === '~' ? 'trackless.location.readOwn' : 'trackless.location.readAll'
 	}),
@@ -50,7 +52,8 @@ router.get(
 				)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 export default router

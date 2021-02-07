@@ -1,7 +1,7 @@
 // Copyright (c) 2020 Wouter van der Wal
 
 import {Request, Response, NextFunction} from 'express'
-import ServerError from './server-error-interface'
+import ServerError from '../../classes/server-error'
 
 /**
  * This will check if the request.query.limit or offset is in use and will
@@ -20,10 +20,11 @@ const limitOffsetHandler = () => {
 				next()
 			} else {
 				// The offset of limit is not valid
-				const error: ServerError = new Error('Wrong limit/offset option')
-				error.code = 'trackless.limit.wrong'
-				error.status = 400
-				next(error)
+				next(new ServerError(
+					'Wrong limit/offset option',
+					400,
+					'trackless.limit.wrong'
+				))
 			}
 		} else {
 			next()

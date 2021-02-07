@@ -14,12 +14,14 @@ import userRoute from './user'
 import accessRoute from './access'
 import settingRoute from './setting'
 import limitOffsetHandler from '../../scripts/RequestHandler/limit-offset-handler'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
 // Return all the groups
 router.get(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.group.read'),
 	sortHandler([
 		'groupID',
@@ -68,12 +70,14 @@ router.get(
 					})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Create a new group
 router.post(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.group.create'),
 	requireHandler([
 		{name: 'groupName', check: mysqlTEXT}
@@ -90,7 +94,8 @@ router.post(
 				})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Import other group routes

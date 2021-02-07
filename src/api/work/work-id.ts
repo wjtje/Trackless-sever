@@ -2,6 +2,7 @@
 
 import {Router as expressRouter} from 'express'
 import {DBcon} from '../..'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 import {handleQuery} from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/auth-handler'
 import checkLateWork from '../../scripts/RequestHandler/check-late-work'
@@ -17,6 +18,7 @@ const router = expressRouter()
 // Get a work object
 router.get(
 	'/:workID',
+	getDatabaseConnection(),
 	authHandler('trackless.work.readAll'),
 	workIDCheckHandler(),
 	(request, response, next) => {
@@ -28,12 +30,14 @@ router.get(
 				responseWork(result, response)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Edit a work object
 router.patch(
 	'/:workID',
+	getDatabaseConnection(),
 	authHandler('trackless.work.editAll'),
 	workIDCheckHandler(),
 	settingsHandler(),
@@ -60,12 +64,14 @@ router.patch(
 			],
 			handlePatchQuery(reject, resolve)
 		)
-	})
+	}),
+	closeDatabaseConnection()
 )
 
 // Remove a work object
 router.delete(
 	'/:workID',
+	getDatabaseConnection(),
 	authHandler('trackless.work.removeAll'),
 	workIDCheckHandler(),
 	settingsHandler(),
@@ -82,7 +88,8 @@ router.delete(
 				})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 export default router

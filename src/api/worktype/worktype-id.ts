@@ -7,14 +7,16 @@ import {DBcon} from '../..'
 import {handleQuery} from '../../scripts/handle'
 import {patchHandler, handlePatchQuery} from '../../scripts/RequestHandler/patch-handler'
 import {mysqlTEXT} from '../../scripts/types'
-import ServerError from '../../scripts/RequestHandler/server-error-interface'
 import worktypeIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/worktype-id-check-handler'
+import ServerError from '../../classes/server-error'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
 // Get by worktypeID
 router.get(
 	'/:worktypeID',
+	getDatabaseConnection(),
 	authHandler('trackless.worktype.read'),
 	worktypeIDCheckHandler(),
 	(request, response, next) => {
@@ -27,12 +29,14 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Remove a worktype
 router.delete(
 	'/:worktypeID',
+	getDatabaseConnection(),
 	authHandler('trackless.worktype.remove'),
 	worktypeIDCheckHandler(),
 	(request, response, next) => {
@@ -45,18 +49,21 @@ router.delete(
 					message: 'done'
 				})
 			}, () => {
-				const error: ServerError = new Error('Worktype can not be removed')
-				error.code = 'trackless.worktype.removeFailed'
-				error.status = 409
-				next(error)
+				next(new ServerError(
+					'Worktype can not be removed',
+					409,
+					'trackless.worktype.removeFailed'
+				))
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Edit a worktype
 router.patch(
 	'/:worktypeID',
+	getDatabaseConnection(),
 	authHandler('trackless.worktype.edit'),
 	worktypeIDCheckHandler(),
 	patchHandler(
@@ -73,7 +80,8 @@ router.patch(
 				handlePatchQuery(reject, resolve)
 			)
 		}
-	)
+	),
+	closeDatabaseConnection()
 )
 
 router.use(unusedRequestTypes())

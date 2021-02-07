@@ -9,12 +9,14 @@ import apiIDRoute from './api-id'
 import sortHandler from '../../scripts/RequestHandler/sort-handler'
 import {decodeJSON} from '../../scripts/test-encoding'
 import limitOffsetHandler from '../../scripts/RequestHandler/limit-offset-handler'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
 // Get all your active api keys
 router.get(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.api.read'),
 	sortHandler([
 		'apiID',
@@ -33,7 +35,8 @@ router.get(
 				response.status(200).json(decodeJSON(result, 'deviceName'))
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 router.use('/', apiIDRoute)

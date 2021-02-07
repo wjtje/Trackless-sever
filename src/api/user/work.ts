@@ -3,12 +3,13 @@
 import {Router as expressRouter} from 'express'
 import moment from 'moment'
 import {DBcon} from '../..'
+import ServerError from '../../classes/server-error'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 import {handleQuery} from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/auth-handler'
 import userIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/user-id-check-handler'
 import limitOffsetHandler from '../../scripts/RequestHandler/limit-offset-handler'
 import requireHandler from '../../scripts/RequestHandler/require-handler'
-import ServerError from '../../scripts/RequestHandler/server-error-interface'
 import settingsHandler from '../../scripts/RequestHandler/settings-handler'
 import sortHandler from '../../scripts/RequestHandler/sort-handler'
 import {responseWork, TLWork} from '../../scripts/response-work'
@@ -19,6 +20,7 @@ const router = expressRouter()
 
 router.get(
 	'/:userID/work',
+	getDatabaseConnection(),
 	authHandler(request => (request.params.userID === '~') ? 'trackless.work.readOwn' : 'trackless.work.readAll'),
 	userIDCheckHandler(),
 	sortHandler([
@@ -60,11 +62,13 @@ router.get(
 				responseWork(result, response)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 router.post(
 	'/:userID/work',
+	getDatabaseConnection(),
 	authHandler(request => (request.params.userID === '~') ? 'trackless.work.createOwn' : 'trackless.work.createAll'),
 	userIDCheckHandler(),
 	requireHandler([
@@ -103,12 +107,14 @@ router.post(
 		} else if (moment(request.body.date).isAfter(moment().subtract(Number(response.locals.setting.workLateDays), 'days'))) {
 			saveWork()
 		} else {
-			const error: ServerError = new Error('You are not allowed to save work')
-			error.code = 'trackless.work.toLate'
-			error.status = 400
-			next(error)
+			next(new ServerError(
+				'You are not allowed to save work',
+				400,
+				'trackless.work.toLate'
+			))
 		}
-	}
+	},
+	closeDatabaseConnection()
 )
 
 export default router

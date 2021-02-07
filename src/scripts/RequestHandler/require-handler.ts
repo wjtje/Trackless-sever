@@ -2,8 +2,8 @@
 
 import {Request, Response, NextFunction} from 'express'
 import _ from 'lodash'
+import ServerError from '../../classes/server-error'
 import {requireObject} from './interface'
-import ServerError from './server-error-interface'
 
 /**
  * An express RequestHandler to check if a user has given all the required info
@@ -30,10 +30,7 @@ const requireHandler = (require: requireObject[]) => {
 			next()
 		}).catch((error_: Error) => {
 			// The user is missing something
-			const error: ServerError = new Error(error_.message)
-			error.status = 400
-			error.code = 'trackless.require.failed'
-			next(error)
+			next(new ServerError(error_.message, 400, 'trackless.require.failed'))
 		})
 	}
 }

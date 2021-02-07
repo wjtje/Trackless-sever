@@ -3,9 +3,9 @@
 import {Request, Response, NextFunction} from 'express'
 import passport from 'passport'
 import {userInfo} from './interface'
-import ServerError from './server-error-interface'
 import {DBcon} from '../..'
 import {handleQuery} from '../handle'
+import ServerError from '../../classes/server-error'
 
 type accessFunction = (request: Request) => string
 
@@ -19,9 +19,11 @@ const authHandler = (access: accessFunction | string) => {
 		passport.authenticate('bearer', (error, user: userInfo) => {
 			if (error) {
 				// Something went wrong
-				const error: ServerError = new Error('Internal server error')
-				error.code = 'trackless.auth.user.failed'
-				next(error)
+				next(new ServerError(
+					'Internal server error',
+					500,
+					'trackless.auth.user.failed'
+				))
 			} else if (user) {
 				// Check if the user has all the rights to access that command
 				DBcon.query(
@@ -45,10 +47,11 @@ const authHandler = (access: accessFunction | string) => {
 				)
 			} else {
 				// User not found
-				const error: ServerError = new Error('Forbidden')
-				error.status = 401
-				error.code = 'trackless.auth.user.notFound'
-				next(error)
+				next(new ServerError(
+					'Forbidden',
+					401,
+					'trackless.auth.user.notFound'
+				))
 			}
 		})(request, response, next)
 	}

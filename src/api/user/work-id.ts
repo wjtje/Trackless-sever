@@ -2,6 +2,7 @@
 
 import {Router as expressRouter} from 'express'
 import {DBcon} from '../..'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 import {handleQuery} from '../../scripts/handle'
 import authHandler from '../../scripts/RequestHandler/auth-handler'
 import checkLateWork from '../../scripts/RequestHandler/check-late-work'
@@ -18,6 +19,7 @@ const router = expressRouter()
 // Get a work object
 router.get(
 	'/:userID/work/:workID',
+	getDatabaseConnection(),
 	authHandler(request => (request.params.userID === '~') ? 'trackless.work.readOwn' : 'trackless.work.readAll'),
 	userIDCheckHandler(),
 	workIDuserIDCheckHandler(),
@@ -30,12 +32,14 @@ router.get(
 				responseWork(result, response)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Edit a work object
 router.patch(
 	'/:userID/work/:workID',
+	getDatabaseConnection(),
 	authHandler(request => (request.params.userID === '~') ? 'trackless.work.editOwn' : 'trackless.work.editAll'),
 	userIDCheckHandler(),
 	workIDuserIDCheckHandler(),
@@ -63,12 +67,14 @@ router.patch(
 			],
 			handlePatchQuery(reject, resolve)
 		)
-	})
+	}),
+	closeDatabaseConnection()
 )
 
 // Remove a work object
 router.delete(
 	'/:userID/work/:workID',
+	getDatabaseConnection(),
 	authHandler(request => (request.params.userID === '~') ? 'trackless.work.removeOwn' : 'trackless.work.removeAll'),
 	userIDCheckHandler(),
 	workIDuserIDCheckHandler(),
@@ -87,7 +93,8 @@ router.delete(
 				})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 export default router

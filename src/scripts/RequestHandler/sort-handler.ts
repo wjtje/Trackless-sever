@@ -1,7 +1,7 @@
 // Copyright (c) 2020 Wouter van der Wal
 
 import {Request, Response, NextFunction} from 'express'
-import ServerError from './server-error-interface'
+import ServerError from '../../classes/server-error'
 
 /**
  * Checks if the request.query.sort is valid and will save the result in request.querySort
@@ -25,10 +25,11 @@ const sortHandler = (options: string[]) => {
 					} else {
 						// The options is not allowed
 						// Show an error to the user
-						const error = new ServerError('Wrong sort option')
-						error.code = 'trackless.sort.wrong'
-						error.status = 400
-						throw error
+						throw new ServerError(
+							'Wrong sort option',
+							400,
+							'trackless.sort.wrong'
+						)
 					}
 				})
 

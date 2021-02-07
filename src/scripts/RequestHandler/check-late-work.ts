@@ -3,8 +3,8 @@
 import {Request, Response, NextFunction} from 'express'
 import moment from 'moment'
 import {DBcon} from '../..'
+import ServerError from '../../classes/server-error'
 import {handleQuery} from '../handle'
-import ServerError from './server-error-interface'
 
 /**
  * Check if work is allowed to be edit
@@ -22,10 +22,11 @@ const checkLateWork = () => {
 				} else if (moment(result[0].date).isAfter(moment().subtract(Number(response.locals.setting.workLateDays), 'days'))) {
 					next()
 				} else {
-					const error: ServerError = new Error('You are not allowed to save work')
-					error.code = 'trackless.work.toLate'
-					error.status = 400
-					next(error)
+					next(new ServerError(
+						'You are not allowed to save work',
+						400,
+						'trackless.work.toLate'
+					))
 				}
 			})
 		)

@@ -10,12 +10,14 @@ import {mysqlTEXT} from '../../scripts/types'
 import sortHandler from '../../scripts/RequestHandler/sort-handler'
 import worktypeIDRouter from './worktype-id'
 import limitOffsetHandler from '../../scripts/RequestHandler/limit-offset-handler'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
 // Get all the users from the system
 router.get(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.worktype.read'),
 	sortHandler([
 		'worktypeID',
@@ -30,12 +32,14 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Create a new user
 router.post(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.worktype.create'),
 	requireHandler([
 		{name: 'name', check: mysqlTEXT}
@@ -52,7 +56,8 @@ router.post(
 				})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 router.use('/', worktypeIDRouter)

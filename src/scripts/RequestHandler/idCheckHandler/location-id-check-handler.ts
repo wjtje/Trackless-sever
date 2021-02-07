@@ -2,27 +2,29 @@
 
 import {Request, Response, NextFunction} from 'express'
 import {DBcon} from '../../..'
+import ServerError from '../../../classes/server-error'
 import {handleQuery} from '../../handle'
-import ServerError from '../server-error-interface'
 
 const locationIDCheckHandler = () => {
 	return (request: Request, response: Response, next: NextFunction) => {
 		// Check if the apiID is a number
 		if (Number.isNaN(Number(request.params.locationID))) {
-			// ApiID is not correct.
-			const error: ServerError = new Error('The locationID is not a number')
-			error.status = 400
-			error.code = 'trackless.checkId.NaN'
-			next(error)
+			// LocationID is not correct.
+			next(new ServerError(
+				'The locationID is not a number',
+				400,
+				'trackless.checkID.NaN'
+			))
 		} else {
 			// Get the infomation from the database
 			DBcon.query('SELECT * FROM `TL_locations` WHERE `locationID`=?', [request.params.locationID], handleQuery(next, result => {
 				if (result.length === 0) {
-					// The apikey does not exsist
-					const error: ServerError = new Error('The locationID does not exsist')
-					error.status = 404
-					error.code = 'trackless.checkId.notFound'
-					next(error)
+					// The locationID does not exsist
+					next(new ServerError(
+						'The locationID does not exsist',
+						404,
+						'trackless.checkID.notFound'
+					))
 				} else {
 					next()
 				}

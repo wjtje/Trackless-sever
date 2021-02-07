@@ -3,8 +3,8 @@
 import {NextFunction} from 'express'
 import {sqlError} from './error'
 import {MysqlError} from 'mysql'
-import ServerError from './RequestHandler/server-error-interface'
 import {DBcon} from '..'
+import ServerError from '../classes/server-error'
 
 /**
  * A function for handling a query
@@ -18,7 +18,7 @@ import {DBcon} from '..'
 export function handleQuery(next: NextFunction, then: (result: any) => void, referencedError?: () => void) {
 	return (error: MysqlError | null, result: any[]) => {
 		if (error?.errno !== undefined && error?.errno !== 1451) {
-			const error_: ServerError = new Error('Unknown error')
+			const error_ = new ServerError('Unknown error')
 			switch (error?.errno) {
 				case 1216: // Can not insert (Reference error)
 					error_.message = 'Please make sure your values are valid'

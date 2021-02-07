@@ -7,14 +7,16 @@ import {DBcon} from '../..'
 import {handleQuery} from '../../scripts/handle'
 import {patchHandler, handlePatchQuery} from '../../scripts/RequestHandler/patch-handler'
 import {mysqlTEXT} from '../../scripts/types'
-import ServerError from '../../scripts/RequestHandler/server-error-interface'
 import {storePassword} from '../../scripts/security'
+import ServerError from '../../classes/server-error'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
 // Get by userID
 router.get(
 	'/:userID',
+	getDatabaseConnection(),
 	authHandler(request => {
 		return request.params.userID === '~' ? 'trackless.user.readOwn' : 'trackless.user.readAll'
 	}),
@@ -29,12 +31,14 @@ router.get(
 				response.status(200).json(result)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Remove a user
 router.delete(
 	'/:userID',
+	getDatabaseConnection(),
 	authHandler('trackless.user.remove'),
 	userIDCheckHandler(),
 	(request, response, next) => {
@@ -48,12 +52,14 @@ router.delete(
 				})
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Edit a user
 router.patch(
 	'/:userID',
+	getDatabaseConnection(),
 	authHandler(request => {
 		return request.params.userID === '~' ? 'trackless.user.editOwn' : 'trackless.user.editAll'
 	}),
@@ -90,13 +96,18 @@ router.patch(
 								changeUser()
 							} else {
 								// User name has been taken
-								const error: ServerError = new Error('Username has been taken')
-								error.code = 'trackless.user.usernameTaken'
-								reject(error)
+								reject(new ServerError(
+									'Username has been taken',
+									400,
+									'trackless.user.usernameTaken'
+								))
 							}
 
 							if (error) {
-								reject((new Error('Server Error') as ServerError).status = 500)
+								reject(new ServerError(
+									'Server Error',
+									500
+								))
 							}
 						}
 					)
@@ -118,7 +129,8 @@ router.patch(
 					changeUser()
 			}
 		}
-	)
+	),
+	closeDatabaseConnection()
 )
 
 export default router

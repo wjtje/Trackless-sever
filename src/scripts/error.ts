@@ -3,7 +3,7 @@
 import {NextFunction} from 'express'
 import {MysqlError} from 'mysql'
 import {DBcon, logger} from '..'
-import ServerError from './RequestHandler/server-error-interface'
+import ServerError from '../classes/server-error'
 
 /**
  * Trow an sql error and save it in the database
@@ -27,7 +27,5 @@ export function sqlError(next: NextFunction, error_: MysqlError) {
 	logger.log('error', 'SQL ERROR', error_)
 
 	// Trow a new error
-	const error: ServerError = new Error('Sql error')
-	error.code = 'trackless.sql.unknownError'
-	next(error)
+	next(new ServerError('Sql error', 500, 'trackless.sql.unknownError'))
 }

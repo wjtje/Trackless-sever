@@ -9,17 +9,19 @@ import {DBcon} from '../..'
 import {handleQuery} from '../../scripts/handle'
 import settingsHandler from '../../scripts/RequestHandler/settings-handler'
 import moment from 'moment'
-import ServerError from '../../scripts/RequestHandler/server-error-interface'
 import sortHandler from '../../scripts/RequestHandler/sort-handler'
 import {responseWork, TLWork} from '../../scripts/response-work'
 import workIDRoute from './work-id'
 import {encodeText} from '../../scripts/test-encoding'
 import limitOffsetHandler from '../../scripts/RequestHandler/limit-offset-handler'
+import ServerError from '../../classes/server-error'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
 router.get(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.work.readAll'),
 	sortHandler([
 		'workID',
@@ -60,11 +62,13 @@ router.get(
 				responseWork(result, response)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 router.post(
 	'/',
+	getDatabaseConnection(),
 	authHandler('trackless.work.createAll'),
 	requireHandler([
 		{name: 'locationID', check: mysqlINT},
@@ -103,12 +107,14 @@ router.post(
 		} else if (moment(request.body.date).isAfter(moment().subtract(Number(response.locals.setting.workLateDays), 'days'))) {
 			saveWork()
 		} else {
-			const error: ServerError = new Error('You are not allowed to save work')
-			error.code = 'trackless.work.toLate'
-			error.status = 400
-			next(error)
+			next(new ServerError(
+				'You are not allowed to save work',
+				400,
+				'trackless.work.toLate'
+			))
 		}
-	}
+	},
+	closeDatabaseConnection()
 )
 
 router.use('/', workIDRoute)

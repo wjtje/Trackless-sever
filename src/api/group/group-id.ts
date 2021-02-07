@@ -7,13 +7,15 @@ import {handleQuery} from '../../scripts/handle'
 import groupIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/group-id-check-handler'
 import requireHandler from '../../scripts/RequestHandler/require-handler'
 import {mysqlTEXT} from '../../scripts/types'
-import ServerError from '../../scripts/RequestHandler/server-error-interface'
+import ServerError from '../../classes/server-error'
+import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
 // Return a single group
 router.get(
 	'/:groupID',
+	getDatabaseConnection(),
 	authHandler('trackless.group.read'),
 	groupIDCheckHandler(),
 	(request, response, next) => {
@@ -37,7 +39,8 @@ router.get(
 				)
 			})
 		)
-	}
+	},
+	closeDatabaseConnection()
 )
 
 // Remove a single group
@@ -55,10 +58,11 @@ router.delete(
 					message: 'Removed'
 				})
 			}, () => {
-				const error: ServerError = new Error('Group can not be removed')
-				error.code = 'trackless.group.removeFailed'
-				error.status = 409
-				next(error)
+				next(new ServerError(
+					'Group can not be removed',
+					409,
+					'trackless.group.removeFailed'
+				))
 			})
 		)
 	}

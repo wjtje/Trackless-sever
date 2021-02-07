@@ -4,7 +4,7 @@
 
 Keep track of what your employees have done.
 
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
 ![David](https://img.shields.io/david/wjtje/Trackless-server)
 ![GitHub](https://img.shields.io/github/license/wjtje/Trackless-server)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/wjtje/Trackless-server)

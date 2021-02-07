@@ -1,18 +1,18 @@
 // Copyright (c) 2020 Wouter van der Wal
 
-import express from 'express'
-import unusedRequestTypes from '../../scripts/RequestHandler/unusedRequestType'
+import {Router as expressRouter} from 'express'
+import unusedRequestTypes from '../../scripts/RequestHandler/unused-request-type'
 import pjson from '../../../package.json'
 
-const router = express.Router()
+const router = expressRouter()
 
 router.get(
-  '/',
-  (request, response) => {
-    response.status(200).json({
-      version: pjson.version
-    })
-  }
+	'/',
+	(request, response) => {
+		response.status(200).json({
+			version: pjson.version
+		})
+	}
 )
 
 router.use(unusedRequestTypes())

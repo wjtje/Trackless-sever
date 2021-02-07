@@ -1,14 +1,14 @@
 // Copyright (c) 2020 Wouter van der Wal
 
-import { createPool } from 'mysql'
+import {createPool} from 'mysql'
 import express from 'express'
 import bodyParser from 'body-parser'
 import passport from 'passport'
-import { Strategy as BearerStrategy } from 'passport-http-bearer'
+import {Strategy as BearerStrategy} from 'passport-http-bearer'
 import cors from 'cors'
-import serverErrorHandler from './scripts/RequestHandler/serverErrorHandler'
-import ServerError from './scripts/RequestHandler/serverErrorInterface'
-import { apiLogin } from './scripts/apiLogin'
+import serverErrorHandler from './scripts/RequestHandler/server-error-handler'
+import ServerError from './scripts/RequestHandler/server-error-interface'
+import {apiLogin} from './scripts/api-login'
 import morgan from 'morgan'
 import accessRoute from './api/access'
 import apiRoute from './api/api'
@@ -20,8 +20,8 @@ import workRoute from './api/work'
 import severAboutRoute from './api/server/about'
 import nocache from 'nocache'
 import rateLimit from 'express-rate-limit'
-import worktypeRoute from './api/worktype/'
-import settingRoute from './api/setting/'
+import worktypeRoute from './api/worktype'
+import settingRoute from './api/setting'
 import docs from '../api/swagger.json'
 import fs from 'fs'
 import winston from 'winston'
@@ -29,53 +29,53 @@ import winston from 'winston'
 // Create a logger
 // This logger will go to a file and the console
 export const logger = winston.createLogger({
-  transports: [
-    new winston.transports.Console(),
-    new winston.transports.File({
-      filename: 'trackless.log'
-    })
-  ]
+	transports: [
+		new winston.transports.Console(),
+		new winston.transports.File({
+			filename: 'trackless.log'
+		})
+	]
 })
 
 // Test if we need to use ssl
 let ssl = {}
 
-if (process.env.CA != null) {
-  ssl = {
-    ssl: {
-      ca: fs.readFileSync(process.env.CA)
-    }
-  }
+if (process.env.CA !== null && process.env.CA !== undefined) {
+	ssl = {
+		ssl: {
+			ca: fs.readFileSync(process.env.CA)
+		}
+	}
 }
 
 // Setup the connection with the database
 export const DBcon = createPool({
-  host: process.env.DBhost ?? 'localhost',
-  user: process.env.DBuser ?? '',
-  password: process.env.DBpassword ?? '',
-  database: process.env.DBdatabase ?? 'trackless',
-  ...ssl
+	host: process.env.DBhost ?? 'localhost',
+	user: process.env.DBuser ?? '',
+	password: process.env.DBpassword ?? '',
+	database: process.env.DBdatabase ?? 'trackless',
+	...ssl
 })
 
 // Test the connection to the database
 DBcon.getConnection((error, connection) => {
-  if (error) {
-    logger.error('Mysql: connection failed', error)
-  } else {
-    logger.info('Mysql: Connected')
-    connection.release()
-  }
+	if (error) {
+		logger.error('Mysql: connection failed', error)
+	} else {
+		logger.info('Mysql: Connected')
+		connection.release()
+	}
 })
 
 // Create a basic app (server)
 export const server = express()
 server.set('trust proxy', 1) // Disable this if you are not using a proxy
 server.use(rateLimit({
-  windowMs: 1 * 60 * 1000,
-  max: 100 // Max 100 request per minute
+	windowMs: 1 * 60 * 1000,
+	max: 100 // Max 100 request per minute
 }))
 server.use(bodyParser.urlencoded({
-  extended: true
+	extended: true
 }))
 server.use(bodyParser.json())
 server.use(cors())
@@ -84,22 +84,22 @@ server.use(passport.initialize())
 
 // Make sure that morgan uses winston for loggin
 server.use(morgan('combined', {
-  stream: {
-    write: (message) => {
-      logger.info(message)
-    }
-  }
+	stream: {
+		write: message => {
+			logger.info(message)
+		}
+	}
 }))
 
 // Use passport
 passport.use(new BearerStrategy(
-  function (token, done) {
-    apiLogin(token).then((user) => {
-      done(null, user)
-    }).catch(() => {
-      done(null, false)
-    })
-  }
+	(token, done) => {
+		apiLogin(token).then(user => {
+			done(null, user)
+		}).catch(() => {
+			done(null, false)
+		})
+	}
 ))
 
 // Import routes
@@ -115,16 +115,16 @@ server.use('/worktype', worktypeRoute)
 server.use('/server/about', severAboutRoute)
 
 // Docs route
-server.get('/docs', (req, res) => {
-  res.json(docs)
+server.get('/docs', (request, response) => {
+	response.json(docs)
 })
 
 // Add 404 response
 server.use((request, response, next) => {
-  const error: ServerError = new Error('Not found')
-  error.status = 404
-  error.code = 'trackless.notFound'
-  next(error)
+	const error: ServerError = new Error('Not found')
+	error.status = 404
+	error.code = 'trackless.notFound'
+	next(error)
 })
 
 // Handle server errors
@@ -134,9 +134,9 @@ server.use(serverErrorHandler())
 const port = process.env.PORT ?? 55565
 
 try {
-  server.listen(port, () => {
-    logger.info(`Server started on port: ${port}`)
-  })
+	server.listen(port, () => {
+		logger.info(`Server started on port: ${port}`)
+	})
 } catch {
-  logger.warn(`port ${port} is in use`)
+	logger.warn(`port ${port} is in use`)
 }

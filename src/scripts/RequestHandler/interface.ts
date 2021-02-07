@@ -6,8 +6,8 @@
  * @param {(testvalue: any) => boolean} check A function for checking the data
  */
 export interface requireObject {
-  name: string;
-  check: (testvalue: any) => boolean;
+	name: string;
+	check: (testvalue: any) => boolean;
 }
 
 /**
@@ -19,9 +19,9 @@ export interface requireObject {
  * @param {number} groupID
  */
 export interface userInfo {
-  userID: number;
-  username: string;
-  firstname: string;
-  lastname: string;
-  groupID: number;
+	userID: number;
+	username: string;
+	firstname: string;
+	lastname: string;
+	groupID: number;
 }

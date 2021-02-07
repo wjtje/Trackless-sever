@@ -10,16 +10,20 @@ import moment from 'moment'
  * @returns {boolean}
  */
 export const mysqlINT = (testValue: any): boolean => {
-  // Check if the value is not NaN
-  if (isNaN(Number(testValue))) {
-    return false // It is not a INT
-  } else if (Number(testValue) > 2147483647 || Number(testValue) < -2147483648) { // Check if the value is not to big or to small
-    return false // It is not a INT
-  } else if (Number(testValue).toString().split('.').length > 1) { // Check if it is a INT
-    return false // It is a float
-  } else {
-    return true
-  }
+	// Check if the value is not NaN
+	if (Number.isNaN(Number(testValue))) {
+		return false // It is not a INT
+	}
+
+	if (Number(testValue) > 2147483647 || Number(testValue) < -2147483648) { // Check if the value is not to big or to small
+		return false // It is not a INT
+	}
+
+	if (Number(testValue).toString().split('.').length > 1) { // Check if it is a INT
+		return false // It is a float
+	}
+
+	return true
 }
 
 /**
@@ -30,31 +34,35 @@ export const mysqlINT = (testValue: any): boolean => {
  * @returns {boolean}
  */
 export const mysqlFLOAT = (testValue: any): boolean => {
-  // Check if the value is not NaN
-  if (isNaN(Number(testValue))) {
-    return false // It is not a FLOAT
-  } else {
-    const float = Number(testValue).toString().split('.')
+	// Check if the value is not NaN
+	if (Number.isNaN(Number(testValue))) {
+		return false // It is not a FLOAT
+	}
 
-    if (float[0] == null) {
-      return false
-    } else if (float[1] == null) {
-      // Only one var
-      if (float[0].length > 2) {
-        return false // To large
-      } else {
-        return true
-      }
-    } else {
-      if (float[0].length > 2 || float[1].length > 2) {
-        return false // To large
-      } else if ((float[0] + float[1]).length > 4) {
-        return false
-      } else {
-        return true
-      }
-    }
-  }
+	const float = Number(testValue).toString().split('.')
+
+	if (float[0] === null || float[0] === undefined) {
+		return false
+	}
+
+	if (float[1] === null || float[1] === undefined) {
+		// Only one var
+		if (float[0].length > 2) {
+			return false // To large
+		}
+
+		return true
+	}
+
+	if (float[0].length > 2 || float[1].length > 2) {
+		return false // To large
+	}
+
+	if ((float[0] + float[1]).length > 4) {
+		return false
+	}
+
+	return true
 }
 
 /**
@@ -65,7 +73,7 @@ export const mysqlFLOAT = (testValue: any): boolean => {
  * @returns {boolean}
  */
 export const mysqlDATE = (testValue: any): boolean => {
-  return moment(testValue, 'YYYY-MM-DD').isValid()
+	return moment(testValue, 'YYYY-MM-DD').isValid()
 }
 
 /**
@@ -76,13 +84,13 @@ export const mysqlDATE = (testValue: any): boolean => {
  * @returns {boolean}
  */
 export const mysqlUTFTEXT = (testValue: any): boolean => {
-  const testValueString = String(testValue) // Make sure it is a string
+	const testValueString = String(testValue) // Make sure it is a string
 
-  if (testValueString.length > 65535 || typeof testValue !== 'string' || testValueString === '') {
-    return false // The string is to large
-  } else {
-    return true
-  }
+	if (testValueString.length > 65535 || typeof testValue !== 'string' || testValueString === '') {
+		return false // The string is to large
+	}
+
+	return true
 }
 
 /**
@@ -93,14 +101,14 @@ export const mysqlUTFTEXT = (testValue: any): boolean => {
  * @returns {boolean}
  */
 export const mysqlTEXT = (testValue: any): boolean => {
-  const testValueString = String(testValue) // Make sure it is a string
+	const testValueString = String(testValue) // Make sure it is a string
 
-  if (testValueString.length > 65535 || typeof testValue !== 'string' || testValueString === '') {
-    return false // The string is to large
-  } else {
-    // Test if string only contains acsii
-    return /^[\x20-\x7E]*$/.test(testValue)
-  }
+	if (testValueString.length > 65535 || typeof testValue !== 'string' || testValueString === '') {
+		return false // The string is to large
+	}
+
+	// Test if string only contains acsii
+	return /^[\u0020-\u007E]*$/.test(testValue)
 }
 
 /**
@@ -111,14 +119,14 @@ export const mysqlTEXT = (testValue: any): boolean => {
  * @returns {boolean}
  */
 export const mysqlLONGTEXT = (testValue: any): boolean => {
-  const testValueString = String(testValue) // Make sure it is a string
+	const testValueString = String(testValue) // Make sure it is a string
 
-  if (testValueString.length > 4294967296 || typeof testValue !== 'string' || testValueString === '') {
-    return false // The string is to large
-  } else {
-    // Test if string only contains acsii
-    return /^[\x20-\x7E]*$/.test(testValue)
-  }
+	if (testValueString.length > 4294967296 || typeof testValue !== 'string' || testValueString === '') {
+		return false // The string is to large
+	}
+
+	// Test if string only contains acsii
+	return /^[\u0020-\u007E]*$/.test(testValue)
 }
 
 /**
@@ -129,11 +137,11 @@ export const mysqlLONGTEXT = (testValue: any): boolean => {
  * @returns {boolean}
  */
 export const mysqlBOOLEAN = (testValue: any): boolean => {
-  if (Number(testValue) === 0 || Number(testValue) === 1) {
-    return true
-  } else {
-    return false
-  }
+	if (Number(testValue) === 0 || Number(testValue) === 1) {
+		return true
+	}
+
+	return false
 }
 
 /**
@@ -143,13 +151,9 @@ export const mysqlBOOLEAN = (testValue: any): boolean => {
  * @returns {(testvalue: any) => boolean} A test function
  */
 export const mysqlVARCHAR = (length: number): ((testValue: any) => boolean) => {
-  return (testValue) => {
-    const testValueString = String(testValue) // Make sure it is a string
+	return testValue => {
+		const testValueString = String(testValue) // Make sure it is a string
 
-    if (testValueString.length > length || typeof testValue !== 'string' || testValueString === '') {
-      return false // The string is to large or not correct
-    } else {
-      return true
-    }
-  }
+		return !(testValueString.length > length || typeof testValue !== 'string' || testValueString === '')
+	}
 }

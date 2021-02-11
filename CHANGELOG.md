@@ -5,6 +5,7 @@
 * Added a docker-compose.yml file
 * trackless.location.readOwn is now a thing
 * Moved to xojs/xo for linting
+* Updated some handlers
 
 # Online API [0.4.6]
 

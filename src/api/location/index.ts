@@ -9,7 +9,7 @@ import sortHandler from '../../handlers/sort-handler'
 import limitOffsetHandler from '../../handlers/limit-offset-handler'
 import databaseQuery from '../../database/query'
 import requireHandler from '../../handlers/require-handler'
-import mysqlTEXT from '../../data-types/mysql-test'
+import mysqlTEXT from '../../data-types/mysql-text'
 
 const router = expressRouter()
 

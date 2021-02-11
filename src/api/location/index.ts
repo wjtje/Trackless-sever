@@ -2,17 +2,14 @@
 
 import {Router as expressRouter} from 'express'
 import unusedRequestTypes from '../../scripts/RequestHandler/unused-request-type'
-import {DBcon} from '../..'
-import {handleQuery} from '../../scripts/handle'
-import requireHandler from '../../scripts/RequestHandler/require-handler'
-import {mysqlTEXT} from '../../scripts/types'
 import locationIDRoute from './location-id'
 import {getDatabaseConnection} from '../../handlers/database-connection'
 import authHandler from '../../handlers/auth-handler'
 import sortHandler from '../../handlers/sort-handler'
 import limitOffsetHandler from '../../handlers/limit-offset-handler'
 import databaseQuery from '../../database/query'
-import ServerError from '../../classes/server-error'
+import requireHandler from '../../handlers/require-handler'
+import mysqlTEXT from '../../data-types/mysql-test'
 
 const router = expressRouter()
 

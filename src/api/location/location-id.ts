@@ -1,7 +1,6 @@
 // Copyright (c) 2020 Wouter van der Wal
 
 import {Router as expressRouter} from 'express'
-import unusedRequestTypes from '../../scripts/RequestHandler/unused-request-type'
 import authHandler from '../../scripts/RequestHandler/auth-handler'
 import locationIDCheckHandler from '../../scripts/RequestHandler/idCheckHandler/location-id-check-handler'
 import {DBcon} from '../..'
@@ -9,7 +8,7 @@ import {handleQuery} from '../../scripts/handle'
 import {patchHandler, handlePatchQuery} from '../../scripts/RequestHandler/patch-handler'
 import {mysqlTEXT, mysqlBOOLEAN} from '../../scripts/types'
 import ServerError from '../../classes/server-error'
-import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
+import {getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
@@ -77,7 +76,5 @@ router.patch(
 		)
 	})
 )
-
-router.use(unusedRequestTypes)
 
 export default router

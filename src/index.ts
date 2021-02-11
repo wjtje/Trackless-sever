@@ -95,7 +95,7 @@ server.use(morgan('combined', {
 	}
 }))
 
-// Use passport
+// Use passport for auth
 passport.use(new BearerStrategy(
 	(token, done) => {
 		apiLogin(token)
@@ -128,7 +128,7 @@ server.get('/docs', (request, response) => {
 // Add 404 response
 server.use((request, response, next) => {
 	next(new ServerError(
-		'The requested source was not found',
+		'The requested resource was not found',
 		404,
 		'trackless.notFound'
 	))

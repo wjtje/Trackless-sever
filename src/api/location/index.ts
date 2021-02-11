@@ -1,7 +1,6 @@
 // Copyright (c) 2020 Wouter van der Wal
 
 import {Router as expressRouter} from 'express'
-import unusedRequestTypes from '../../scripts/RequestHandler/unused-request-type'
 import locationIDRoute from './location-id'
 import {getDatabaseConnection} from '../../handlers/database-connection'
 import authHandler from '../../handlers/auth-handler'
@@ -85,7 +84,5 @@ router.post(
 )
 
 router.use('/', locationIDRoute)
-
-router.use(unusedRequestTypes())
 
 export default router

@@ -80,4 +80,4 @@ The short anwser is no, and the longer anwser is still no.
 
 The MIT License (MIT)
 
-Copyright (c) 2020 Wouter van der Wal
+Copyright (c) 2021 Wouter van der Wal

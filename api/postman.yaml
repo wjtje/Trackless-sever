@@ -749,21 +749,21 @@
           "schema" : {
             "type" : "string"
           },
-          "description" : "If used the server will show the hidden locations"
+          "description" : "The location with hidden = 1 are normaly hidden, but if this parameter is set the server will show the hidden locations."
         }, {
           "in" : "query",
           "name" : "limit",
           "schema" : {
             "type" : "number"
           },
-          "description" : "Option to limit the result"
+          "description" : "How many result do you want"
         }, {
           "in" : "query",
           "name" : "offset",
           "schema" : {
             "type" : "number"
           },
-          "description" : "Option to offset the count"
+          "description" : ""
         } ],
         "responses" : {
           "200" : {

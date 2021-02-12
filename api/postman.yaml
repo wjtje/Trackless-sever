@@ -1,0 +1,2292 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "version" : "0.4.7",
+    "title" : "Trackless API",
+    "contact" : {
+      "name" : "wjtje",
+      "url" : "https://www.wjtje.ga"
+    },
+    "license" : {
+      "name" : "The MIT License",
+      "url" : "https://wjtje.mit-license.org/"
+    }
+  },
+  "paths" : {
+    "/access" : {
+      "get" : {
+        "tags" : [ "access" ],
+        "summary" : "List all the access rules on the server (trackless.access.readAll)",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "allOf" : [ {
+                      "type" : "object",
+                      "properties" : {
+                        "groupID" : {
+                          "type" : "integer"
+                        }
+                      }
+                    }, {
+                      "$ref" : "#/components/schemas/Access"
+                    } ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "access" ],
+        "summary" : "Give some group access to a command (trackless.access.create)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "groupID" : {
+                    "type" : "integer"
+                  },
+                  "access" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "accessID" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "something wrong with your request"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/access/{accessID}" : {
+      "get" : {
+        "tags" : [ "access" ],
+        "summary" : "Display an access rule (trackless.access.readAll)",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "accessID",
+          "description" : "ID of the access to return",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "allOf" : [ {
+                      "type" : "object",
+                      "properties" : {
+                        "groupID" : {
+                          "type" : "integer"
+                        }
+                      }
+                    }, {
+                      "$ref" : "#/components/schemas/Access"
+                    } ]
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "access" ],
+        "summary" : "Remove an access rule (trackless.access.remove)",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "accessID",
+          "description" : "ID of the access to return",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/api" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "summary" : "Get all your active api keys (trackless.api.read)",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Api"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/api/{apiID}" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "summary" : "Get infomation about a single api key (trackless.api.read)",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "apiID",
+          "description" : "the id of the api key",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Api"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "api" ],
+        "summary" : "Remove a single api key (trackless.api.remove)",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "apiID",
+          "description" : "the id of the api key",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/group" : {
+      "get" : {
+        "tags" : [ "group" ],
+        "summary" : "Get all the groups on the server (trackless.group.read)",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Group"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "group" ],
+        "summary" : "Create a new group on the server (trackless.group.create)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "groupName" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "groupID" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Something is wrong with your input"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/group/{groupID}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "groupID",
+        "description" : "ID of the group to return",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "group" ],
+        "summary" : "Get infomation about a single group (trackless.group.read)",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Group"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "group" ],
+        "summary" : "Removes a single group from the server (trackless.group.remove)",
+        "description" : "All the user is that group will be moved to group 0 (default). And all access rules for that group will be lost.",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          },
+          "409" : {
+            "description" : "In use"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "group" ],
+        "summary" : "Edits a group name (trackless.group.edit)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "groupName" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/group/{groupID}/user" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "groupID",
+        "description" : "The ID of a group",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "group", "user" ],
+        "summary" : "List all the users in a group (trackless.group.read)",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "group", "user" ],
+        "summary" : "Add a user to a group (trackless.group.add)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "userID" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/group/{groupID}/access" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "groupID",
+        "description" : "The ID of a group",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "group", "access" ],
+        "summary" : "List all access of a group (trackless.access.readAll)",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Access"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "group", "access" ],
+        "summary" : "Gives a group access to a command (trackless.access.create)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "access" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/group/{groupID}/setting" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "groupID",
+        "description" : "The ID of a group",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "group", "setting" ],
+        "summary" : "Get all the settings for a single groups on the server (trackless.setting.readAll)",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Setting"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "group", "setting" ],
+        "summary" : "Create a new setting for a group (trackless.setting.create)",
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "setting" : {
+                    "type" : "string"
+                  },
+                  "value" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "settingID" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Something is wrong with your input"
+          }
+        }
+      }
+    },
+    "/location" : {
+      "get" : {
+        "tags" : [ "location" ],
+        "summary" : "Get all the locations on the server (trackless.location.read)",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "hidden",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "If used the server will show the hidden locations"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "location" ],
+        "summary" : "Create a new location (trackless.location.create)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "name" : {
+                    "type" : "string"
+                  },
+                  "place" : {
+                    "type" : "string"
+                  },
+                  "id" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "locationID" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/location/{locationID}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "locationID",
+        "description" : "ID of the location",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "location" ],
+        "summary" : "Get infomation about a single location (trackless.location.read)",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Location"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "location" ],
+        "summary" : "Remove a single location (trackless.location.remove)",
+        "description" : "If this location is in use then it can't be deleted. You can use the hide option to disable it.",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          },
+          "409" : {
+            "description" : "In use"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "location" ],
+        "summary" : "Edit a location (trackless.location.edit)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "name" : {
+                    "type" : "string"
+                  },
+                  "place" : {
+                    "type" : "string"
+                  },
+                  "id" : {
+                    "type" : "string"
+                  },
+                  "hidden" : {
+                    "type" : "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/login" : {
+      "post" : {
+        "tags" : [ "login" ],
+        "summary" : "Get a new apikey for the server",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "username" : {
+                    "type" : "string"
+                  },
+                  "password" : {
+                    "type" : "string"
+                  },
+                  "deviceName" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "bearer" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "wrong username or password"
+          }
+        }
+      }
+    },
+    "/server/about" : {
+      "get" : {
+        "tags" : [ "server" ],
+        "summary" : "Get information about the server",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "version" : {
+                      "type" : "string",
+                      "example" : "0.4-beta.5"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/setting" : {
+      "get" : {
+        "tags" : [ "setting" ],
+        "summary" : "Get all the settings for all the groups on the server (trackless.setting.readAll)",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Setting"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "setting" ],
+        "summary" : "Create a new setting for a group (trackless.setting.create)",
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "groupID" : {
+                    "type" : "integer"
+                  },
+                  "setting" : {
+                    "type" : "string"
+                  },
+                  "value" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "settingID" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Something is wrong with your input"
+          }
+        }
+      }
+    },
+    "/setting/{settingID}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "settingID",
+        "schema" : {
+          "type" : "integer"
+        },
+        "description" : "The settingID",
+        "required" : true
+      } ],
+      "get" : {
+        "tags" : [ "setting" ],
+        "summary" : "Get a setting (trackless.setting.readAll)",
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Setting"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "setting" ],
+        "summary" : "Remove a setting (trackless.setting.remove)",
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "setting" ],
+        "summary" : "Edit a setting (trackless.setting.edit)",
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "groupID" : {
+                    "type" : "integer"
+                  },
+                  "setting" : {
+                    "type" : "string"
+                  },
+                  "value" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
+      }
+    },
+    "/user" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "Get all the users from the system (trackless.user.readAll)",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "Create a new user on the server (trackless.user.create)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "firstname" : {
+                    "type" : "string"
+                  },
+                  "lastname" : {
+                    "type" : "string"
+                  },
+                  "username" : {
+                    "type" : "string"
+                  },
+                  "password" : {
+                    "type" : "string"
+                  },
+                  "groupID" : {
+                    "type" : "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "userID" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Something is wrong with your input"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/user/{userID}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "userID",
+        "description" : "ID of the user",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "Get infomation about a single user (trackless.user.readAll / trackless.user.readOwn)",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ],
+        "description" : "You can use an '~' as a userID to list your own account."
+      },
+      "delete" : {
+        "tags" : [ "user" ],
+        "summary" : "Remove a single user (trackless.user.remove)",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ],
+        "description" : "You can use an '~' as a userID to list your own account. All the work from that user will be lost."
+      },
+      "patch" : {
+        "tags" : [ "user" ],
+        "summary" : "Change a users info (trackless.user.editAll / trackless.user.editOwn)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "firstname" : {
+                    "type" : "string"
+                  },
+                  "lastname" : {
+                    "type" : "string"
+                  },
+                  "username" : {
+                    "type" : "string"
+                  },
+                  "password" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ],
+        "description" : "You can use an '~' as a userID to list your own account.\nYou don't need to edit every thing at once."
+      }
+    },
+    "/user/{userID}/access" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "userID",
+        "description" : "ID of the user",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "access", "user" ],
+        "summary" : "Get all the access infomation for a user (trackless.access.readAll / trackless.access.readOwn)",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Access"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ],
+        "description" : "You can use an '~' as a userID to list your own account."
+      }
+    },
+    "/user/{userID}/location" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "userID",
+        "description" : "ID of the user",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "location", "user" ],
+        "summary" : "Get location infomation about the user. Last used and most used. (trackless.location.readAll / trackless.location.readOwn)",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "last" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/Location"
+                      }
+                    },
+                    "most" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/Location"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/user/{userID}/setting" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "userID",
+        "description" : "The ID of a user",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "user", "setting" ],
+        "summary" : "Get all the settings for a single user on the server (trackless.setting.readAll / trackless.setting.readOwn)",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Setting"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/user/{userID}/work" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "userID",
+        "description" : "The id of the user",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "user", "work" ],
+        "summary" : "Get all the work from an user (trackless.work.readAll / trackless.work.readOwn)",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "startDate",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Only show work after ..."
+        }, {
+          "in" : "query",
+          "name" : "endDate",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Only show work bevore ..."
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Work"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "user", "work" ],
+        "summary" : "Save your work as a user on the server (trackless.work.createAll / trackless.work.createOwn)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "worktypeID" : {
+                    "type" : "integer"
+                  },
+                  "locationID" : {
+                    "type" : "integer"
+                  },
+                  "date" : {
+                    "type" : "string"
+                  },
+                  "time" : {
+                    "type" : "integer"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "workID" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/user/{userID}/work/{workID}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "userID",
+        "required" : true,
+        "description" : "The user ID",
+        "schema" : {
+          "type" : "string"
+        }
+      }, {
+        "in" : "path",
+        "name" : "workID",
+        "required" : true,
+        "description" : "The work ID",
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "user", "work" ],
+        "summary" : "Get a single work object that belongs to a user (trackless.work.readAll / trackless.work.readOwn)",
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Work"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "user", "work" ],
+        "summary" : "Remove a single work object that belongs to a user (trackless.work.removeAll / trackless.work.removeOwn)",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "user", "work" ],
+        "summary" : "Change info for a work object (trackless.work.editAll / trackless.work.editOwn)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "locationID" : {
+                    "type" : "integer"
+                  },
+                  "worktypeID" : {
+                    "type" : "integer"
+                  },
+                  "date" : {
+                    "type" : "string"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  },
+                  "time" : {
+                    "type" : "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/work" : {
+      "get" : {
+        "tags" : [ "work" ],
+        "summary" : "Get the work from all the users (trackless.work.readAll)",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "startDate",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Only show work after ..."
+        }, {
+          "in" : "query",
+          "name" : "endDate",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Only show work bevore ..."
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Work"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "work" ],
+        "summary" : "Save your work on the server (trackless.work.createAll)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "worktypeID" : {
+                    "type" : "integer"
+                  },
+                  "userID" : {
+                    "type" : "integer"
+                  },
+                  "locationID" : {
+                    "type" : "integer"
+                  },
+                  "date" : {
+                    "type" : "string"
+                  },
+                  "time" : {
+                    "type" : "integer"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "workID" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/work/{workID}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "workID",
+        "required" : true,
+        "description" : "The work ID",
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "work" ],
+        "summary" : "Get a single work object (trackless.work.readAll)",
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Work"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "work" ],
+        "summary" : "Remove a single work object (trackless.work.removeAll)",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "work" ],
+        "summary" : "Change info for a work object (trackless.work.editAll)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "locationID" : {
+                    "type" : "integer"
+                  },
+                  "worktypeID" : {
+                    "type" : "integer"
+                  },
+                  "userID" : {
+                    "type" : "integer"
+                  },
+                  "date" : {
+                    "type" : "string"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  },
+                  "time" : {
+                    "type" : "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/worktype" : {
+      "get" : {
+        "tags" : [ "worktype" ],
+        "summary" : "Get all the worktypes from the system (trackless.worktype.read)",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Option to sort result by property"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to limit the result"
+        }, {
+          "in" : "query",
+          "name" : "offset",
+          "schema" : {
+            "type" : "number"
+          },
+          "description" : "Option to offset the count"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Worktype"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "worktype" ],
+        "summary" : "Create a new worktype on the server (trackless.worktype.create)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "name" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "worktypeID" : {
+                      "type" : "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Something is wrong with your input"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    },
+    "/worktype/{worktypeID}" : {
+      "parameters" : [ {
+        "in" : "path",
+        "name" : "worktypeID",
+        "description" : "ID of the worktype",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        }
+      } ],
+      "get" : {
+        "tags" : [ "worktype" ],
+        "summary" : "Get infomation about a single worktype (trackless.worktype.read)",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Worktype"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "worktype" ],
+        "summary" : "Remove a single worktype (trackless.worktype.remove)",
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "worktype" ],
+        "summary" : "Change the info of a worktype (trackless.worktype.edit)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "name" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        },
+        "security" : [ {
+          "bearer_token" : [ ]
+        } ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Access" : {
+        "type" : "object",
+        "properties" : {
+          "accessID" : {
+            "type" : "integer"
+          },
+          "access" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Api" : {
+        "type" : "object",
+        "properties" : {
+          "apiID" : {
+            "type" : "integer"
+          },
+          "createDate" : {
+            "type" : "string"
+          },
+          "lastUsed" : {
+            "type" : "string"
+          },
+          "deviceName" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Group" : {
+        "type" : "object",
+        "properties" : {
+          "groupID" : {
+            "type" : "integer"
+          },
+          "groupName" : {
+            "type" : "string"
+          },
+          "users" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/User"
+            }
+          }
+        }
+      },
+      "Location" : {
+        "type" : "object",
+        "properties" : {
+          "locationID" : {
+            "type" : "integer"
+          },
+          "hidden" : {
+            "type" : "integer",
+            "description" : "Hidden locations are not shown to everybody"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "place" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "time" : {
+            "type" : "integer",
+            "description" : "The total time recorded for this location"
+          }
+        }
+      },
+      "Setting" : {
+        "type" : "object",
+        "properties" : {
+          "settingID" : {
+            "type" : "integer"
+          },
+          "groupID" : {
+            "type" : "integer"
+          },
+          "groupName" : {
+            "type" : "string"
+          },
+          "setting" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
+      "User" : {
+        "type" : "object",
+        "properties" : {
+          "userID" : {
+            "type" : "integer"
+          },
+          "firstname" : {
+            "type" : "string"
+          },
+          "lastname" : {
+            "type" : "string"
+          },
+          "username" : {
+            "type" : "string"
+          },
+          "groupID" : {
+            "type" : "integer"
+          },
+          "groupName" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Work" : {
+        "type" : "object",
+        "properties" : {
+          "workID" : {
+            "type" : "integer"
+          },
+          "time" : {
+            "type" : "integer",
+            "description" : "Time is stored as hours. Example eight hours and 30 minutes eill become 8.5 hours."
+          },
+          "date" : {
+            "type" : "string",
+            "description" : "Date is stored in the format YYYY-MM-DD"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "user" : {
+            "$ref" : "#/components/schemas/User"
+          },
+          "location" : {
+            "$ref" : "#/components/schemas/Location"
+          },
+          "worktype" : {
+            "$ref" : "#/components/schemas/Worktype"
+          }
+        }
+      },
+      "Worktype" : {
+        "type" : "object",
+        "properties" : {
+          "worktypeID" : {
+            "type" : "integer"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "bearer_token" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    }
+  }
+}

@@ -734,7 +734,8 @@
     "/location" : {
       "get" : {
         "tags" : [ "location" ],
-        "summary" : "Get all the locations on the server (trackless.location.read)",
+        "summary" : "Get all the locations on the server",
+        "description": "This request requires the trackless.location.read access rule",
         "parameters" : [ {
           "in" : "query",
           "name" : "sort",

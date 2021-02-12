@@ -742,7 +742,7 @@
           "schema" : {
             "type" : "string"
           },
-          "description" : "Option to sort result by property"
+          "description" : "Sort the result by property. Sorting by multiple properties is suported by using a ','."
         }, {
           "in" : "query",
           "name" : "hidden",

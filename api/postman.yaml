@@ -1,0 +1,210 @@
+openapi: 3.0.0
+info:
+  title: Trackless API
+  contact:
+    name: wjtje
+    url: https://github.com/wjtje
+  license:
+    name: MIT
+    url: https://wjtje.mit-license.org/
+  version: 0.4.7
+servers:
+  - url: http://localhost:55565
+    description: Your local server
+paths:
+  /location:
+    get:
+      tags:
+        - location
+      summary: All the locations on the server
+      description: |
+        **Required access**: trackless.location.read
+
+        **Important**: If the location is hidden, don't show it to 'normal users' becuse the location is no longer active.
+      operationId: getLocations
+      parameters:
+        - name: hiddden
+          in: query
+          description: If this is set the server will show the hidden locations
+          allowEmptyValue: true
+          example: true
+          schema:
+            type: boolean
+        - $ref: '#/components/parameters/sortParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/offsetParam'
+      security:
+        - api_key: []
+      responses:
+        200:
+          description: The result
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/locationSchema'
+    post:
+      tags:
+        - location
+      summary: Create a new location
+      operationId: createLocation
+      requestBody:
+        description: location to add to the server
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/locationSchema'
+      security:
+        - api_key: []
+      responses:
+        201:
+          description: Created
+        400:
+          description: Bad request
+  /location/:locationID:
+    parameters:
+      - $ref: '#/components/parameters/locationIDParam'
+    get:
+      tags:
+        - location
+      summary: Information about a single location on the server
+      description: |
+        **Required access**: trackless.location.read
+
+        **Important**: If the location is hidden, don't show it to 'normal users' becuse the location is no longer active.
+      operationId: getSingleLocation
+      security:
+        - api_key: []
+      responses:
+        200:
+          description: The result
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/locationSchema'
+        404:
+          description: Not found
+    delete:
+      summary: Remove a single location for the server
+      description: |
+        **Required access**: trackless.location.remove
+
+        **Important**: The location can not be delete if it's in use by work stored on the serer.
+        You could hide the location to make it as inactive.
+      operationId: removeSingleLocation
+      security:
+        - api_key: []
+      responses:
+        200:
+          description: Removed!
+        404:
+          description: Not found
+        409:
+          description: Conflict
+    patch:
+      summary: Change a locations details
+      description: |
+        **Required access**: trackless.location.edit
+
+        You don't need to edit everything at once
+      operationId: editSingleLocation
+      security:
+        - api_key: []
+      requestBody:
+        description: details to edit about a location
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/locationEditSchema'
+      responses:
+        200:
+          description: Saved
+        400:
+          description: Bad request
+        404:
+          description: Not found
+components:
+  schemas:
+    locationSchema:
+      description: The location object given to the server
+      type: object
+      required:
+        - name
+        - place
+        - id
+      properties:
+        name:
+          description: The name of the owners of the place
+          type: string
+          example: 'Jhon Doe'
+        place:
+          description: The place of the location, eg. city.
+          type: string
+          example: 'Doe town'
+        id:
+          description: An internal id for connecting other systems
+          type: string
+          example: '2021-012'
+    locationEditSchema:
+      description: The location object that is editable by a request
+      allOf:
+        - $ref: '#/components/schemas/locationSchema'
+        - type: object
+          properties:
+            hidden:
+              description: Is the location normaly shown? If this is 1, then the location is no longer active
+              type: integer
+              example: 0
+    locationResponseSchema:
+      description: The location object returned by the server
+      allOf:
+        - $ref: '#/components/schemas/locationEditSchema'
+        - type: object
+          properties:
+            locationID:
+              description: A uniqe number for this location
+              type: integer
+              example: 12
+            time:
+              description: The total amount of time recorded for this location
+              type: number
+              format: float
+              example: 12.5
+  parameters:
+    limitParam:
+      name: limit
+      in: query
+      description: How many results should the server send at once
+      example: 10
+      schema:
+        type: integer
+    offsetParam:
+      name: offset
+      in: query
+      description: The offset for the result, how many sould the server skip
+      example: 5
+      schema:
+        type: integer
+    sortParam:
+      name: sort
+      in: query
+      description: Option to sort the result by property. Multiple properties are allowed using a "," as seperator.
+      example: 'first,second'
+      schema:
+        type: string
+    locationIDParam:
+      name: locationID
+      in: path
+      description: The uniqe ID for that location
+      required: true
+      example: 2
+      schema:
+        type: integer
+  securitySchemes:
+    api_key:
+      description: 'The api_key provided by the system. Required by each request.'
+      type: http
+      scheme: bearer

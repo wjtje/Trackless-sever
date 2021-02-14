@@ -22,6 +22,13 @@ const databaseQuery = async (connection: PoolConnection | undefined, sqlCommand:
 					logger.log('error', 'SQL ERROR', error)
 
 					switch (error?.errno) {
+						case 1062:
+							reject(new ServerError(
+								'Duplicate entry. Please check your values.',
+								400,
+								'trackless.duplicate.err'
+							))
+							break
 						case 1216: // Can not insert (Reference error)
 							reject(new ServerError(
 								'Please make sure your values are valid',
@@ -43,11 +50,11 @@ const databaseQuery = async (connection: PoolConnection | undefined, sqlCommand:
 								'trackless.reference.notFound'
 							))
 							break
-						case 1062:
+						case 1451: // Can not delete
 							reject(new ServerError(
-								'Duplicate entry. Please check your values.',
-								400,
-								'trackless.duplicate.err'
+								'The requested resource could not be delete becuse of a conflict',
+								409,
+								'trackless.reference.delete'
 							))
 							break
 						default:

@@ -1,5 +1,7 @@
 /**
  * Test if the testValue is a valid mysqlTEXT that only contains ACSII
+ *
+ * @param testValue The value to test
  */
 const mysqlTEXT: TestFunction = testValue => {
 	// Create a string for testing the length

@@ -2,8 +2,8 @@ version: "3.8"
 
 services:
   server:
-    image: trackless-server:latest
-    ports: 
+    image: wjtje/trackless-server:latest
+    ports:
       - 55565:55565
     environment:
       DBhost: mariadb
@@ -12,14 +12,14 @@ services:
 
   mariadb:
     image: mariadb:10
-    volumes: 
+    volumes:
       - mariadb-data:/var/lib/mysql
       - ./sql/:/docker-entrypoint-initdb.d
-    # ports: 
+    # ports:
     #   - 3306:3306
-    environment: 
+    environment:
       MYSQL_ROOT_PASSWORD: changethis
       MYSQL_DATABASE: trackless
 
-volumes: 
+volumes:
   mariadb-data:

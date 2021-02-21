@@ -2,7 +2,7 @@
 
 import {Router as expressRouter} from 'express'
 import authHandler from '../../scripts/RequestHandler/auth-handler'
-import {DBcon} from '../..'
+import {DBcon, logger} from '../..'
 import {handleQuery} from '../../scripts/handle'
 import {TLgroups} from './interface'
 import requireHandler from '../../scripts/RequestHandler/require-handler'
@@ -14,7 +14,7 @@ import userRoute from './user'
 import accessRoute from './access'
 import settingRoute from './setting'
 import limitOffsetHandler from '../../scripts/RequestHandler/limit-offset-handler'
-import {closeDatabaseConnection, getDatabaseConnection} from '../../handlers/database-connection'
+import {getDatabaseConnection} from '../../handlers/database-connection'
 
 const router = expressRouter()
 
@@ -31,7 +31,7 @@ router.get(
 	(request, response, next) => {
 		// List all group
 		DBcon.query(
-			`SELECT * FROM \`TL_groups\` ORDER BY \`groupname\` ${request.querySort ?? ''} ${request.queryLimitOffset ?? ''}`,
+			`SELECT * FROM \`TL_groups\` ${request.querySort ?? 'ORDER BY `groupname`'} ${request.queryLimitOffset ?? ''}`,
 			handleQuery(next, (result: TLgroups[]) => {
 				const rslt: Array<{
 					groupID: number;

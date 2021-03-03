@@ -43,7 +43,7 @@
     "@types/js-sha512": "^0.7.0",
     "@types/lodash": "^4.14.167",
     "@types/morgan": "^1.9.2",
-    "@types/mysql": "^2.15.17",
+    "@types/mysql": "^2.15.18",
     "@types/node": "^14.14.31",
     "@types/on-finished": "^2.3.1",
     "@types/passport": "^1.0.5",

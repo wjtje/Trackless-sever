@@ -33,7 +33,7 @@
     "on-finished": "^2.3.0",
     "passport": "^0.4.1",
     "passport-http-bearer": "^1.0.1",
-    "tslib": "^2.0.3",
+    "tslib": "^2.2.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {

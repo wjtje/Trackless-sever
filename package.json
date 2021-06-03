@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
-    "@types/express": "^4.17.9",
+    "@types/express": "^4.17.12",
     "@types/express-rate-limit": "^5.1.1",
     "@types/js-sha512": "^0.7.0",
     "@types/lodash": "^4.14.170",

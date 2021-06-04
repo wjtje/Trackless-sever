@@ -29,7 +29,7 @@
     "moment": "^2.29.1",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
-    "nocache": "^2.1.0",
+    "nocache": "^3.0.0",
     "on-finished": "^2.3.0",
     "passport": "^0.4.1",
     "passport-http-bearer": "^1.0.1",
